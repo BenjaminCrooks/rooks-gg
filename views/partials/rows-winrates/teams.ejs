@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<div id="team-header" class="data-row">
+    <div>As Enemy</div>
+    <div>As Ally</div>
+</div>
+
+<div id="col-header" class="data-row" col-size="team">
+    <!-- <div>Rank</div><div data-sort="champion" class="champion">Champion</div> -->
+    <div class="champion">
+        <div>Rank</div>
+        <div>Champion</div>
+    </div>
+    <div data-sort="enemywinrate" class="winrate">Win Rate</div>
+    <div data-sort="enemyplayed" class="cell">Total Games</div>
+    <div data-sort="allywinrate" class="winrate">Win Rate</div>
+    <div data-sort="allyplayed" class="cell">Total Games</div>
+    <div data-sort="pickrate" class="cell">Overall<br>Pick Rate</div>
+</div>
+
+<div id="row-div" col-size="team">
+    <% rows.forEach(function(element, index) { %>
+    <div class="data-row">
+        <!-- <div class="val-accent"><%= index + 1 %></div><div class="champion"><img src="assets/dragontail/champion/square/<%= element.champion %>.png" alt="Champion Icon"><%= element.champion %></div> -->
+
+        <div class="champion"><div class="rank"><%= index + 1 %></div><img src="assets/dragontail/champion/square/<%= element.champion %>.png" alt="Champion Icon"><%= element.champion %></div>
+
+        <!-- Enemy Win Rates -->
+        <div class="winrate">
+            <div class="winrate-bar">
+                <% if (element.enemyWins !== 0) { %>
+                <div style="width:<%= element.enemyWinrate %>%;"><%= element.enemyWins %>W</div>
+                <% }; if (element.enemyLosses !== 0) { %>
+                <%= element.enemyLosses %>L
+                <% } %>
+            </div>
+            <%= element.enemyWinrate %>%
+        </div>
+
+        <div class="cell"><%= element.enemyPlayed %> Played</div>
+
+        <!-- Ally Win Rates -->
+        <div class="winrate">
+            <div class="winrate-bar">
+                <% if (element.allyWins !== 0) { %>
+                <div style="width:<%= element.allyWinrate %>%;"><%= element.allyWins %>W</div>
+                <% }; if (element.allyLosses !== 0) { %>
+                <%= element.allyLosses %>L
+                <% } %>
+            </div>
+            <%= element.allyWinrate %>%
+        </div>
+
+        <div class="cell"><%= element.allyPlayed %> Played</div>
+
+        <div class="cell"><%= element.pickrate %>%</div>
+    </div>
+    <% }) %>
+</div>

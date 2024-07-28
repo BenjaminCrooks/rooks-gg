@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<div id="col-header" class="data-row" col-size="champion">
+    <!-- <div>Rank</div><div data-sort="champion">Champion</div> -->
+    <div class="champion">
+        <div>Rank</div>
+        <div>Champion</div>
+    </div>
+    <div data-sort="winrate" class="winrate">Win Rate</div>
+    <div data-sort="played" class="cell">Total Games</div>
+    <div data-sort="pickrate" class="cell">Pick Rate</div>
+    <div data-sort="kda" class="cell">KDA</div>
+</div>
+
+<div id="row-div" col-size="champion">
+    <% rows.forEach(function(element, index) { %>
+    <div class="data-row">
+        <!-- <div class="val-accent"><%= index + 1 %></div><div class="champion"><img src="assets/dragontail/champion/square/<%= element.champion %>.png" alt="Champion Icon"><%= element.champion %></div> -->
+        
+        <div class="champion"><div class="rank"><%= index + 1 %></div><img src="assets/dragontail/champion/square/<%= element.champion %>.png" alt="Champion Icon"><%= element.champion %></div>
+        
+        <div class="winrate">
+            <div class="winrate-bar">
+                <% if (element.wins !== 0) { %>
+                <div style="width:<%= element.winrate %>%;"><%= element.wins %>W</div>
+                <% }; if (element.losses !== 0) { %>
+                <%= element.losses %>L
+                <% } %>
+            </div>
+            <%= element.winrate %>%
+        </div>
+
+        <div class="cell"><%= element.played %> Played</div>
+
+        <div class="cell"><%= element.pickrate %>%</div>
+
+        <div class="kda cell"><%= element.kda %>:1<div><%= element.kills %> / <%= element.deaths %> / <%= element.assists %></div></div>
+    </div>
+    <% }) %>
+</div>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<title>Rooks - <%= champion %> Augments</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Rooks">
+<meta name="description" content="Baseline page template">
+
+<link rel="icon" href="assets/icons/rooksIconGG.png">
+<link rel="stylesheet" href="styles.css">
+<script src="plugins/jquery-3.4.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+
+<style>
+
+	* {
+		font-family: Roboto;
+	}
+
+	body {
+		height: 100%;
+		justify-content: space-evenly;
+		gap: 0px;
+	}
+
+	main {
+		background-color: #181818;
+		width: 60vw;
+		gap: 24px;
+	}
+
+	h1 {
+	    position: absolute;
+	    text-shadow: 0px 0px 8px black;
+	}
+
+	input {
+		background-color: #181818;
+		border: solid 1px #444444;
+		border-radius: 2px;
+		padding: 8px;
+	}
+
+	footer {
+		align-items: center;
+		justify-content: center;
+		gap: 32px;
+		width: 95%;
+		border-top: 1px solid #484848;
+		padding: 16px 0px 0px 0px;
+	}
+
+	footer > a {
+		padding: 8px 16px;
+    	font-size: 16px;
+    	font-family: Montserrat Medium;
+	}
+
+
+
+	#aug-options {
+		gap: 8px;
+		margin-top: auto;
+	}
+
+	header {
+	    height: 120px;
+		width: 38%;
+	    border: none;
+	    padding: 0px;
+	    overflow: hidden;
+		position: relative;
+		align-self: center;
+		-webkit-mask-image: linear-gradient(90deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0) 5%,rgba(0,0,0,1) 16.25%,rgba(0,0,0,1) 83.75%,rgba(0,0,0,0) 95%,rgba(0,0,0,0) 100%);
+	}
+
+	header img {
+		object-fit: cover;
+		object-position: top;
+    	width: 100%;
+    	height: auto;
+    	transform: translate(0, 15%);
+    	filter: blur(0px) brightness(50%) grayscale(50%); /*contrast(80%) invert(60%)*/
+	}
+	
+
+
+
+	.aug-row {
+		background-color: #282828;
+		border-radius: 4px;
+		gap: 12px;
+		padding: 12px;
+		overflow: scroll;
+	}
+
+	.aug-item {
+		width: 90px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 8px;
+	}
+
+	.frame {
+		height: 90px;
+		width: 90px;
+		aspect-ratio: 1 / 1;
+		background-color: #181818;
+		border: solid 2px #686868;
+		border-radius: 4px;
+	}
+
+	label {
+		height: 2em;
+		width: 100%;
+		text-align: center;
+/*		font-size: 10px;*/
+	}
+
+	.aug-item img {
+		object-fit: contain;
+		width: 100%;
+		animation: fadeIn 0.5s;
+		transition: opacity 0.5s ease-out;
+	}
+
+	
+
+</style>
+
+</head>
+
+<body>
+
+<%- include("partials/navigation-bar") %>
+
+
+<header class="h-container">
+	<!-- <img src="<%= square %>"> -->
+	<img src="assets/dragontail/champion/centered/<%= champion %>_0.jpg">
+	<h1><%= champion %></h1>
+</header>
+
+<main>
+
+	<div class="aug-row h-container">
+		<% prismatic.forEach(function(element, index) { %>
+		<div class="aug-item"<% if (early.includes(element.name)) { %> data-early="early"<% } %>>
+			<div class="frame">
+			<img src="<%= element.src %>" alt="<%= element.name %>">
+			</div>
+			<label><%= element.name %></label>
+		</div>
+		<% }) %>
+	</div>
+
+	<div class="aug-row h-container">
+		<% gold.forEach(function(element, index) { %>
+		<div class="aug-item"<% if (early.includes(element.name)) { %> data-early="early"<% } %>>
+			<div class="frame">
+			<img src="<%= element.src %>" alt="<%= element.name %>">
+			</div>
+			<label><%= element.name %></label>
+		</div>
+		<% }) %>
+	</div>
+
+	<div class="aug-row h-container">
+		<% silver.forEach(function(element, index) { %>
+		<div class="aug-item"<% if (early.includes(element.name)) { %> data-early="early"<% } %>>
+			<div class="frame">
+			<img src="<%= element.src %>" alt="<%= element.name %>">
+			</div>
+			<label><%= element.name %></label>
+		</div>
+		<% }) %>
+	</div>
+
+	<div id="aug-options" class="h-container">
+		<input type="checkbox" value>
+		Strong Early
+	</div>
+
+</main>
+
+<!-- <footer id="sub-links" class="h-container">
+	<a href="/arena/augments/anivia" class="btn">Anivia</a>
+	<a href="/arena/augments/vex" class="btn">Vex</a>
+	<a href="/arena/augments/ziggs" class="btn">Ziggs</a>
+</footer> -->
+
+
+
+<script>
+
+	$(document).ready(function() {
+
+		$(".aug-row .aug-item").each(function() {
+			$(this).data("early", $(this).data("early"))
+		})
+
+		$("#aug-options > input").change(function() {
+			if (this.checked) {
+				$(".aug-row .aug-item:not(:data(early))").fadeOut(200)
+			} else {
+				$(".aug-row .aug-item").fadeIn(200)
+			}
+		})
+
+	})
+
+</script>
+
+</body>
+
+</html>

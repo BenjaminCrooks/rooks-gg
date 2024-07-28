@@ -1,0 +1,360 @@
+/* Tags */
+* {
+    box-sizing: border-box;
+    margin: 0px;
+    color: #b8b8b8;
+    font: 12px Roboto;
+    line-height: 1em;
+}
+
+*::-webkit-scrollbar { display: none; }
+
+body {
+    min-height: calc(100vh - 56px);
+    background-color: #181818;
+    padding: 32px;
+    margin-top: 56px;
+    gap: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background-color: #282828;
+    width: 50vw;
+    padding: 16px;
+    border-radius: 4px;
+}
+
+img {
+    display: block;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: Montserrat Semi Bold;
+    font-variant: small-caps;
+    color: white;
+}
+
+h1 {
+    font-size: 48px;
+}
+
+h2 {
+    font-size: 32px;
+}
+
+h3 {
+    font-size: 16px;
+}
+
+p {}
+
+span {}
+
+a {
+    text-decoration: none;
+}
+
+header {
+    width: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #484848;
+    padding: 0px 0px 16px 0px;
+}
+
+footer {}
+
+div {}
+
+ul {
+    list-style: none;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+}
+
+ul.center {
+    align-items: center;
+}
+
+ul.right {
+    align-items: end;
+}
+
+li {
+    white-space: nowrap;
+/*    overflow: hidden;*/
+    text-overflow: ellipsis;
+}
+
+li.bold {
+    font-family: Roboto Black;
+    font-size: 14px;
+}
+
+li.break {
+    margin-bottom: auto;
+}
+
+li.legendary {
+    color: #ff8000;
+}
+
+li.epic {
+    color: #ba67f2;
+}
+
+/*li.boosted {
+    color: #ff3333;
+}*/
+
+label {}
+
+button {}
+button:disabled {}
+
+select {} /* dropdown menu */
+option {} /* dropdown option */
+
+input {
+    background-repeat: no-repeat;
+}
+
+input:invalid {}
+
+input[type=text] { /* "search bar" */
+    color: white;
+    font-family: Roboto Medium;
+    font-size: 16px;
+    background-color: #282828;
+    background-image: url("assets/icons/searchIcon.png");
+    background-size: 20px 20px;
+    background-position: 8px 50%;
+    padding: 8px 8px 8px 36px;
+    border: none;
+    border-radius: 4px;
+}
+
+input[type=text]:focus {
+    outline-color: #484848;
+}
+
+input[type=text]:disabled {}
+
+input[type=checkbox] {
+    appearance: none;
+    cursor: pointer;
+}
+
+input[type=checkbox]:checked {
+    background-color: #444444;
+    background-image: url("assets/icons/checkmark.png");
+    background-position: center;
+    background-size: auto 100%;
+}
+
+
+
+
+
+/* Navigation Bar */
+#navigation-bar {
+  width: 100%;
+  height: 56px;
+  position: fixed;
+  top: 0;
+  left: 0;
+/*  background-color: #2d283e;*/
+  z-index: 1;
+  padding: 8px;
+}
+
+#navigation-bar img {
+    height: 100%;
+}
+
+#navigation-bar > a {
+    position: relative;
+    padding: 8px 16px;
+    font-size: 16px;
+    font-family: Montserrat Bold;
+    color: white;
+}
+
+#navigation-bar > a:first-of-type {
+    height: 90%;
+    margin-left: 8px;
+    margin-right: auto;
+    padding: 0px;
+}
+
+#navigation-bar > a ~ a:not(:nth-child(2)) {
+    border-left: 1px solid #484848;
+}
+
+a:hover {
+    color: #989898;
+}
+
+#navigation-bar ul.sub-nav {
+    position: absolute;
+    top: calc(100% + 8px + 4px);
+    left: 0;
+    background-color: #564f70;
+    min-width: 100%;
+    gap: 12px;
+    padding: 16px;
+}
+
+#navigation-bar ul.sub-nav > li {
+    font-family: Montserrat Bold;
+    font-size: 16px;
+}
+
+
+
+
+
+/* Row Elements */
+.row-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #282828;
+    border-radius: 4px;
+}
+
+.row-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    border-radius: 2px;
+}
+
+.row-item img {
+    height: 100%;
+    border-radius: 4px;
+}
+
+.row-rank {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    font-family: Roboto Bold;
+    color: #989898;
+}
+
+.row-rank + img {
+    margin-left: 32px;
+}
+
+.row-container > .row-item:nth-child(even) {
+    background-color: #484848;
+}
+
+.winrate-bar {
+    background-color: #E84057;
+    padding-right: 8px;
+    height: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 2px;
+    overflow: hidden;
+    color: #d8d8d8;
+}
+
+.winrate-bar > div {
+    background-color: #5383E8;
+    padding-left: 8px;
+    height: 100%;
+    display: inherit;
+    align-items: inherit;
+    color: #d8d8d8;
+}
+
+
+/* Flex Elements */
+.grid-container {
+    display: grid;
+}
+
+.grid-container > img {
+    width: 100%;
+}
+
+
+.h-container {
+    display: flex;
+    align-items: center;
+}
+
+.v-container {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.v-flip {
+  transform: scaleY(-1);
+}
+
+.h-flip {
+  transform: scaleX(-1);
+}
+
+.dd-center {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-repeat: no-repeat;
+}
+
+
+
+ 
+
+/* Purple */
+.accent-txt-1 {color: #564f70;} .accent-txt-2 {color: #2d283e;} .accent-txt-3 {color: #22092c;}
+.accent-dom-1 {background-color: #564f70;} .accent-dom-2 {background-color: #2d283e;} .accent-dom-3 {background-color: #2d283e;}
+
+/* Maroon - Default Shirt */
+/*.accent-txt-1 {color: #660220;} .accent-txt-2 {color: #4c0118;} .accent-txt-3 {color: #330110;}*/
+/*.accent-dom-1 {background-color: #660220;} .accent-dom-2 {background-color: #4c0118;} .accent-dom-3 {background-color: #330110;}*/
+
+/* Maroon - 25 Saturation */
+/*.accent-txt-1 {color: #5d1a27;} .accent-txt-2 {color: #45111d;} .accent-txt-3 {color: #2e0913;}*/
+/*.accent-dom-1 {background-color: #5d1a27;} .accent-dom-2 {background-color: #45111d;} .accent-dom-3 {background-color: #2e0913;}*/
+
+/* Maroon - 50 Vibrance */
+/*.accent-txt-1 {color: #662430;} .accent-txt-2 {color: #4c1923;} .accent-txt-3 {color: #33151c;}*/
+/*.accent-dom-1 {background-color: #662430;} .accent-dom-2 {background-color: #4c1923;} .accent-dom-3 {background-color: #33151c;}*/
+
+/*sand green #789082 / sand red #957977*/
+
+
+
+/* Fonts */
+@font-face { font-family: Montserrat Light;         src: url(assets/fonts/Montserrat-Light.ttf); }
+@font-face { font-family: Montserrat Regular;       src: url(assets/fonts/Montserrat-Regular.ttf); }
+@font-face { font-family: Montserrat Medium;        src: url(assets/fonts/Montserrat-Medium.ttf); }
+@font-face { font-family: Montserrat Semi Bold;     src: url(assets/fonts/Montserrat-SemiBold.ttf); }
+@font-face { font-family: Montserrat Bold;          src: url(assets/fonts/Montserrat-Bold.ttf); }
+@font-face { font-family: Montserrat Extra Bold;    src: url(assets/fonts/Montserrat-ExtraBold.ttf); }
+@font-face { font-family: Roboto;                   src: url(assets/fonts/Roboto-Regular.ttf); }
+@font-face { font-family: Roboto Medium;            src: url(assets/fonts/Roboto-Medium.ttf); }
+@font-face { font-family: Roboto Bold;              src: url(assets/fonts/Roboto-Bold.ttf); }
+@font-face { font-family: Roboto Black;             src: url(assets/fonts/Roboto-Black.ttf); }

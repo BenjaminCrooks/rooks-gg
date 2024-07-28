@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<title>Rooks - <%= pageTitle %></title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Rooks">
+<meta name="description" content="Baseline page template">
+
+<link rel="icon" href="assets/icons/rooksIconGG.png">
+<link rel="stylesheet" href="styles.css">
+<script src="plugins/jquery-3.4.1.min.js"></script>
+
+<style>
+
+	main {
+	    background: none;
+	    padding: 0px;
+	    width: 60vw;
+
+	    display: grid;
+	    grid-template-columns: 1fr 2fr;
+	    grid-template-rows: 100px auto auto auto;
+	    grid-auto-flow: column;
+	}
+
+	main > div {
+	    width: 100%;
+	}
+
+	.grid-container {
+	    grid-template-columns: repeat(3, 24px);
+	    grid-template-rows: repeat(2, 24px);
+	}
+
+/*	.grid-container::after  {
+		content: "";
+    	background-color: #2f436E;
+    	border-radius: 2px;
+	}*/
+
+
+	#general-info {
+	    background-color: #282828;
+	    grid-column: 1 / span 2;
+	}
+
+	#match-history {
+	    grid-column: 2;
+	    grid-row: 2 / span 3;
+	    gap: 8px;
+	    background-color: transparent;
+	}
+
+	#champions, #matchups {
+	    gap: 4px;
+	    padding: 8px;
+	}
+
+
+	/* Match History */
+	#match-history > .win { background-color: #28344e; }
+	#match-history > .loss { background-color: #59343b; }
+
+	#match-history > .win li.bold { color: #5383e8; }
+	#match-history > .loss li.bold { color: #e84057; }
+
+	#match-history > .row-item {
+	    height: 112px;
+	    padding: 8px;
+	    overflow: hidden;
+	    border-radius: 4px;
+	}
+
+	div.dd-center {
+	    width: 35%;
+	    height: 100%;
+	    background-position: bottom 80% right 50%;
+	    background-size: 160% auto;
+	    -webkit-mask-image: linear-gradient(
+	        90deg,
+	        rgba(0,0,0,1) 0%,
+	        rgba(0,0,0,1) 75%,
+	        rgba(0,0,0,0) 100%
+	    );
+	}
+
+	div.dd-center > ul {
+	    gap: 6px;
+	    padding: 12px 16px;
+	    width: 50%;
+	    height: 100%;
+	}
+
+	#match-history > .win > div.dd-center > ul {
+		background: linear-gradient(
+	        90deg,
+	        rgba(83,131,232,1) 0%,
+	        rgba(83,131,232,1) 5%,
+	        rgba(0,0,0,0.6) 6%,
+	        rgba(0,0,0,0.6) 50%,
+	        rgba(0,0,0,0) 100%
+	    );
+	}
+	
+	#match-history > .loss > div.dd-center > ul {
+		background: linear-gradient(
+	        90deg,
+	        rgba(232,64,87,1) 0%,
+	        rgba(232,64,87,1) 5%,
+	        rgba(0,0,0,0.6) 6%,
+	        rgba(0,0,0,0.6) 50%,
+	        rgba(0,0,0,0) 100%
+	    );
+	}
+
+	.runes, .rune-options, .items, .participants {
+		gap: 4px;
+	}
+
+
+	/* Runes */
+	.runes {
+	    height: 60px;
+	    margin-left: 32%;
+	}
+
+	.rune-stats {
+		gap: 2px
+	}
+
+	.rune-stats > img {
+		width: 20px;
+		border:1px solid rgb(187, 152, 52);
+		border-radius: 50%;
+		background-color: #282828;
+	}
+
+
+	/* Participants */
+	.row-container.participants {
+	    background-color: transparent;
+	}
+
+	.row-container.participants > .row-item {
+	    height: 16px;
+	    gap: 16px;
+	    background-color: transparent;
+	}
+
+	.row-container.participants > * {
+	    background-color: transparent;
+	}
+
+	.row-container.participants > .row-item > .h-container {
+	    width: 70px;
+	    height: 100%;
+	    gap: 8px;
+	    white-space: nowrap;
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	}
+
+	.row-container.participants > .row-item > .h-container.bold {
+		font-family: Roboto Bold;
+		color: #c8c8c8;
+	}
+
+
+	/* Left Column Sections */
+	#matchups img {
+	    border: 2px solid #e84057;
+	}
+
+	#champions > .row-item, #matchups > .row-item {
+	    height: 48px;
+	    padding: 4px 16px;
+	    font-size: 11px;
+	}
+
+	.left-col > .row-item * {
+	    font-size: 11px;
+	}
+
+	.left-col li.bold {
+	    font-size: 12px;
+	}
+
+/*	#champions .winrate-bar { background-color: #28344e; }
+	#champions .winrate-bar > div { background-color: #5383E8; }
+	#matchups .winrate-bar { background-color: #59343b; }
+	#matchups .winrate-bar > div { background-color: #E84057; }*/
+
+	
+
+	.row-container > h3 {
+	    padding: 8px;
+	    margin-bottom: 0.5em;
+	}
+
+	.row-container ul {
+	    gap: 4px;
+	}
+
+	.winrate-bar {
+	    width: 35%;
+	}
+
+</style>
+
+</head>
+
+<body>
+
+<%- include("partials/navigation-bar") %>
+
+<main>
+
+
+	<div id="general-info"></div>
+
+
+
+	<div id="match-history" class="row-container">
+		<%- include("partials/rows-overview/match-history", {history}) %>
+	</div>
+
+
+
+	<div id="champions" class="row-container left-col">
+		<h3>Champions</h3>
+		<%- include("partials/rows-overview/champions", {champions}) %>
+	</div>
+
+
+
+	<div id="matchups" class="row-container left-col">
+		<h3>Worst Matchups</h3>
+		<%- include("partials/rows-overview/enemies", {matchups}) %>
+	</div>
+
+
+</main>
+
+<script>
+	$(document).ready(function() {})
+</script>
+
+</body>
+
+</html>

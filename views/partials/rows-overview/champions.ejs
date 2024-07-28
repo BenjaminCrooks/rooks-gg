@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+
+<% champions.forEach(function(element, index) { %>
+<div class="row-item">
+
+    <img src="assets/dragontail/champion/square106/<%= element.champion %>.png">
+
+    <ul class="center">
+        <li class="bold<% if (element.kda >= 6) { %> legendary<% } else if (element.kda >= 4) { %> epic<% } else if (element.kda <= 1) { %> boosted<% } %>"><%= element.kda %>:1</li>
+        <li><%= element.kills %> / <%= element.deaths %> / <%= element.assists %></li>
+    </ul>
+
+    <div class="winrate-bar">
+        <div style="width:<%= element.winrate %>%;"><%= element.wins %>W</div>
+        <%= element.losses %>L
+    </div>
+
+    <ul class="right">
+        <li class="bold<% if (element.winrate >= 70) { %> legendary<% } else if (element.winrate >= 60) { %> epic<% } else if (element.winrate <= 40) { %> boosted<% } %>"><%= element.winrate %>%</li>
+        <li><%= element.played %> Played</li>
+    </ul>
+
+</div>
+<% }) %>
