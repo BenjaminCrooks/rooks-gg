@@ -16,7 +16,7 @@ The match data is provided via [RIOT Games' developer API](https://developer.rio
 │   │   │   ├── gold
 │   │   │   ├── prismatic
 │   │   │   └── silver
-│   │   ├── dragontail			# LoL game data & assets (a trimmed/parsed version of data dragon's asset folder)
+│   │   ├── dragontail			# Data Dragon's LoL game data & assets
 │   │   │   ├── champion
 │   │   │   │   ├── centered		# Centered splash arts
 │   │   │   │   ├── spells		# Spell icons
