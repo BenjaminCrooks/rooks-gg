@@ -48,7 +48,7 @@ The match data is provided via [RIOT Games' developer API](https://developer.rio
 ### Homepage
 A quick overview for match data for my most recent 20 matches. Allows me to quickly see how I am performing on my most recently played champions, along with showing me what champions I have been consistently losing to. More general data for individual matches is also displayed, giving an overview of how my games have been going across all of the accounts that I play on. 
 
-![Overview](Screenshot_1.png "Overview")
+![Overview](docs/Screenshot_1.png "Overview")
 
 
 ### Win Rate Data
@@ -59,9 +59,9 @@ GET     /teams/win-rates        finds all of the data for other players in my ma
 
 Displays general champion data for every match recorded in the database. Depending on the route, this data is viewable as either just my personal player data or strictly the other champions in my matches. Both routes combine the champion data for matches played across mutliple accounts. This allows for easy viewing of which champions I see the most frequently, as well as which I play the best with & lose against the most.
 
-![Champions](Screenshot_2.png "My champion win rates")
+![Champions](./docs/Screenshot_2.png "My champion win rates")
 
-![Teams](Screenshot_3.png "Team & enemy win rates")
+![Teams](./docs/Screenshot_3.png "Team & enemy win rates")
 
 
 ### Arena Augments
@@ -71,7 +71,7 @@ GET     /arena/augments/Caitlyn        		finds all authors
 
 Allows me to easily view what augments are available for which champions, sorted by order of which I feel are most valuable. The augment lists for each champion are stored as arrays within the routing section since I only wanted to view a specific few champions, so it didn't warrant it's own MongoDB collection.
 
-![Augments](Screenshot_5.png "Arena augments")
+![Augments](./docs/Screenshot_5.png "Arena augments")
 
 
 ### Navigation
@@ -81,7 +81,7 @@ GET     .../selection        		finds all authors
 
 Controller functions used to display which champions are viewable for a given root route.
 
-![Navigation](Screenshot_4.png "Navigation selection")
+![Navigation](./docs/Screenshot_4.png "Navigation selection")
 
 
 ### Champion Stats
