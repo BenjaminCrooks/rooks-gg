@@ -5,6 +5,7 @@ router.use(express.static("public"))
 
 let matchesModel = require("../models/matchSchema.js")
 var tools = require("../tools.js")
+var query = require("../controllers/query.js")
 
 
 router.use("/win-rates", (req, res, next) => {
@@ -83,59 +84,38 @@ router.use("/win-rates", (req, res, next) => {
 	    }}
 	]
  	next()
-})
+}, query, (req, res, next) => {
+	let totalPlayedMatches = res.locals.data[0].totalMatches[0].count
 
+	res.locals.rows = res.locals.data[0].participants.map(function(element, index, array) {
+		return {
+			champion: element._id,
+			enemyWins: element.enemyWins,
+			enemyLosses: element.enemyTotal - element.enemyWins,
+			enemyWinrate: Math.round(element.enemyWinRate*100),
+			enemyPlayed: element.enemyTotal,
+			allyWins: element.allyWins,
+			allyLosses: element.allyTotal - element.allyWins,
+			allyWinrate: Math.round(element.allyWinRate*100),
+			allyPlayed: element.allyTotal,
+			pickrate: (((element.enemyTotal+element.allyTotal)/totalPlayedMatches)*100).toFixed(2), 
 
-
-router.use((req, res, next) => {
-
-	// Ignore remakes for all queries
-	res.locals.aggregation.unshift({$match: {gameEndedInEarlySurrender: false}})
-
-	// Query database
-	matchesModel.aggregate(res.locals.aggregation).exec((err, data) => {
-		if (err) {
-			console.log("Error 404 - Page not found\n\t" + err)
-			res.status(404).redirect("../404")
-		} else if (data.length == 0) {
-			console.log("Error 204 - No content found; 0 documents matched the parameters\n\t" + err)
-			res.status(204).redirect("../204")
-		} else {
-			// console.log(data[0].participants[0])
-			let totalPlayedMatches = data[0].totalMatches[0].count
-
-			res.locals.rows = data[0].participants.map(function(element, index, array) {
-				return {
-					champion: element._id,
-					enemyWins: element.enemyWins,
-					enemyLosses: element.enemyTotal - element.enemyWins,
-					enemyWinrate: Math.round(element.enemyWinRate*100),
-					enemyPlayed: element.enemyTotal,
-					allyWins: element.allyWins,
-					allyLosses: element.allyTotal - element.allyWins,
-					allyWinrate: Math.round(element.allyWinRate*100),
-					allyPlayed: element.allyTotal,
-					pickrate: (((element.enemyTotal+element.allyTotal)/totalPlayedMatches)*100).toFixed(2), 
-
-					sort: {
-						"champion": element._id,
-						"enemywinrate": Math.round(element.enemyWinRate*100),
-						"enemyplayed": element.enemyTotal,
-						"allywinrate": Math.round(element.allyWinRate*100),
-						"allyplayed": element.allyTotal,
-						"pickrate": (((element.enemyTotal+element.allyTotal)/totalPlayedMatches)*100).toFixed(2)
-					}
-				}
-			})
-
-			next()
+			sort: {
+				"champion": element._id,
+				"enemywinrate": Math.round(element.enemyWinRate*100),
+				"enemyplayed": element.enemyTotal,
+				"allywinrate": Math.round(element.allyWinRate*100),
+				"allyplayed": element.allyTotal,
+				"pickrate": (((element.enemyTotal+element.allyTotal)/totalPlayedMatches)*100).toFixed(2)
+			}
 		}
 	})
+
+	next()
 })
 
 
 router.get("/win-rates", (req, res) => {
-	// console.log(res.locals.rows[0])
 	res.render("winrates.ejs", {
 		pageTitle: res.locals.pageTitle,
 		rowPartial: res.locals.partial,

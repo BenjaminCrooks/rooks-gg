@@ -5,6 +5,7 @@ router.use(express.static("public"))
 
 let matchesModel = require("../models/matchSchema.js")
 var tools = require("../tools.js")
+var query = require("../controllers/query.js")
 
 
 router.use("/:champion", (req, res, next) => {
@@ -45,61 +46,42 @@ router.use("/:champion", (req, res, next) => {
 	    {$addFields: {winRate: {$divide: ["$wins", "$matches"]}}}
 	]
  	next()
-})
+}, query, (req, res, next) => {
+	let stats = res.locals.data[0]
 
+	res.locals.stats = {
+		champion: stats._id,
+		wins: stats.wins,
+		losses: stats.matches - stats.wins,
+		winrate: Math.round(stats.winRate*100).toString(),
 
-router.use((req, res, next) => {
+		played: stats.matches.toString(),
+		timePlayed: tools.gameLength(stats.timePlayed),
+		avgGameLength: tools.gameLength(Math.round(stats.timePlayed/stats.matches)),
+		// pickrate: ((stats.matches/totalPlayedMatches)*100).toFixed(2),
 
-	// Ignore remakes for all queries
-	res.locals.aggregation.unshift({$match: {gameEndedInEarlySurrender: false}})
+		kills: stats.kills,
+		avgKills: (stats.kills/stats.matches).toFixed(1),
+		deaths: stats.deaths,
+		avgDeaths: (stats.deaths/stats.matches).toFixed(1),
+		assists: stats.assists,
+		avgAssists: (stats.assists/stats.matches).toFixed(1),
+		kda: ((stats.kills + stats.assists)/stats.deaths).toFixed(2),
 
-	// Query database
-	matchesModel.aggregate(res.locals.aggregation).exec((err, data) => {
-		if (err) {
-			console.log("Error 404 - Page not found\n\t" + err)
-			res.status(404).redirect("../404")
-		} else if (data.length == 0) {
-			console.log("Error 204 - No content found; 0 documents matched the parameters\n\t" + err)
-			res.status(204).redirect("../204")
-		} else {
+		cs: stats.cs,
+		avgCs: (stats.cs/stats.matches).toFixed(1),
 
-			let stats = data[0]
+		spell1Casts: stats.spell1Casts,
+		spell1Avg: Math.round(stats.spell1Casts/stats.matches),
+		spell2Casts: stats.spell2Casts,
+		spell2Avg: Math.round(stats.spell2Casts/stats.matches),
+		spell3Casts: stats.spell3Casts,
+		spell3Avg: Math.round(stats.spell3Casts/stats.matches),
+		spell4Casts: stats.spell4Casts,
+		spell4Avg: Math.round(stats.spell4Casts/stats.matches)
+	}
 
-			res.locals.stats = {
-				champion: stats._id,
-				wins: stats.wins,
-				losses: stats.matches - stats.wins,
-				winrate: Math.round(stats.winRate*100).toString(),
-
-				played: stats.matches.toString(),
-				timePlayed: tools.gameLength(stats.timePlayed),
-				avgGameLength: tools.gameLength(Math.round(stats.timePlayed/stats.matches)),
-				// pickrate: ((stats.matches/totalPlayedMatches)*100).toFixed(2),
-
-				kills: stats.kills,
-				avgKills: (stats.kills/stats.matches).toFixed(1),
-				deaths: stats.deaths,
-				avgDeaths: (stats.deaths/stats.matches).toFixed(1),
-				assists: stats.assists,
-				avgAssists: (stats.assists/stats.matches).toFixed(1),
-				kda: ((stats.kills + stats.assists)/stats.deaths).toFixed(2),
-
-				cs: stats.cs,
-				avgCs: (stats.cs/stats.matches).toFixed(1),
-
-				spell1Casts: stats.spell1Casts,
-				spell1Avg: Math.round(stats.spell1Casts/stats.matches),
-				spell2Casts: stats.spell2Casts,
-				spell2Avg: Math.round(stats.spell2Casts/stats.matches),
-				spell3Casts: stats.spell3Casts,
-				spell3Avg: Math.round(stats.spell3Casts/stats.matches),
-				spell4Casts: stats.spell4Casts,
-				spell4Avg: Math.round(stats.spell4Casts/stats.matches)
-			}
-
-			next()
-		}
-	})
+	next()
 })
 
 

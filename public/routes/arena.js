@@ -10,16 +10,18 @@ const augments = require("express").Router()
 router.use("/augments", augments)
 augments.use(express.static("public"))
 
-// augments.use("/CHAMPION", (req, res, next) => {
-// 	res.locals.champion = "CHAMPION"
 
-// 	res.locals.silver = []
-// 	res.locals.gold = []
-// 	res.locals.prismatic = []
+var selection = require("../controllers/selection.js")
+router.get("/selection", (req, res, next) => {
+	res.locals = {
+		pageTitle: "Augments",
+		path: "/arena/augments/",
+		champions: ["Anivia", "Vex", "Ziggs", "Hwei", "Ashe", "Caitlyn", "Vayne"]
+	}
+	next()
+}, selection.selectionNavigation)
 
-// 	res.locals.early = []
-//  	next()
-// })
+
 
 augments.use("/anivia", (req, res, next) => {
 	res.locals.champion = "Anivia"
@@ -119,22 +121,6 @@ augments.get("*", (req, res) => {
 		early: res.locals.early
 	})
 })
-
-
-
-// Selection Screen
-const selection = require("../controllers/selection.js")
-
-router.use((req, res, next) => {
-	res.locals = {
-		pageTitle: "Augments",
-		path: "/arena/augments/",
-		champions: ["Anivia", "Vex", "Ziggs", "Hwei", "Ashe", "Caitlyn", "Vayne"]
-	}
-	next()
-})
-
-router.use("/selection", selection)
 
 
 module.exports = router

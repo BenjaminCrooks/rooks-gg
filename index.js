@@ -3,8 +3,6 @@ const app = express()
 
 const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
-const async = require("async")
-const fs = require("fs")
 const path = require("path")
 
 mongoose.connect("mongodb://localhost:27017/lol")
@@ -12,32 +10,31 @@ mongoose.connect("mongodb://localhost:27017/lol")
 app.set("view engine", "ejs")
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
-app.use(express.static("public"))
+app.use(express.static("public")) // app.use(express.static(path.join(__dirname, 'public')))
 
 let matchesModel = require("./public/models/matchSchema.js")
 
 
-// Routes
 const champions = require("./public/routes/champions")
 const teams = require("./public/routes/teams")
+const stats = require("./public/routes/stats")
 const champies = require("./public/routes/random-icons")
 const arena = require("./public/routes/arena")
 app.use("/champions", champions)
 app.use("/teams", teams)
+app.use("/stats", stats)
 app.use("/random-icon", champies)
 app.use("/arena", arena)
-const stats = require("./public/routes/stats")
-app.use("/stats", stats)
 
 var tools = require("./public/tools.js")
+var query = require("./public/controllers/query.js")
 
 
 
 
-app.use("/", (req, res, next) => {
+app.get("/", (req, res, next) => {
 	res.locals.aggregation = [
 		{$sort: {gameTimestamp: -1}},
-	    {$match: {gameEndedInEarlySurrender: false}},
 	    {$limit: 40},
 	    {$project: {
 	    	gameVersion: 1,
@@ -118,7 +115,7 @@ app.use("/", (req, res, next) => {
 					losses: {$subtract: ["$matches", "$wins"]},
 					winrate: {$cond: [{$eq: ["$matches", 0]}, 0, {$divide: ["$wins", "$matches"]}]}
 				}},
-				{$sort: {matches: -1, wins: -1}},
+				{$sort: {matches: -1, wins: -1, championName: -1}},
 				{$limit: 6}
 			],
 
@@ -151,77 +148,59 @@ app.use("/", (req, res, next) => {
 
 		}}
 	]
-
  	next()
-})
-
-
-app.use((req, res, next) => {
-
-	// Ignore remakes for all queries
-	res.locals.aggregation.unshift({$match: {gameEndedInEarlySurrender: false}})
-
-	// Query database
-	matchesModel.aggregate(res.locals.aggregation).exec((err, data) => {
-		if (err) {
-			console.log("Error 404 - Page not found\n\t" + err)
-			res.status(404).redirect("../404")
-		} else if (data.length == 0) {
-			console.log("Error 204 - No content found; 0 documents matched the parameters\n\t" + err)
-			res.status(204).redirect("../204")
-		} else {
-
-			res.locals.history = data[0].history.map(function(element, index) {
-				return {
-					summoner: element.summonerName,
-					role: element.position,
-					champion: element.championName,
-					win: element.win,
-					length: tools.gameLength(element.maxTimePlayed),
-					version: element.gameVersion.substring(0, 5),
-					date: tools.formatDate(element.gameTimestamp),
-					keystone: element.runes.keystone.replaceAll(" ", ""),
-					styles: element.runes.styles.map(function(element) { return element.replaceAll(" ", "")}),
-					stats: tools.formatRuneStats(element.runes.stats),
-					items: tools.formatItems(element.items),
-					participants: tools.formatParticipants(element.teams)
-				}
-			})
-
-			res.locals.champions = data[0].champions.map(function(element, index) {
-				return {
-					champion: element._id,
-					wins: element.wins,
-					losses: element.losses,
-					winrate: Math.round(element.winrate*100),
-					played: element.matches,
-					kda: ((element.kills + element.assists)/element.deaths).toFixed(2),
-					kills: (element.kills/element.matches).toFixed(1),
-					deaths: (element.deaths/element.matches).toFixed(1),
-					assists: (element.assists/element.matches).toFixed(1)
-				}
-			})
-
-			res.locals.matchups = data[0].losingTo.map(function(element, index) {
-				return {
-					champion: element._id,
-					wins: element.wins,
-					losses: element.losses,
-					winrate: Math.round(element.winrate*100),
-					played: element.matches
-				}
-			})
-
-			next()
+}, query, (req, res, next) => {
+	res.locals.history = res.locals.data[0].history.map(function(element, index) {
+		return {
+			summoner: element.summonerName,
+			role: element.position,
+			champion: element.championName,
+			win: element.win,
+			length: tools.gameLength(element.maxTimePlayed),
+			version: element.gameVersion.substring(0, 5),
+			date: tools.formatDate(element.gameTimestamp),
+			// date: tools.formatTime(element.gameTimestamp) + " · " + tools.formatDate(element.gameTimestamp),
+			keystone: element.runes.keystone.replaceAll(" ", ""),
+			styles: element.runes.styles.map(function(element) { return element.replaceAll(" ", "").replaceAll(":", "") }),
+			stats: tools.formatRuneStats(element.runes.stats),
+			items: tools.formatItems(element.items),
+			participants: tools.formatParticipants(element.teams)
 		}
 	})
-})
 
+	res.locals.champions = res.locals.data[0].champions.map(function(element, index) {
+		return {
+			champion: element._id,
+			wins: element.wins,
+			losses: element.losses,
+			winrate: Math.round(element.winrate*100),
+			played: element.matches,
+			kda: ((element.kills + element.assists)/element.deaths).toFixed(2),
+			kills: (element.kills/element.matches).toFixed(1),
+			deaths: (element.deaths/element.matches).toFixed(1),
+			assists: (element.assists/element.matches).toFixed(1)
+		}
+	})
 
-app.get("/", (req, res) => {
+	res.locals.matchups = res.locals.data[0].losingTo.map(function(element, index) {
+		return {
+			champion: element._id,
+			wins: element.wins,
+			losses: element.losses,
+			winrate: Math.round(element.winrate*100),
+			played: element.matches
+		}
+	})
+
+	next()
+}, (req, res) => {
 	res.render("overview.ejs", {
 		pageTitle: "Recent Overview"
 	})
+})
+
+app.get("/test", (req, res) => {
+	res.render("raw-test.ejs", {})
 })
 
 

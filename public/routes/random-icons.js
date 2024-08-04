@@ -6,48 +6,48 @@ router.use(express.static("public"))
 
 
 
+const iconArrayChampies = fs.readdirSync("./public/assets/dragontail/profileicon/champies", {recursive: true}, (err, files) => {return files})
+const iconArrayChampieFavs = fs.readdirSync("./public/assets/dragontail/profileicon/champies/fav", {recursive: true}, (err, files) => {return files})
+const iconArrayFavs = fs.readdirSync("./public/assets/dragontail/profileicon/fav", {recursive: true}, (err, files) => {return files})
+
+
 router.use("/favorites", (req, res, next) => {
-	res.locals.pageTitle = "Icon Randomizer"
+	res.locals.icons = iconArrayFavs
 	res.locals.path = "assets/dragontail/profileicon/fav"
 
-	res.locals.aggregation = []
- 	next()
+	next()
 })
+
 
 router.use("/all-champies", (req, res, next) => {
-	res.locals.pageTitle = "Champie Randomizer"
+	res.locals.icons = iconArrayChampies
 	res.locals.path = "assets/dragontail/profileicon/champies"
 
-	res.locals.aggregation = []
- 	next()
+	next()
 })
 
-router.use("/favorite-champies", (req, res, next) => {
-	res.locals.pageTitle = "Fav Champie Randomizer"
+
+router.use("/fav-champies", (req, res, next) => {
+	res.locals.icons = iconArrayChampieFavs
 	res.locals.path = "assets/dragontail/profileicon/champies/fav"
 
-	res.locals.aggregation = []
  	next()
 })
 
 
 
 router.use((req, res, next) => {
-	fs.readdir("./public/" + res.locals.path, {recursive: true}, (err, files) => { 	// withFileTypes: true
-		// remove 'fav' dir
-		files.splice(files.indexOf("fav"), 1)
-
-		res.locals.imgsrc = res.locals.path + "/" + files[Math.floor(Math.random()*files.length)]
-		
-		next()
-	})
+	res.locals.icons.splice(res.locals.icons.indexOf("fav"), 1) // remove 'fav' dir
+	res.locals.imgsrc = res.locals.path + "/" + res.locals.icons[Math.floor(Math.random()*res.locals.icons.length)]
+	
+	next()
 })
 
 
 
-router.get(["/all", "/favorites"], (req, res) => {
+router.get(["/favorites", "/all-champies", "/fav-champies"], (req, res) => {
 	res.render("random-icon.ejs", {
-		pageTitle: res.locals.pageTitle,
+		pageTitle: "Random Icon",
 		imgsrc: res.locals.imgsrc
 	})
 })
