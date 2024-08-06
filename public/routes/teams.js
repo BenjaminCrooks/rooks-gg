@@ -13,7 +13,6 @@ router.use("/win-rates", (req, res, next) => {
 	res.locals.partial = "partials/rows-winrates/teams"
 
 	res.locals.aggregation = [
-		{$match: {summonerName: "ADDERALL XERATH"}},
 	    {$project: {
 	        _id: 0,
 	        championName: 1,
