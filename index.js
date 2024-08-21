@@ -10,9 +10,7 @@ mongoose.connect("mongodb://localhost:27017/lol")
 app.set("view engine", "ejs")
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
-app.use(express.static("public")) // app.use(express.static(path.join(__dirname, 'public')))
-
-let matchesModel = require("./public/models/matchSchema.js")
+app.use(express.static("public"))
 
 
 const champions = require("./public/routes/champions")
@@ -20,11 +18,13 @@ const teams = require("./public/routes/teams")
 const stats = require("./public/routes/stats")
 const champies = require("./public/routes/random-icons")
 const arena = require("./public/routes/arena")
+const runes = require("./public/routes/runes")
 app.use("/champions", champions)
 app.use("/teams", teams)
 app.use("/stats", stats)
 app.use("/random-icon", champies)
 app.use("/arena", arena)
+app.use("/runes", runes)
 
 var tools = require("./public/tools.js")
 var query = require("./public/controllers/query.js")
@@ -35,7 +35,6 @@ var query = require("./public/controllers/query.js")
 app.get("/", (req, res, next) => {
 	res.locals.aggregation = [
 		{$sort: {gameTimestamp: -1}},
-	    {$limit: 40},
 	    {$project: {
 	    	gameVersion: 1,
 			gameTimestamp: 1,
@@ -49,6 +48,7 @@ app.get("/", (req, res, next) => {
 			runes: 1,
 			items: 1,
 			win: 1,
+			gameEndedInEarlySurrender: 1,
 			"teams.ally": {$map: {
 	            input: "$teams.ally.picks",
 	            as: "pick",
@@ -71,6 +71,7 @@ app.get("/", (req, res, next) => {
 
 			// Match History
 			history: [
+				{$limit: 20},
 				{$project: {
 					gameVersion: 1,
 					gameTimestamp: 1,
@@ -81,6 +82,7 @@ app.get("/", (req, res, next) => {
 					teams: 1,
 					items: 1,
 					win: 1,
+					gameEndedInEarlySurrender: 1,
 					"runes.keystone": "$runes.primaryStyle.keystone.perk",
 					"runes.styles": [
 						"$runes.primaryStyle.slot1.perk",
@@ -90,8 +92,7 @@ app.get("/", (req, res, next) => {
 						"$runes.subStyle.slot2.perk"
 					],
 					"runes.stats": 1
-				}},
-				{$limit: 20}
+				}}
 			],
 
 			// My Champions
@@ -115,7 +116,8 @@ app.get("/", (req, res, next) => {
 					losses: {$subtract: ["$matches", "$wins"]},
 					winrate: {$cond: [{$eq: ["$matches", 0]}, 0, {$divide: ["$wins", "$matches"]}]}
 				}},
-				{$sort: {matches: -1, wins: -1, championName: -1}},
+				// {$match: {$expr: {$gte: ["$matches", 3]}}},
+				{$sort: {matches: -1, wins: -1}},
 				{$limit: 6}
 			],
 
@@ -141,8 +143,8 @@ app.get("/", (req, res, next) => {
 				}},
 				// {$match: {$expr: {$gt: ["$matches", 3]}}},
 				{$match: {$and: [{$expr: {$gt: ["$matches", 3]}}, {$expr: {$lt: ["$winrate", 0.5]}}]}},
-				{$sort: {winrate: 1, wins: 1}},
-				{$limit: 4}
+				{$sort: {winrate: 1, losses: -1, _id: 1}},
+				{$limit: 4},
 			]
 
 
@@ -158,16 +160,17 @@ app.get("/", (req, res, next) => {
 			win: element.win,
 			length: tools.gameLength(element.maxTimePlayed),
 			version: element.gameVersion.substring(0, 5),
-			date: tools.formatDate(element.gameTimestamp),
-			// date: tools.formatTime(element.gameTimestamp) + " · " + tools.formatDate(element.gameTimestamp),
+			// date: tools.formatDate(element.gameTimestamp),
+			date: tools.formatDate(element.gameTimestamp) + " · " + tools.formatTime(element.gameTimestamp),
 			keystone: element.runes.keystone.replaceAll(" ", ""),
 			styles: element.runes.styles.map(function(element) { return element.replaceAll(" ", "").replaceAll(":", "") }),
 			stats: tools.formatRuneStats(element.runes.stats),
 			items: tools.formatItems(element.items),
-			participants: tools.formatParticipants(element.teams)
+			participants: tools.formatParticipants(element.teams),
+			remake: element.gameEndedInEarlySurrender
 		}
 	})
-
+	
 	res.locals.champions = res.locals.data[0].champions.map(function(element, index) {
 		return {
 			champion: element._id,
@@ -197,10 +200,6 @@ app.get("/", (req, res, next) => {
 	res.render("overview.ejs", {
 		pageTitle: "Recent Overview"
 	})
-})
-
-app.get("/test", (req, res) => {
-	res.render("raw-test.ejs", {})
 })
 
 
