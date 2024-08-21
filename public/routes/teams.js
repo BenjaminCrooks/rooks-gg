@@ -3,7 +3,6 @@ const router = express.Router()
 
 router.use(express.static("public"))
 
-let matchesModel = require("../models/matchSchema.js")
 var tools = require("../tools.js")
 var query = require("../controllers/query.js")
 

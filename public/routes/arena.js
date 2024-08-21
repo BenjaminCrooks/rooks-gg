@@ -16,6 +16,7 @@ router.get("/selection", (req, res, next) => {
 	res.locals = {
 		pageTitle: "Augments",
 		path: "/arena/augments/",
+		search: true,
 		champions: ["Anivia", "Vex", "Ziggs", "Hwei", "Ashe", "Caitlyn", "Vayne"]
 	}
 	next()
@@ -110,7 +111,6 @@ augments.use((req, res, next) => {
 	next()
 })
 
-// augments.get(["/anivia", "/vex", "/ziggs"], (req, res) => {
 augments.get("*", (req, res) => {
 	res.render("augments.ejs", {
 		champion: res.locals.champion,

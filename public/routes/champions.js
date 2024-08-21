@@ -3,13 +3,11 @@ const router = express.Router()
 
 router.use(express.static("public"))
 
-let matchesModel = require("../models/matchSchema.js")
 var tools = require("../tools.js")
 var query = require("../controllers/query.js")
 
 
-// router.use("/win-rates", (req, res, next) => {
-router.use(["/win-rates", "/win-rates-test"], (req, res, next) => {
+router.use("/win-rates", (req, res, next) => {
 	res.locals.pageTitle = "Champion Win Rates"
 	res.locals.partial = "partials/rows-winrates/champions"
 
@@ -72,14 +70,6 @@ router.get("/win-rates", (req, res) => {
 	res.render("winrates.ejs", {
 		pageTitle: res.locals.pageTitle,
 		rowPartial: res.locals.partial,
-		rows: res.locals.rows
-	})
-})
-
-router.get("/win-rates-test", (req, res) => {
-	res.render("test.ejs", {
-		pageTitle: "TESTING",
-		rowPartial: "partials/rows-winrates/rows-test",
 		rows: res.locals.rows
 	})
 })

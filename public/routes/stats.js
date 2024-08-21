@@ -3,7 +3,6 @@ const router = express.Router()
 
 router.use(express.static("public"))
 
-let matchesModel = require("../models/matchSchema.js")
 var tools = require("../tools.js")
 var query = require("../controllers/query.js")
 
@@ -21,8 +20,12 @@ router.use("/:champion", (req, res, next) => {
 	        deaths: 1,
 	        win: 1,
 	        spell1Casts: 1, spell2Casts: 1, spell3Casts: 1, spell4Casts: 1,
+
 	        csKilled: {$add: ["$totalMinionsKilled", "$neutralMinionsKilled"]},
+
 	        // visionWardsBoughtInGame: 1, detectorWardsPlaced: 1, visionScore: 1, wardsKilled: 1, wardsPlaced: 1,
+	        // controlWards: ,
+
 	        maxTimePlayed: 1
 	    }},
 
