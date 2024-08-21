@@ -11,8 +11,7 @@
 
 body {
     min-height: calc(100vh - 56px);
-    background-color: #181818;
-    padding: 32px;
+    padding: 32px 32px 64px 32px;
     margin-top: 56px;
     gap: 32px;
     display: flex;
@@ -24,7 +23,6 @@ main {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    background-color: #282828;
     width: 50vw;
     padding: 16px;
     border-radius: 4px;
@@ -40,17 +38,11 @@ h1, h2, h3, h4, h5, h6 {
     color: white;
 }
 
-h1 {
-    font-size: 48px;
-}
+h1 {font-size: 48px;}
 
-h2 {
-    font-size: 32px;
-}
+h2 {font-size: 32px;}
 
-h3 {
-    font-size: 16px;
-}
+h3 {font-size: 16px;}
 
 p {}
 
@@ -69,7 +61,20 @@ header {
     padding: 0px 0px 16px 0px;
 }
 
-footer {}
+footer {
+/*    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    width: 95%;
+    border-top: 1px solid #484848;
+    padding: 16px 0px 0px 0px;*/
+}
+
+footer > a {
+/*    padding: 8px 16px;
+    font-size: 16px;
+    font-family: Montserrat Medium;*/
+}
 
 div {}
 
@@ -90,11 +95,11 @@ ul.right {
 
 li {
     white-space: nowrap;
-/*    overflow: hidden;*/
+    overflow: hidden;
     text-overflow: ellipsis;
 }
 
-li.bold {
+li.strong {
     font-family: Roboto Black;
     font-size: 14px;
 }
@@ -133,7 +138,6 @@ input[type=text] { /* "search bar" */
     color: white;
     font-family: Roboto Medium;
     font-size: 16px;
-    background-color: #282828;
     background-image: url("assets/icons/searchIcon.png");
     background-size: 20px 20px;
     background-position: 8px 50%;
@@ -154,7 +158,6 @@ input[type=checkbox] {
 }
 
 input[type=checkbox]:checked {
-    background-color: #444444;
     background-image: url("assets/icons/checkmark.png");
     background-position: center;
     background-size: auto 100%;
@@ -171,7 +174,6 @@ input[type=checkbox]:checked {
   position: fixed;
   top: 0;
   left: 0;
-/*  background-color: #2d283e;*/
   z-index: 1;
   padding: 8px;
 }
@@ -181,11 +183,14 @@ input[type=checkbox]:checked {
 }
 
 #navigation-bar > a {
+    font: small-caps 16px Montserrat Bold;
     position: relative;
     padding: 8px 16px;
-    font-size: 16px;
-    font-family: Montserrat Bold;
     color: white;
+}
+
+#navigation-bar > a:hover {
+    color: #989898;
 }
 
 #navigation-bar > a:first-of-type {
@@ -199,25 +204,6 @@ input[type=checkbox]:checked {
     border-left: 1px solid #484848;
 }
 
-a:hover {
-    color: #989898;
-}
-
-#navigation-bar ul.sub-nav {
-    position: absolute;
-    top: calc(100% + 8px + 4px);
-    left: 0;
-    background-color: #564f70;
-    min-width: 100%;
-    gap: 12px;
-    padding: 16px;
-}
-
-#navigation-bar ul.sub-nav > li {
-    font-family: Montserrat Bold;
-    font-size: 16px;
-}
-
 
 
 
@@ -226,7 +212,6 @@ a:hover {
 .row-container {
     display: flex;
     flex-direction: column;
-    background-color: #282828;
     border-radius: 4px;
 }
 
@@ -261,29 +246,31 @@ a:hover {
     margin-left: 32px;
 }
 
-.row-container > .row-item:nth-child(even) {
-    background-color: #484848;
-}
-
 .winrate-bar {
-    background-color: #E84057;
-    padding-right: 8px;
     height: 60%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
     border-radius: 2px;
     overflow: hidden;
+    font-family: Roboto Medium;
     color: #d8d8d8;
 }
 
 .winrate-bar > div {
-    background-color: #5383E8;
     padding-left: 8px;
     height: 100%;
     display: inherit;
     align-items: inherit;
-    color: #d8d8d8;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+}
+
+.winrate-bar > span {
+    margin: 0px 8px 0px auto;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
 }
 
 
@@ -327,25 +314,46 @@ a:hover {
 
  
 
+
+
+
+
 /* Purple */
-.accent-txt-1 {color: #564f70;} .accent-txt-2 {color: #2d283e;} .accent-txt-3 {color: #22092c;}
-.accent-dom-1 {background-color: #564f70;} .accent-dom-2 {background-color: #2d283e;} .accent-dom-3 {background-color: #2d283e;}
+body { background-color: var(--purple100); }
+.frame { background-color: var(--purple100); }
+main { background-color: var(--purple200); }
 
-/* Maroon - Default Shirt */
-/*.accent-txt-1 {color: #660220;} .accent-txt-2 {color: #4c0118;} .accent-txt-3 {color: #330110;}*/
-/*.accent-dom-1 {background-color: #660220;} .accent-dom-2 {background-color: #4c0118;} .accent-dom-3 {background-color: #330110;}*/
+#navigation-bar { background-color: var(--purple300); }
+.aug-row { background-color: var(--purple300); }
 
-/* Maroon - 25 Saturation */
-/*.accent-txt-1 {color: #5d1a27;} .accent-txt-2 {color: #45111d;} .accent-txt-3 {color: #2e0913;}*/
-/*.accent-dom-1 {background-color: #5d1a27;} .accent-dom-2 {background-color: #45111d;} .accent-dom-3 {background-color: #2e0913;}*/
+#general-info { background-color: var(--purple200); }
+#champion-grid { background-color: var(--purple200); }
+.row-container { background-color: var(--purple200); }
+.row-container > .row-item:nth-child(odd) { background-color: var(--purple400); }
 
-/* Maroon - 50 Vibrance */
-/*.accent-txt-1 {color: #662430;} .accent-txt-2 {color: #4c1923;} .accent-txt-3 {color: #33151c;}*/
-/*.accent-dom-1 {background-color: #662430;} .accent-dom-2 {background-color: #4c1923;} .accent-dom-3 {background-color: #33151c;}*/
+input { background-color: var(--purple200); }
+input[type=checkbox]:checked { background-color: #444444; }
 
-/*sand green #789082 / sand red #957977*/
+.winrate-bar { background-color: #E84057; }
+.winrate-bar > div { background-color: #5383E8; }
 
 
+/* Variables */
+:root {
+    --purple100: #19171f;
+    --purple200: #23202e;
+    --purple300: #2d283e;
+    --purple400: #363048;
+    --purple500: #413c57;
+    --purple600: #4e4765;
+    --purple700: #564f70;
+    --iceWhite: #d0d7e1;
+
+    --win-blue100: #5383e8;
+    --win-blue200: #28344e;
+    --loss-red100: #e84057;
+    --loss-red200: #59343b;
+}
 
 /* Fonts */
 @font-face { font-family: Montserrat Light;         src: url(assets/fonts/Montserrat-Light.ttf); }

@@ -33,7 +33,23 @@ module.exports = {
 		if (date === undefined) {
 			return undefined
 		} else {
-			return date.toLocaleDateString("en-US", {timeZone: "UTC", month: "short", day: "numeric", year: "numeric"})
+			return date.toLocaleDateString("en-US", {timeZone: "America/New_York", month: "short", day: "numeric"})
+		}
+	},
+
+
+	formatTime: function (date) {
+		/**
+		 * Formats a date object into a more readable form
+		 * 
+		 * @param {Object} date - Date object
+		 * @returns {string} - Time
+		 */
+
+		if (date === undefined) {
+			return undefined
+		} else {
+			return date.toLocaleTimeString("en-US", {timeZone: "America/New_York", hour: "numeric", minute: "numeric"})
 		}
 	},
 
@@ -91,31 +107,18 @@ module.exports = {
 		 * @returns {Object} - Participant object with altered keys
 		 */
 
-		let participants = {
-			ally: {
-				"TOP": undefined,
-				"JUNGLE": undefined,
-				"MIDDLE": undefined,
-				"BOTTOM": undefined,
-				"SUPPORT": undefined
-			},
-			enemy: {
-				"TOP": undefined,
-				"JUNGLE": undefined,
-				"MIDDLE": undefined,
-				"BOTTOM": undefined,
-				"SUPPORT": undefined
+		let roles = [ "TOP", "JUNGLE", "MIDDLE", "BOTTOM", "SUPPORT" ]
+		let participants = { ally: {}, enemy: {} }
+
+		teams.ally.forEach(function(e) { participants.ally[e.position] = e.championName })
+		teams.enemy.forEach(function(e) { participants.enemy[e.position] = e.championName })
+
+		return roles.map(function(element) {
+			return {
+				role: element,
+				ally: participants["ally"][element],
+				enemy: participants["enemy"][element]
 			}
-		}
-
-		teams.ally.forEach(function(element, index) {
-			participants["ally"][element.position] = element.championName
 		})
-
-		teams.enemy.forEach(function(element, index) {
-			participants["enemy"][element.position] = element.championName
-		})
-
-		return participants
 	}
 }
