@@ -9,12 +9,15 @@
     <img src="assets/dragontail/champion/square106/<%= element.champion %>.png">
 
     <div class="winrate-bar">
+        <% if (element.wins !== 0) { %>
         <div style="width:<%= element.winrate %>%;"><%= element.wins %>W</div>
-        <%= element.losses %>L
+        <% }; if (element.losses !== 0) { %>
+        <span><%= element.losses %>L</span>
+        <% } %>
     </div>
 
     <ul class="right">
-        <li class="bold<% if (element.winrate >= 70) { %> legendary<% } else if (element.winrate >= 60) { %> epic<% } else if (element.winrate <= 40) { %> boosted<% } %>"><%= element.winrate %>%</li>
+        <li class="strong<% if (element.winrate >= 70) { %> legendary<% } else if (element.winrate >= 60) { %> epic<% } else if (element.winrate <= 40) { %> boosted<% } %>"><%= element.winrate %>%</li>
         <li><%= element.played %> Games</li>
     </ul>
 

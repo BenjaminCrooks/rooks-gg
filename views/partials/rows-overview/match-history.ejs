@@ -2,26 +2,28 @@
 
 <% history.forEach(function(element, index) { %>
 
-<div class="row-item <% if (element.win === true) { %> win <% } else { %> loss <% } %>">
+<div class="grid-row <% if (element.remake === true) { %> remake<% } else if (element.win === true) { %> win<% } else if (element.win === false) { %> loss<% } %>">
+
 
     <div class="dd-center" style="background-image: url('assets/dragontail/champion/centered/<%= element.champion %>_0.jpg');">
         <ul>
-            <li class="bold"><% if (element.win === true) { %> Victory <% } else { %> Defeat <% } %></li>
+            <li class="strong"><% if (element.remake === true) { %>Remake<% } else if (element.win === true) { %>Victory<% } else if (element.win === false) { %>Defeat<% } %></li>
             <li class="break"><%= element.length %></li>
             <li style="visibility: hidden;">v <%= element.version %></li>
-            <li><%= element.date %></li>
-            <li style="visibility: visible; font-family: Roboto Bold;"><%= element.summoner %></li>
+            <li><%= element.date.slice(0, -3) %><span><%= element.date.slice(-2) %></span></li>
+            <li class="account" style="font-family: Roboto Bold;"><%= element.summoner %></li>
         </ul>
+        <div class="side-bar"></div>
     </div>
 
-    <!-- Runes -->
     <div class="runes h-container">
-        <img src="assets/dragontail/runes/Styles/<%= element.keystone %>.png" style="height: 48px">
+
+        <img class="keystone" src="assets/dragontail/runes/Styles/<%= element.keystone %>.png">
 
         <div class="rune-options grid-container">
-            <% element.styles.forEach(function(rune, index) { %>
-            <img src="assets/dragontail/runes/Styles/<%= rune %>.png">
-            <% }) %>
+        <% element.styles.forEach(function(rune, index) { %>
+            <img src="assets/dragontail/runes/Styles/<%= rune %>.png" alt="Rune">
+        <% }) %>
         </div>
 
         <div class="rune-stats v-container">
@@ -29,47 +31,51 @@
             <img src="assets/dragontail/runes/StatMods/<%= element.stats.flex %>.png" alt="Stat">
             <img src="assets/dragontail/runes/StatMods/<%= element.stats.defense %>.png" alt="Stat">
         </div>
+
     </div>
 
-    <!-- Items -->
-    <div class="items grid-container">
-        <% element.items.forEach(function(item, index) { %>
-        <img src="https://ddragon.leagueoflegends.com/cdn/<%= element.version %>.1/img/item/<%= item %>.png">
-        <% }) %>
-    </div>
 
-    <!-- Participants -->
-    <div class="participants row-container">
-        <div class="row-item">
-            <img src="https://s-lol-web.op.gg/images/icon/icon-position-top.svg">
-            <div class="h-container<% if (element.role == "TOP") { %> bold<% } %>"><img src="assets/dragontail/champion/square106/<%= element.participants.ally.TOP %>.png"><%= element.participants.ally.TOP %></div>
-            <div class="h-container"><img src="assets/dragontail/champion/square106/<%= element.participants.enemy.TOP %>.png"><%= element.participants.enemy.TOP %></div>
-        </div>
-        
-        <div class="row-item">
-            <img src="https://s-lol-web.op.gg/images/icon/icon-position-jng.svg">
-            <div class="h-container<% if (element.role == "JUNGLE") { %> bold<% } %>"><img src="assets/dragontail/champion/square106/<%= element.participants.ally.JUNGLE %>.png"><%= element.participants.ally.JUNGLE %></div>
-            <div class="h-container"><img src="assets/dragontail/champion/square106/<%= element.participants.enemy.JUNGLE %>.png"><%= element.participants.enemy.JUNGLE %></div>
-        </div>
+    <table class="items">
+        <tr>
+        <% for (let i = 0; i < 6; i++) { if (element.items[i] != undefined) { %>
+            <td><img src="https://ddragon.leagueoflegends.com/cdn/<%= element.version %>.1/img/item/<%= element.items[i] %>.png" alt="Item"></td>
+        <% } else { %><td></td><% } if (i == 2) { %></tr><tr><% } } %>
+        </tr>
+    </table>
 
-        <div class="row-item">
-            <img src="https://s-lol-web.op.gg/images/icon/icon-position-mid.svg">
-            <div class="h-container<% if (element.role == "MIDDLE") { %> bold<% } %>"><img src="assets/dragontail/champion/square106/<%= element.participants.ally.MIDDLE %>.png"><%= element.participants.ally.MIDDLE %></div>
-            <div class="h-container"><img src="assets/dragontail/champion/square106/<%= element.participants.enemy.MIDDLE %>.png"><%= element.participants.enemy.MIDDLE %></div>
-        </div>
 
-        <div class="row-item">
-            <img src="https://s-lol-web.op.gg/images/icon/icon-position-bot.svg">
-            <div class="h-container<% if (element.role == "BOTTOM") { %> bold<% } %>"><img src="assets/dragontail/champion/square106/<%= element.participants.ally.BOTTOM %>.png"><%= element.participants.ally.BOTTOM %></div>
-            <div class="h-container"><img src="assets/dragontail/champion/square106/<%= element.participants.enemy.BOTTOM %>.png"><%= element.participants.enemy.BOTTOM %></div>
-        </div>
+    <table class="participants">
 
-        <div class="row-item">
-            <img src="https://s-lol-web.op.gg/images/icon/icon-position-sup.svg">
-            <div class="h-container<% if (element.role == "UTILITY") { %> bold<% } %>"><img src="assets/dragontail/champion/square106/<%= element.participants.ally.SUPPORT %>.png"><%= element.participants.ally.SUPPORT %></div>
-            <div class="h-container"><img src="assets/dragontail/champion/square106/<%= element.participants.enemy.SUPPORT %>.png"><%= element.participants.enemy.SUPPORT %></div>
-        </div>
-    </div>
+        <colgroup>
+            <col width="32px">
+            <col width="24px">
+            <col width="auto">
+            <col width="24px">
+            <col width="auto">
+        </colgroup>
+
+        <tbody>
+
+            <% element.participants.forEach(function(participant, index) { %>
+            <tr>
+                <td><img class="role<% if (element.role == participant.role) { %> player<% } %>" src="assets/dragontail/role/role-<%= participant.role %>.svg"></td>
+
+                <td><img src="assets/dragontail/champion/square106/<%= participant.ally %>.png"></td>
+
+                <td<% if (element.role == participant.role) { %> class="player"<% } %>><%= participant.ally %></td>
+
+                <td><img src="assets/dragontail/champion/square106/<%= participant.enemy %>.png"></td>
+
+                <td><%= participant.enemy %></td>
+            </tr>
+            <% }) %>
+
+        </tbody>
+
+    </table>
+
+
 
 </div>
+
 <% }) %>
