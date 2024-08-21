@@ -6,6 +6,11 @@ The match data is provided via [RIOT Games' developer API](https://developer.rio
 [RIOT Developer API Documentation](https://developer.riotgames.com/docs/lol)
 
 
+### To-Do List (Priority)
+- Routes ➜ own index.js file
+- Rune data-table view ➜ dynamic input
+- Unify "table" like DOM elements (to table element)
+
 ### Project Directory
 ```
 .
@@ -49,6 +54,20 @@ The match data is provided via [RIOT Games' developer API](https://developer.rio
 A quick overview for match data for my most recent 20 matches. Allows me to quickly see how I am performing on my most recently played champions, along with showing me what champions I have been consistently losing to. More general data for individual matches is also displayed, giving an overview of how my games have been going across all of the accounts that I play on. 
 
 ![Overview](docs/Screenshot_1.png "Overview")
+
+
+### Rune Value Comparing
+```
+GET     /runes/anivia-precision		temporary route for testing/development
+```
+
+*Currently a work in progress*.
+
+Used to see how much value I am getting for either a given rune or set of runes. The top table displays averages for the given set of runes; while the bottom table shows each match as a row.
+
+I will probably pivot this to be used for data other than just runes, but while I build out the functionality of it I intend to keep it to the scope of runes. This is because this whole data visualization tool started with me wishing I could comparie the value that I was getting for specific runes, which I couldn't easily do on any of the major LoL data sites.
+
+![Runes](./docs/Screenshot_6.png "Precision row 3 rune comparing")
 
 
 ### Win Rate Data
