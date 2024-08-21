@@ -48,6 +48,8 @@ The match data is provided via [RIOT Games' developer API](https://developer.rio
 └── README.md
 ```
 
+
+
 ## Routing
 
 ### Homepage
@@ -144,3 +146,21 @@ GET     /random-icon/all-champies        		finds all authors
 GET     /random-icon/fav-champies        		finds all authors
 ```
 I wanted a quick way to randomly select which summoner/profile icon to use from a pre-select list of my favorites. 
+
+
+
+## Development Log
+
+### v1.2.0
+**Query Controller**
+- Moved the database aggregation to a middleware function
+- Reduces code redundancy
+
+**Random Icon**
+- Now builds web page through navigation-selection.ejs
+- Expanded navigation-selection.ejs dynamics and functionality
+- Removed own ejs file
+
+**Visuals Overhaul**
+- Color scheme shifted from grey to purple
+- CSS variables
