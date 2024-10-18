@@ -2,15 +2,19 @@
 * {
     box-sizing: border-box;
     margin: 0px;
-    color: #b8b8b8;
-    font: 12px Roboto;
     line-height: 1em;
 }
 
 *::-webkit-scrollbar { display: none; }
 
+html {
+    font: 12px Roboto;
+    color: #b8b8b8;
+}
+
 body {
     min-height: calc(100vh - 56px);
+    background-color: var(--purple100);
     padding: 32px 32px 64px 32px;
     margin-top: 56px;
     gap: 32px;
@@ -24,6 +28,7 @@ main {
     flex-direction: column;
     gap: 8px;
     width: 50vw;
+    background-color: var(--purple200);
     padding: 16px;
     border-radius: 4px;
 }
@@ -34,46 +39,37 @@ img {
 
 h1, h2, h3, h4, h5, h6 {
     font-family: Montserrat Semi Bold;
-    font-variant: small-caps;
     color: white;
 }
 
-h1 {font-size: 48px;}
+h1 { font-size: 48px; }
 
-h2 {font-size: 32px;}
+h2 { font-size: 32px; }
 
-h3 {font-size: 16px;}
+h3 { font-size: 16px; }
 
 p {}
 
-span {}
-
-a {
-    text-decoration: none;
+span {
+    font-family: inherit;
+    font-size: inherit;
 }
 
+li.dull, span.dull { filter: brightness(75%); /* grayscale(25%) contrast(100%) blur(0px) invert(60%) */ }
+span.small { font-size: 0.75rem; }
+span.italic { font-style: italic; }
+
+/*span.subscript { vertical-align: sub; }*/
+
+a { text-decoration: none; }
+
 header {
-    width: 95%;
+    /*width: 95%;
     display: flex;
     justify-content: center;
     align-items: center;
     border-bottom: 1px solid #484848;
-    padding: 0px 0px 16px 0px;
-}
-
-footer {
-/*    align-items: center;
-    justify-content: center;
-    gap: 32px;
-    width: 95%;
-    border-top: 1px solid #484848;
-    padding: 16px 0px 0px 0px;*/
-}
-
-footer > a {
-/*    padding: 8px 16px;
-    font-size: 16px;
-    font-family: Montserrat Medium;*/
+    padding: 0px 0px 16px 0px;*/
 }
 
 div {}
@@ -85,85 +81,96 @@ ul {
     flex-direction: column;
 }
 
-ul.center {
-    align-items: center;
-}
-
-ul.right {
-    align-items: end;
-}
+ul.left { align-items: start; }
+ul.center { align-items: center; }
+ul.right { align-items: end; }
 
 li {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-li.strong {
-    font-family: Roboto Black;
-    font-size: 14px;
-}
+li.center { align-self: center; }
 
-li.break {
-    margin-bottom: auto;
-}
+li.break { margin-bottom: auto; }
 
-li.legendary {
-    color: #ff8000;
-}
+li.strong, td.strong { font-family: Roboto Bold; }
 
-li.epic {
-    color: #ba67f2;
-}
+li.legendary, td.legendary { color: #ff8000; }
 
-/*li.boosted {
-    color: #ff3333;
-}*/
+li.epic, td.epic { color: #ba67f2; }
 
-label {}
+li.rare, td.rare { color: #0070dd; }
 
-button {}
-button:disabled {}
+li.boosted, td.boosted { color: #ff5f5f; } /* ff3333 */
 
-select {} /* dropdown menu */
-option {} /* dropdown option */
 
-input {
-    background-repeat: no-repeat;
-}
 
-input:invalid {}
-
-input[type=text] { /* "search bar" */
-    color: white;
-    font-family: Roboto Medium;
-    font-size: 16px;
-    background-image: url("assets/icons/searchIcon.png");
-    background-size: 20px 20px;
-    background-position: 8px 50%;
-    padding: 8px 8px 8px 36px;
-    border: none;
+/* Tables */
+table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-spacing: 0;
+    overflow: hidden;
+    text-align: center;
+    vertical-align: middle;
     border-radius: 4px;
 }
 
-input[type=text]:focus {
-    outline-color: #484848;
+table.bevel img { margin: 0 auto; }
+
+th, td {
+    padding: 0px;
 }
 
-input[type=text]:disabled {}
-
-input[type=checkbox] {
-    appearance: none;
-    cursor: pointer;
+th {
+    font-family: Roboto Bold;
+    color: white;
+    background-color: var(--purple200);
 }
 
-input[type=checkbox]:checked {
-    background-image: url("assets/icons/checkmark.png");
-    background-position: center;
-    background-size: auto 100%;
+tr.title > th {
+    text-align: left;
+    padding-left: 1rem;
+    border-bottom: 1px solid var(--purple300);
 }
 
+td {
+    background-color: var(--purple300);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
+table.default td { border-top: 1px solid var(--purple100); }
+table.alternate tr:nth-child(odd) { background-color: var(--purple400); }
+
+/* Stylized Table */
+/* *:has(> table.bevel) {padding: 0px 8px 8px 8px;} ★ ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ★ */
+
+table.bevel td { background-color: transparent; }
+table.bevel tr:nth-child(odd) { background-color: var(--purple400); } /* alternating background color */
+
+table.bevel tr:nth-child(odd) > td:first-of-type { border-radius: 2px 0px 0px 2px; } /* border radius ➜ row */
+table.bevel tr:nth-child(odd) > td:last-of-type { border-radius: 0px 2px 2px 0px; }
+
+table.bevel img, table.bevel .winrate-bar { border-radius: 2px; }
+
+
+
+
+
+.shadow {
+    text-shadow:
+    -1.5px -1.5px 0.1em black,
+    1.5px -1.5px 0.1em black,
+    -1.5px 1.5px 0.1em black,
+    1.5px 1.5px 0.1em black;
+}
 
 
 
@@ -174,13 +181,12 @@ input[type=checkbox]:checked {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: 5;
   padding: 8px;
+  background-color: var(--purple300);
 }
 
-#navigation-bar img {
-    height: 100%;
-}
+#navigation-bar img { height: 100%; }
 
 #navigation-bar > a {
     font: small-caps 16px Montserrat Bold;
@@ -189,9 +195,7 @@ input[type=checkbox]:checked {
     color: white;
 }
 
-#navigation-bar > a:hover {
-    color: #989898;
-}
+#navigation-bar > a:hover { color: #989898; }
 
 #navigation-bar > a:first-of-type {
     height: 90%;
@@ -206,68 +210,32 @@ input[type=checkbox]:checked {
 
 
 
-
-
 /* Row Elements */
-.row-container {
-    display: flex;
-    flex-direction: column;
-    border-radius: 4px;
-}
-
-.row-item {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    border-radius: 2px;
-}
-
-.row-item img {
-    height: 100%;
-    border-radius: 4px;
-}
-
-.row-rank {
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    aspect-ratio: 1 / 1;
-    font-family: Roboto Bold;
-    color: #989898;
-}
-
-.row-rank + img {
-    margin-left: 32px;
-}
-
 .winrate-bar {
-    height: 60%;
+    height: 50%;
     display: flex;
     align-items: center;
     border-radius: 2px;
     overflow: hidden;
     font-family: Roboto Medium;
     color: #d8d8d8;
+    background-color: var(--loss-red100);
 }
 
 .winrate-bar > div {
-    padding-left: 8px;
+    width: 35%;
     height: 100%;
     display: inherit;
     align-items: inherit;
     font-family: inherit;
     font-size: inherit;
     color: inherit;
+    padding-left: 0.7em;
+    background-color: var(--win-blue100);
 }
 
 .winrate-bar > span {
-    margin: 0px 8px 0px auto;
+    margin: 0px 0.7em 0px auto;
     font-family: inherit;
     font-size: inherit;
     color: inherit;
@@ -275,13 +243,11 @@ input[type=checkbox]:checked {
 
 
 /* Flex Elements */
-.grid-container {
-    display: grid;
-}
+.grid-row-container { display: grid; }
 
-.grid-container > img {
-    width: 100%;
-}
+.grid-container { display: grid; }
+
+.grid-container > img { width: 100%; }
 
 
 .h-container {
@@ -295,13 +261,9 @@ input[type=checkbox]:checked {
 }
 
 
-.v-flip {
-  transform: scaleY(-1);
-}
+.v-flip { transform: scaleY(-1); }
 
-.h-flip {
-  transform: scaleX(-1);
-}
+.h-flip { transform: scaleX(-1); }
 
 .dd-center {
     position: absolute;
@@ -310,32 +272,6 @@ input[type=checkbox]:checked {
     background-repeat: no-repeat;
 }
 
-
-
- 
-
-
-
-
-
-/* Purple */
-body { background-color: var(--purple100); }
-.frame { background-color: var(--purple100); }
-main { background-color: var(--purple200); }
-
-#navigation-bar { background-color: var(--purple300); }
-.aug-row { background-color: var(--purple300); }
-
-#general-info { background-color: var(--purple200); }
-#champion-grid { background-color: var(--purple200); }
-.row-container { background-color: var(--purple200); }
-.row-container > .row-item:nth-child(odd) { background-color: var(--purple400); }
-
-input { background-color: var(--purple200); }
-input[type=checkbox]:checked { background-color: #444444; }
-
-.winrate-bar { background-color: #E84057; }
-.winrate-bar > div { background-color: #5383E8; }
 
 
 /* Variables */
@@ -353,16 +289,57 @@ input[type=checkbox]:checked { background-color: #444444; }
     --win-blue200: #28344e;
     --loss-red100: #e84057;
     --loss-red200: #59343b;
+    --remake-grey100: #9e9eb1;
+    --remake-grey200: #282830;
+    
+    --ally100: #188ac6;
+    --ally200: #39a6ef;
+    --ally300: #63c3f7;
+    --enemy100: #9a261b;
+    --enemy200: #aa372c;
+    --enemy300: #d1685d;
+
+
+
+    --font-thin: 100;
+    --font-light: 300;
+    --font-regular: 400;
+    --font-medium: 500;
+    --font-bold: 700;
+    --font-black: 900;
 }
 
-/* Fonts */
-@font-face { font-family: Montserrat Light;         src: url(assets/fonts/Montserrat-Light.ttf); }
-@font-face { font-family: Montserrat Regular;       src: url(assets/fonts/Montserrat-Regular.ttf); }
-@font-face { font-family: Montserrat Medium;        src: url(assets/fonts/Montserrat-Medium.ttf); }
-@font-face { font-family: Montserrat Semi Bold;     src: url(assets/fonts/Montserrat-SemiBold.ttf); }
-@font-face { font-family: Montserrat Bold;          src: url(assets/fonts/Montserrat-Bold.ttf); }
-@font-face { font-family: Montserrat Extra Bold;    src: url(assets/fonts/Montserrat-ExtraBold.ttf); }
-@font-face { font-family: Roboto;                   src: url(assets/fonts/Roboto-Regular.ttf); }
-@font-face { font-family: Roboto Medium;            src: url(assets/fonts/Roboto-Medium.ttf); }
-@font-face { font-family: Roboto Bold;              src: url(assets/fonts/Roboto-Bold.ttf); }
-@font-face { font-family: Roboto Black;             src: url(assets/fonts/Roboto-Black.ttf); }
+
+/* Montserrat */
+@font-face { font-family: Montserrat Light;             src: url(assets/fonts/Montserrat-Light.ttf); }
+@font-face { font-family: Montserrat;                   src: url(assets/fonts/Montserrat-Regular.ttf); }
+@font-face { font-family: Montserrat Medium;            src: url(assets/fonts/Montserrat-Medium.ttf); }
+@font-face { font-family: Montserrat Semi Bold;         src: url(assets/fonts/Montserrat-SemiBold.ttf); }
+@font-face { font-family: Montserrat Bold;              src: url(assets/fonts/Montserrat-Bold.ttf); }
+@font-face { font-family: Montserrat Extra Bold;        src: url(assets/fonts/Montserrat-ExtraBold.ttf); }
+
+/* Roboto */
+@font-face { font-family: Roboto Thin;                  src: url(assets/fonts/Roboto-Thin.ttf); }
+@font-face { font-family: Roboto Light;                 src: url(assets/fonts/Roboto-Light.ttf); }
+@font-face { font-family: Roboto;                       src: url(assets/fonts/Roboto-Regular.ttf); }
+@font-face { font-family: Roboto Medium;                src: url(assets/fonts/Roboto-Medium.ttf); }
+@font-face { font-family: Roboto Bold;                  src: url(assets/fonts/Roboto-Bold.ttf); }
+@font-face { font-family: Roboto Black;                 src: url(assets/fonts/Roboto-Black.ttf); }
+
+/* Roboto Condensed */
+@font-face { font-family: Roboto Condensed Thin;        src: url(assets/fonts/RobotoCondensed-Thin.ttf); }
+@font-face { font-family: Roboto Condensed Light;       src: url(assets/fonts/RobotoCondensed-Light.ttf); }
+@font-face { font-family: Roboto Condensed;             src: url(assets/fonts/RobotoCondensed-Regular.ttf); }
+@font-face { font-family: Roboto Condensed Medium;      src: url(assets/fonts/RobotoCondensed-Medium.ttf); }
+@font-face { font-family: Roboto Condensed Bold;        src: url(assets/fonts/RobotoCondensed-Bold.ttf); }
+@font-face { font-family: Roboto Condensed Black;       src: url(assets/fonts/RobotoCondensed-Black.ttf); }
+
+
+/*@font-face { font-family: Roboto Flex;             src: url(assets/fonts/RobotoFlex-VariableFont_GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,opsz,slnt,wdth,wght.ttf); }*/
+/*RobotoCondensed-VariableFont_wght*/
+
+/* font-weight: var(--font-regular);
+font-style [slant, italic]
+font-optical-sizing [auto, none]
+font-stretch: 100%;
+https://fonts.google.com/knowledge/using_type/styling_type_on_the_web_with_variable_fonts */

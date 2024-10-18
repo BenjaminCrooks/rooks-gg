@@ -1,3 +1,5 @@
+var dd = require("./data-dragon.js")
+
 module.exports = {
 	gameLength: function (seconds) {
 		/**
@@ -15,9 +17,10 @@ module.exports = {
 		]
 
 		return playTime.filter(function(ele) {
-			return ele.value > 1
+			// return ele.value > 1
+			return ele.text != "h"
 		}).map(function(ele, ind, arr) {
-			return String(Math.floor(ele.value)) + ele.text
+			return String(Math.floor(ele.value)).padStart(2, "0") + ele.text
 		}).join(" ")
 	},
 
@@ -29,7 +32,7 @@ module.exports = {
 		 * @param {Object} date - Date object
 		 * @returns {string} - Date as Mon Day Year
 		 */
-
+		
 		if (date === undefined) {
 			return undefined
 		} else {
@@ -49,6 +52,7 @@ module.exports = {
 		if (date === undefined) {
 			return undefined
 		} else {
+			date.setHours(date.getHours()+4)
 			return date.toLocaleTimeString("en-US", {timeZone: "America/New_York", hour: "numeric", minute: "numeric"})
 		}
 	},
@@ -98,6 +102,21 @@ module.exports = {
 		}
 	},
 
+	formatRuneStyles: function (styles) {
+		/**
+		 * Converts perk style IDs into corresponding file names
+		 * 
+		 * @param {Object} styles - Rune styles array
+		 * @returns {array} - Array of rune objects
+		 */
+		
+		let styleArray = styles.primaryStyle.selections.slice(1, 4).concat(styles.subStyle.selections)
+		
+		return styleArray.map(function(element, index, array) {
+			return dd.rune(element.perk)
+		})
+	},
+
 
 	formatParticipants: function (teams) {
 		/**
@@ -110,12 +129,18 @@ module.exports = {
 		let roles = [ "TOP", "JUNGLE", "MIDDLE", "BOTTOM", "SUPPORT" ]
 		let participants = { ally: {}, enemy: {} }
 
-		teams.ally.forEach(function(e) { participants.ally[e.position] = e.championName })
-		teams.enemy.forEach(function(e) { participants.enemy[e.position] = e.championName })
+		teams.ally.forEach(function(e) {
+			participants.ally[e.position] = e
+			participants.ally[e.position].champion = dd.champion(e.championId)
+		})
+		teams.enemy.forEach(function(e) {
+			participants.enemy[e.position] = e
+			participants.enemy[e.position].champion = dd.champion(e.championId)
+		})
 
 		return roles.map(function(element) {
 			return {
-				role: element,
+				position: element,
 				ally: participants["ally"][element],
 				enemy: participants["enemy"][element]
 			}

@@ -3,50 +3,98 @@ const router = express.Router()
 
 router.use(express.static("public"))
 
+var dd = require("../data-dragon.js")
 var tools = require("../tools.js")
 var query = require("../controllers/query.js")
 
 
-router.use("/anivia-precision", (req, res, next) => {
-	res.locals.pageTitle = "Champion Win Rates"
-	res.locals.partial = "partials/rows-winrates/champions"
+router.use("/value-compare", (req, res, next) => {
 
+	if (req.query.champion === undefined) { req.query.champion = "Anivia" }
+	if (req.query.runes === undefined) {
+		req.query.runes = [8014, 8017, 8299]
+	} else {
+		req.query.runes = req.query.runes.map(function(rune) {
+			rune = dd.rune(rune)
+			return rune.id
+		}).filter(function(rune) {
+			return rune != undefined
+		})
+	}
+	if (req.query.datatype === undefined) { req.query.datatype = "damage" }
+
+	res.locals.queryMatch = [
+		{championName: new RegExp(req.query.champion, "i")},
+
+		{$expr: {$anyElementTrue: {
+			$map: {
+				input: {$concatArrays: [
+					{$map: {
+						input: "$perks.styles.primaryStyle.selections",
+						as: "style",
+						in: "$$style.perk"
+			        }},
+			      	{$map: {
+						input: "$perks.styles.subStyle.selections",
+						as: "style",
+						in: "$$style.perk"
+			        }}
+			    ]},
+				as: "perk",
+				in: {$in: [
+					"$$perk",
+					req.query.runes // ★ ──────────────────────────────────────────────────────────────────────────────────── ★
+				]}
+			}
+		}}}
+	]
+ 
 	res.locals.aggregation = [
-		{$match: {$and: [
-			{gameVersion: new RegExp("^14.1[0-9]")},
-			{championName: "Anivia"},
-			{$or: [
-				{"runes.subStyle.slot1.perk": {$in: ["Coup de Grace", "Cut Down", "Last Stand"]}},
-				{"runes.subStyle.slot2.perk": {$in: ["Coup de Grace", "Cut Down", "Last Stand"]}}
-			]}
-		]}},
 		{$project: {
-			_id: 0,
-			matchId: 1,
-			gameTimestamp: 1,
+			matchId: "$metadata.matchId",
+			gameDateTimestamp: 1,
+			gameDuration: "$info.gameDuration",
+			gameLength: 1,
 			championName: 1,
-			rune: "$runes.subStyle.slot2.perk",
-			damage: "$runes.subStyle.slot2.var1",
-			maxTimePlayed: 1,
-			totalDamageDealtToChampions: 1,
-			win: 1
-		}},
-		{$addFields: {
-			dmgMin: {$round: [{$divide: ["$damage", {$divide: ["$maxTimePlayed", 60]}]}, 2]},
-			percentTotalDmg: {$round: [{$multiply: [{$divide: ["$damage", "$totalDamageDealtToChampions"]}, 100]}, 0]}
-		}},
-		{$facet: {
-			history: [
-				{$sort: {gameTimestamp: -1}}
-			],
+			win: 1,
 
+			totalDamageDealtToChampions: 1,
+			goldEarned: 1,
+
+			perk: {$filter: {
+				input: {$concatArrays: [
+					"$perks.styles.primaryStyle.selections",
+					"$perks.styles.subStyle.selections"
+				]},
+				as: "rune",
+				cond: {$in: [
+					"$$rune.perk",
+					req.query.runes // ★ ──────────────────────────────────────────────────────────────────────────────────── ★
+				]}
+			}}
+		}},
+
+		{$sort: {gameDateTimestamp: -1}},
+
+		{$unwind: "$perk"},
+
+		{$addFields: {
+			damage: "$perk.var1",
+			dmgMin: {$round: [{$divide: ["$perk.var1", {$divide: ["$gameDuration", 60]}]}, 2]},
+			percentTotalDmg: {$round: [{$multiply: [{$divide: ["$perk.var1", "$totalDamageDealtToChampions"]}, 100]}, 2]}
+			// percentTotalGold: {$round: [{$multiply: [{$divide: ["$var2", "$goldEarned"]}, 100]}, 0]}
+		}},
+
+		{$facet: {
+
+			// Rune stat summary ★ ──────────────────────────────────────────────────────────────────────────────────── ★
 			summary: [
 				{$group: {
-					_id: "$rune",
+					_id: "$perk.perk",
 					avgDmgMin: {$avg: "$dmgMin"},
-					avgDmg: {$avg: "$damage"},
+					avgDmg: {$avg: "$perk.var1"},
 					avgPercentTotal: {$avg: "$percentTotalDmg"},
-					avgLength: {$avg: "$maxTimePlayed"},
+					avgDuration: {$avg: "$gameDuration"},
 					wins: {$sum: {$cond: ["$win", 1, 0]}},
 					matches: {$sum: 1}
 				}},
@@ -55,36 +103,50 @@ router.use("/anivia-precision", (req, res, next) => {
 					losses: {$subtract: ["$matches", "$wins"]}
 				}},
 				{$set: {
-					rune: "$_id",
+					perk: "$_id",
 					avgDmgMin: {$round: ["$avgDmgMin", 1]},
 					avgDmg: {$round: ["$avgDmg", 1]},
-					avgPercentTotal: {$round: ["$avgPercentTotal", 0]},
-					avgLength: {$round: ["$avgLength", 0]}
+					avgPercentTotal: {$round: ["$avgPercentTotal", 2]},
+					avgDuration: {$round: ["$avgDuration", 0]}
 				}},
 				{$sort: {winrate: -1, avgDmgMin: -1}}
+			],
+
+			// History of matches ★ ──────────────────────────────────────────────────────────────────────────────────── ★
+			history: [
+				{$sort: {gameDateTimestamp: -1}}
 			]
+
 		}}
 	]
+
+	// default to 20 if match count not given
+	if (req.query.matches == undefined) { res.locals.aggregation.splice(2, 0, {$limit: 20}) }
 	
  	next()
 }, query, (req, res, next) => {
-	res.locals.matches = res.locals.data[0].history.map(function(element, index, array) {
-		element.date = element.gameTimestamp.toLocaleDateString("en-US", {timeZone: "America/New_York", day: "numeric", month: "short", year: "numeric"})
-		element.length = tools.gameLength(element.maxTimePlayed)
-		return element
+	res.locals.matches = res.locals.data[0].history.map(function(match) {
+		match.champion = dd.champion(match.championName)
+		match.vars = match.perk
+		match.perk = dd.rune(match.perk.perk)
+		match.gameDuration = tools.gameLength(match.gameDuration)
+		if (match.win) { match.outcome = "Victory" } else { match.outcome = "Defeat" }
+		return match
 	})
 
-	res.locals.summary = res.locals.data[0].summary.map(function(element, index, array) {
-		element.avgLength = tools.gameLength(element.avgLength)
-		return element
+	res.locals.summary = res.locals.data[0].summary.map(function(e) {
+		e.perk = dd.rune(e.perk)
+		e.avgDuration = tools.gameLength(e.avgDuration)
+		return e
 	})
 
 	next()
 })
 
 
-router.get("/anivia-precision", (req, res) => {
-	res.render("data-table.ejs", {})
+router.get("/value-compare", (req, res) => {
+	// res.send(res.locals.data[0])
+	res.render("table-runes.ejs", {})
 })
 
 

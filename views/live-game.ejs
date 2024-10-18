@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<title>Live Game</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Rooks">
+<meta name="description" content="Live Game">
+
+<link rel="icon" href="assets/icons/rooksIconGG.png">
+<link rel="stylesheet" href="styles.css">
+<script src="plugins/jquery-3.4.1.min.js"></script>
+
+<style>
+
+body {
+	height: calc(100vh - 56px);
+}
+
+body > * {
+	width: 60vw;
+}
+
+body > header {
+	height: 64px;
+	justify-content: space-around;
+/*		background-color: rgba(128, 128, 128, 0.25);*/
+}
+
+.bans, .prev-match {
+	gap: 8px;
+}
+
+.bans .frame, .prev-match .frame {
+	width: 32px;
+	aspect-ratio: 1 / 1;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.bans img, .prev-match img {
+	filter: contrast(110%) grayscale(100%);
+	width: 100%;
+}
+
+.bans.blue .frame { border: 1px solid var(--win-blue100); }
+.bans.red .frame { border: 1px solid var(--loss-red100); }
+.blue { color: var(--win-blue100); }
+.red { color: var(--loss-red100); }
+
+
+
+
+body > div.row {
+	border-radius: 4px;
+	position: relative;
+	height: 144px;
+	gap: 32px;
+	background: linear-gradient(90deg, rgba(40,52,78,1) 0%, rgba(40,52,78,1) 45%, rgba(89,52,59,1) 55%, rgba(89,52,59,1) 100%);
+}
+
+div.row .role {
+	position: absolute;
+	top: calc(50% - 32px);
+	left: calc(50% - 32px);
+	width: 64px;
+	height: 64px;
+	background-image: url("assets/icons/svgs/role/role-TOP.svg");
+	background-position: center;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+}
+
+ul {
+/*	font-family: Roboto Medium;*/
+	gap: 8px;
+	z-index: 1;
+}
+
+li { line-height: 1.5em; }
+li.tall { line-height: 2em; }
+
+span.icon {
+	display: inline-block;
+	height: 2em;
+	width: 2em;
+	background-repeat: no-repeat;
+	background-position: top 0 left 0;
+	background-size: cover;
+	vertical-align: top;
+}
+
+span.icon.rank { margin-right: 4px; }
+
+/*li > span.dull { font-family: Roboto; }*/
+
+li > .winrate-bar {
+	width: 10em;
+	height: 8px;
+	background-color: rgba(0, 0, 0, 0.35);
+}
+
+ul.summoner {
+	height: 100%;
+	gap: 4px;
+	width: 192px;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 14px;
+    background: linear-gradient( 90deg,
+        rgba(0,0,0,0.6) 50%,
+        rgba(0,0,0,0) 100%
+    );
+}
+
+/*li.break { color: #a8a8a8; }*/
+
+li > a { color: #C8C8C8; }
+/*li > a > span.dull, li.break { font-family: Roboto; }*/
+
+ul.summoner li.h-container { gap: 8px; }
+ul.summoner li.h-container img {
+	width: 32px;
+	border-radius: 4px;
+}
+
+div.dd-center {
+    width: 25%;
+    height: 100%;
+    background-position: bottom 80% right 80%;
+    background-size: 140% auto;
+    -webkit-mask-image: linear-gradient( 90deg,
+        rgba(0,0,0,1) 0%,
+        rgba(0,0,0,1) 75%,
+        rgba(0,0,0,0) 100%
+    );
+
+    background-blend-mode: luminosity;
+    filter: brightness(100%) grayscale(25%) contrast(100%);
+    background-color: rgba(83, 131, 232, 0.3);
+}
+
+
+
+div.row .roons {
+	height: 100%;
+	width: 126px;
+	background-image: url("assets/icons/roons.png");
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+
+div.prev-match {
+	position: absolute;
+	top: calc(100% + 8px);
+	left: 4px;
+}
+
+.prev-match .frame.win { border: 1px solid var(--win-blue100); }
+.prev-match .frame.loss { border: 1px solid var(--loss-red100); }
+
+</style>
+
+</head>
+
+<body>
+
+<%- include("partials/navigation-bar") %>
+
+	<header class="h-container">
+		<h3 class="blue">Blue Team</h3>
+		<div class="blue bans h-container">
+			<div class="frame"><img src="/assets/dragontail/champion/squarecrop/Aatrox.png"></div>
+			<div class="frame"><img src="/assets/dragontail/champion/squarecrop/Ahri.png"></div>
+			<div class="frame"><img src="/assets/dragontail/champion/squarecrop/Akali.png"></div>
+			<div class="frame"><img src="/assets/dragontail/champion/squarecrop/Akshan.png"></div>
+			<div class="frame"><img src="/assets/dragontail/champion/squarecrop/Kassadin.png"></div>
+		</div>
+
+		<div class="red bans h-container">
+			<div class="frame"><img src="/assets/dragontail/champion/squarecrop/Aatrox.png"></div>
+			<div class="frame"><img src="/assets/dragontail/champion/squarecrop/Ahri.png"></div>
+			<div class="frame"><img src="/assets/dragontail/champion/squarecrop/Akali.png"></div>
+			<div class="frame"><img src="/assets/dragontail/champion/squarecrop/Akshan.png"></div>
+			<div class="frame"><img src="/assets/dragontail/champion/squarecrop/Kassadin.png"></div>
+		</div>
+		<h3 class="red">Red Team</h3>
+	</header>
+
+
+
+	<div class="row h-container">
+		
+		<div class="dd-center" style="background-image: url('/assets/dragontail/champion/centered/Hwei_0.jpg');"></div>
+		<div class="role"></div>
+
+		<div class="prev-match h-container">
+			<div class="frame win"><img src="/assets/dragontail/champion/squarecrop/Aatrox.png"></div>
+			<div class="frame win"><img src="/assets/dragontail/champion/squarecrop/Ahri.png"></div>
+			<div class="frame loss"><img src="/assets/dragontail/champion/squarecrop/Akali.png"></div>
+			<div class="frame win"><img src="/assets/dragontail/champion/squarecrop/Akshan.png"></div>
+			<div class="frame loss"><img src="/assets/dragontail/champion/squarecrop/Kassadin.png"></div>
+			<div class="frame loss"><img src="/assets/dragontail/champion/squarecrop/Akali.png"></div>
+			<div class="frame loss"><img src="/assets/dragontail/champion/squarecrop/Akshan.png"></div>
+			<div class="frame win"><img src="/assets/dragontail/champion/squarecrop/Kassadin.png"></div>
+		</div>
+		
+
+
+		<ul class="summoner">
+			<li class="strong"><a target="_blank" href="https://www.op.gg/summoners/na/rRooks-NA1">Skylar Vox<span class="dull">&nbsp;#NA1</span></a></li>
+			<li>Level 420</li>
+			<li class="strong break">Aatrox</li>
+			<li class="h-container">
+				<img src="/assets/dragontail/spell/SummonerFlash.png">
+				<img src="/assets/dragontail/spell/SummonerTeleport.png">
+			</li>
+		</ul>
+
+		<ul class="center">
+			<li class="tall"><span class="icon rank" style="background-image: url('assets/icons/svgs/rank/Emerald.svg');"></span> Emerald IV <span class="dull">&nbsp;(35LP)</span></li>
+			<li><div class="winrate-bar">
+		        <div style="width:69%; background-color: #0070dd;"></div>
+		       	<!-- a8a8a8 / epic ba67f2 / leg ff8000 -->
+		    </div></li>
+			<li><span style="color: #0070dd;">54.4<span class="dull">%</span></span> &nbsp;(37W&nbsp;&nbsp;31L)</li>
+		</ul>
+
+		<div class="roons"></div>
+
+		<div class="roons" style="margin-left:100px;"></div>
+	</div>
+
+
+</body>
+
+</html>

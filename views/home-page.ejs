@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<title>Rooks - Homepage</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Rooks">
+<meta name="description" content="Baseline page template">
+
+<link rel="icon" href="assets/icons/rooksIconGG.png">
+<link rel="stylesheet" href="styles.css">
+<script src="plugins/jquery-3.4.1.min.js"></script>
+
+<style>
+
+main {
+    background: none;
+    padding: 0px;
+    width: 1152px; /*width: 60vw;*/
+    display: grid;
+    grid-template-columns: 382px 762px; /*1fr 2fr*/
+    grid-template-rows: 16px auto auto auto; /* 168px */
+    grid-template-areas:
+    "misc misc"
+    "champ hist"
+    "enemy hist"
+    ". hist";
+}
+
+#general-info {
+    grid-area: misc;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+main > div { background-color: var(--purple200); }
+
+
+/* Left Column ─────────────────────────────────────────────────────────────────────────── */
+#matchups img { border: 2px solid var(--loss-red100); }
+
+.left-col {
+    display: flex; /*table wont be 100% width without display being flex, no clue why :)*/
+    flex-direction: column;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.left-col th { height: 32px; }
+
+.left-col td {
+    height: 48px;
+    font-size: 11px;
+    padding: 4px 8px;
+}
+
+table tr a {
+    display: block;
+    height: 100%;
+}
+
+.left-col table.bevel img {
+    height: 100%;
+    border-radius: 4px;
+}
+
+
+
+.left-col ul { gap: 4px; }
+
+.left-col li.strong { font-size: 12px; }
+
+.winrate-bar { font-size: 10px; }
+
+
+/* Match History ────────────────────────────────────────────────────────────────────── */
+#match-history {
+    grid-area: hist;
+    background-color: transparent;
+    grid-template-columns: 1fr auto auto 41px 188px;
+    grid-auto-rows: 116px;
+    column-gap: 18px;
+    row-gap: 8px;
+}
+
+.grid-row {
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1; /* take up full grid row */
+    height: 100%;
+    align-items: center;
+}
+
+.grid-row img { height: 100%; }
+
+.win, .win a.match-details { background-color: var(--win-blue200); }
+.loss, .loss a.match-details { background-color: var(--loss-red200); }
+.remake, .remake a.match-details { background-color: var(--remake-grey200); }
+.win ul.match-data li.strong { color: var(--win-blue100); }
+.loss ul.match-data li.strong { color: var(--loss-red100); }
+.remake ul.match-data li.strong { color: var(--remake-grey100); }
+.win div.side-bar { background-color: var(--win-blue100); }
+.loss div.side-bar { background-color: var(--loss-red100); }
+.remake div.side-bar { background-color: var(--remake-grey100); }
+
+
+
+.match-data { grid-column: 1; z-index: 1; }
+.icon-container { grid-column: 2; z-index: 1; }
+.stat-data { grid-column: 3; z-index: 1; }
+.vision-data { grid-column: 4; z-index: 1; }
+.participants { grid-column: 5; z-index: 1; }
+
+
+.grid-row.win div.dd-center { background-color: rgba(83, 131, 232, 0.3); }
+.grid-row.loss div.dd-center { background-color: rgba(232, 64, 87, 0.3); }
+.grid-row.remake div.dd-center { background-color: rgba(158, 158, 177, 0.3); }
+
+
+div.dd-center {
+    width: 256px;
+    height: 100%;
+    background-position: bottom 80% right 50%;
+    background-size: 160% auto;
+    -webkit-mask-image: linear-gradient( 90deg,
+        rgba(0,0,0,1) 0%,
+        rgba(0,0,0,1) 75%,
+        rgba(0,0,0,0) 100%
+    );
+
+    background-blend-mode: luminosity;
+    filter: brightness(100%) grayscale(25%) contrast(100%);
+}
+
+div.champion-level {
+    position: absolute;
+    bottom: 8px;
+    left: 188px;
+    width: 18px;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    color: #a8a8a8;
+    font-size: 9px;
+    font-family: Roboto Medium;
+    border: 1px solid rgb(187, 152, 52);
+    border-radius: 50%;
+    background-color: #282828;
+    filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.35)) drop-shadow(-1px -1px 2px rgba(0, 0, 0, 0.35)) drop-shadow(1px -1px 2px rgba(0, 0, 0, 0.35)) drop-shadow(-1px 1px 2px rgba(0, 0, 0, 0.35));
+}
+
+a.match-details {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 2px;
+    background-image: url("assets/icons/svgs/export-grey.svg");
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-position: top 4px right 4px;
+    z-index: 2;
+    opacity: 0%;
+    transition: opacity 0.2s ease-out;
+}
+
+.grid-row:hover a.match-details { opacity: 100%; }
+a.match-details:hover { background-image: url("assets/icons/svgs/export.svg"); }
+
+
+
+/* Match Info ──────────────────────────────────────────────────────────────────────────── */
+ul.match-data {
+    gap: 8px;
+    padding: 12px 16px;
+    width: 128px;
+    height: 100%;
+    background: linear-gradient( 90deg,
+        rgba(0,0,0,1) 5%,
+        rgba(0,0,0,0.6) 6%,
+        rgba(0,0,0,0.6) 50%,
+        rgba(0,0,0,0) 100%
+    );
+    margin-right: auto;
+}
+
+div.grid-row li > span.small { font-size: 0.8rem; }
+
+ul.match-data li.strong { font-size: 14px; }
+
+.side-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 8px;
+}
+
+
+/* Runes ──────────────────────────────────────────────────────────────────────────────── */
+.icon-container {
+    height: 100%;
+    padding: 14px 0px;
+    justify-content: space-between;
+}
+
+.runes, .rune-options { gap: 2px; }
+
+img.keystone  { width: 38px; height: 38px; }
+
+.grid-container {
+    grid-template-columns: repeat(3, 21px);
+    grid-template-rows: repeat(2, 21px);
+}
+
+.rune-stats {
+    margin-left: 2px;
+    gap: 2px
+}
+
+.rune-stats > img {
+    width: 17px;
+    border: 1px solid rgb(187, 152, 52);
+    border-radius: 50%;
+    background-color: #282828;
+}
+
+.summoner-spells {
+    gap: 4px;
+}
+
+.summoner-spells > img {
+    width: 24px;
+    border-radius: 4px;
+    margin-left: 8px;
+}
+
+
+/* Items ──────────────────────────────────────────────────────────────────────────────── */
+table.items {
+    width: 152px;
+    border-collapse: separate;
+    border-spacing: 2px;
+}
+
+table.items td {
+    height: 21px;
+    width: 21px;
+    background-color: rgba(0, 0, 0, 0.35);
+    border-radius: 4px;
+}
+
+table.items td:last-of-type {
+    background-color: transparent;
+    padding: 2px;
+    border-radius: 50%;
+}
+
+table.items td:last-of-type > img {
+    border-radius: 50%;
+}
+
+
+/* Stats ──────────────────────────────────────────────────────────────────────────────── */
+ul.stat-data {
+    height: 100%;
+    gap: 6px;
+    padding: 15px 0px;
+}
+
+ul.stat-data > li:first-of-type > span { color: var(--loss-red100); }
+
+ul.stat-data > li:first-of-type { font-family: Roboto Black; font-size: 16px; }
+ul.stat-data > li:nth-child(2) { font-family: Roboto Medium; font-size: 15px; }
+
+
+/* Vision ──────────────────────────────────────────────────────────────────────────────── */
+div.vision-data {
+    height: 75%;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 18px;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+div.vision-data div {
+    align-items: center;
+    justify-content: flex-end;
+    width: 20px;
+    aspect-ratio: 1 / 1;
+    border-radius: 4px;
+    color: #E8E8E8;
+    font-size: 10px;
+    font-family: Roboto Medium;
+    background-repeat: no-repeat;
+    background-position: top 0% left 0%;
+    background-size: cover;
+
+}
+
+div.divider {
+    height: 75%;
+    width: 1px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 1px;
+}
+
+
+/* Participants ───────────────────────────────────────────────────────────────────────── */
+table.participants {
+    border-collapse: separate;
+    border-spacing: 0px 4px;
+    width: 100%;
+}
+
+table.participants td {
+    height: 16px;
+    padding-right: 4px;
+    background-color: transparent;
+    text-align: left;
+    color: #a8a8a8;
+}
+
+table.participants td > img:not(.role) { border-radius: 4px; }
+
+/*tr.player > td:first-of-type > img {
+    border: 2px solid rgba(168, 168, 168, 0.5);
+    border-radius: 2px;
+}*/
+
+tr.player > td:nth-child(3)  {
+    font-family: Roboto Bold;
+    color: #c8c8c8;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<%- include("partials/navigation-bar") %>
+
+<main>
+
+
+	<div id="general-info">
+        
+    </div>
+
+
+	<div id="match-history" class="grid-row-container">
+		<%- include("partials/home/match-history", {history}) %>
+	</div>
+
+
+    <div id="champions" class="row-container left-col">
+        <table class="bevel">
+            <%- include("partials/home/champions", {champions}) %>
+        </table>
+    </div>
+
+
+	<div id="matchups" class="row-container left-col">
+        
+    </div>
+
+
+</main>
+
+</body>
+
+</html>

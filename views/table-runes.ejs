@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<title>Data Table - Rune Values</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Rooks">
+<meta name="description" content="Rune value comparing">
+
+<link rel="icon" href="assets/icons/rooksIconGG.png">
+<link rel="stylesheet" href="styles.css">
+<script src="plugins/jquery-3.4.1.min.js"></script>
+
+<style>
+
+	main {
+		width: auto;
+		align-items: center;
+		gap: 64px;
+		background-color: transparent;
+	}
+
+	th {
+		height: 2rem;
+		padding: 16px 8px;
+	}
+
+	td {
+		height: 48px;
+		padding: 4px 16px;
+	}
+
+	td img {
+		width: 32px;
+		height: 32px;
+	}
+
+	td .h-container {
+		height: 100%;
+		gap: 8px;
+	}
+
+	div.champion > img {
+		border-radius: 4px;
+		border: 2px solid;
+	}
+
+	ul {
+		gap: 4px;
+	}
+
+	ul.right > li.strong {
+		font-size: 12px;
+	}
+
+	tr.Victory div.champion > img { border-color: var(--win-blue100); }
+	tr.Defeat div.champion > img { border-color: var(--loss-red100); }
+
+	.winrate-bar {
+		font-size: 10px;
+	}
+
+</style>
+
+</head>
+
+<body>
+
+<%- include("partials/navigation-bar") %>
+
+<main>
+	
+
+    <table id="summary" class="default">
+
+        <colgroup>
+            <col width="176px">
+            <col width="96px">
+            <col width="96px">
+            <col width="96px">
+            <col width="176px">
+            <col width="88px">
+            <col width="96px">            
+        </colgroup>
+
+        <thead>
+        	<tr>
+        		<th>Rune</th>
+        		<th>Avg Dmg/Min</th>
+        		<th>Avg Damage</th>
+        		<th>Avg % of Dmg</th>
+        		<th>Win Rate</th>
+        		<th>Matches</th>
+        		<th>Avg Length</th>
+        	</tr>
+        </thead>
+
+        <tbody>
+        <% summary.forEach(function(element, index) { %>
+            <tr>
+                <td>
+                	<div class="rune h-container">
+                		<img src="<%= element.perk.img %>">
+                		<%= element.perk.name %>
+                	</div>
+                </td>
+                <td><%= element.avgDmgMin %><span class="small dull">/min</span></td>
+                <td><%= element.avgDmg %></td>
+                <td><%= element.avgPercentTotal %>%</td>
+                <td>
+				    <div class="winrate-bar">
+				        <% if (element.wins !== 0) { %>
+				        <div style="width:<%= element.winrate %>%;"><%= element.wins %>W</div>
+				        <% }; if (element.losses !== 0) { %>
+				        <span><%= element.losses %>L</span>
+				        <% } %>
+				    </div>
+                </td>
+                <td>
+				    <ul class="right">
+				        <li class="strong"><%= element.winrate %>%</li>
+				        <li><%= element.matches %> Played</li>
+				    </ul>
+				</td>
+                <td><%= element.avgDuration %></td>
+            </tr>
+
+		<% })%>
+        </tbody>
+
+    </table>
+
+
+
+
+    <table id="matches" class="default">
+
+        <colgroup>
+            <col width="144px">
+            <col width="176px">
+            <col width="112px">
+            <col width="112px">
+            <col width="112px">
+            <col width="96px">
+        </colgroup>
+
+        <thead>
+        	<tr>
+        		<th>Champion</th>
+        		<th>Rune</th>
+        		<th>Damage</th>
+        		<th>Dmg/Min</th>
+        		<th>% Total Dmg</th>
+        		<th>Duration</th>
+        	</tr>
+        </thead>
+
+        <tbody>
+        <% matches.forEach(function(match, index) { %>
+            <tr class="<%= match.outcome %>">
+                <td>
+                	<div class="champion h-container">
+                		<img src="<%= match.champion.img.squarecrop %>">
+                		<%= match.champion.name %>
+                	</div>
+                </td>
+                <td>
+                	<div class="rune h-container">
+                		<img src="<%= match.perk.img %>">
+                		<%= match.perk.name %>
+                	</div>
+                </td>
+                <td><%= match.damage %></td>
+                <td><%= match.dmgMin %><span class="small dull">/min</span></td>
+                <td><%= match.percentTotalDmg %>%</td>
+            	<td><%= match.gameDuration %></td>
+            </tr>
+        <% }) %>
+        </tbody>
+
+    </table>
+
+
+</main>
+
+</body>
+
+</html>

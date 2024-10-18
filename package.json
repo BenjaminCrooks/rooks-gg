@@ -1,13 +1,24 @@
 {
-  "name": "rooks",
-  "version": "1.2.0",
-  "description": "League of Legends data visualization",
+  "name": "rooks-gg",
+  "version": "1.0.0",
+  "description": "League of Legends data visualization tool",
   "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BenjaminCrooks/rooks-gg.git"
+  },
   "author": "Rooks",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BenjaminCrooks/rooks-gg/issues"
+  },
+  "homepage": "https://github.com/BenjaminCrooks/rooks-gg#readme",
   "dependencies": {
     "async": "^3.2.5",
     "body-parser": "^1.20.2",

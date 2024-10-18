@@ -13,90 +13,118 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.static("public"))
 
 
-const champions = require("./public/routes/champions")
-const teams = require("./public/routes/teams")
-const stats = require("./public/routes/stats")
-const champies = require("./public/routes/random-icons")
-const arena = require("./public/routes/arena")
-const runes = require("./public/routes/runes")
-app.use("/champions", champions)
-app.use("/teams", teams)
-app.use("/stats", stats)
-app.use("/random-icon", champies)
-app.use("/arena", arena)
-app.use("/runes", runes)
+const routes = require("./public/routes")
+app.use("/runes", routes.runes)
+app.use("/win-rates", routes.winrates)
+app.use("/match", routes.match)
 
+var dd = require("./public/data-dragon.js")
 var tools = require("./public/tools.js")
 var query = require("./public/controllers/query.js")
 
 
 
-
 app.get("/", (req, res, next) => {
+	res.locals.queryMatch = []
+
 	res.locals.aggregation = [
-		{$sort: {gameTimestamp: -1}},
+		{$sort: {gameDateTimestamp: -1}},
 	    {$project: {
-	    	gameVersion: 1,
-			gameTimestamp: 1,
-			maxTimePlayed: 1,
+	    	matchId: "$metadata.matchId",
+	    	gameVersion: "$info.gameVersion",
+			gameDateTimestamp: 1,
+			gameDuration: "$info.gameDuration",
+			gameLength: 1,
+			championId: 1,
 			championName: 1,
+			summoner1Id: 1,
+			summoner2Id: 1,
+			champLevel: 1,
+			goldEarned: 1,
+			visionScore: 1,
+			wardsKilled: 1,
+			visionWardsBoughtInGame: 1, // control wards bought (value on op.gg/post game)
+			detectorWardsPlaced: 1, // control wards placed
+			wardsPlaced: 1, // total number of wards placed (ALL ward types)
+			// doubleKills: 1,
+			// tripleKills: 1,
+			// quadraKills: 1,
+			// pentaKills: 1,
+			riotIdGameName: 1,
+			riotIdTagline: 1,
 			summonerName: 1,
 			position: 1,
 			kills: 1,
 			deaths: 1,
 			assists: 1,
-			runes: 1,
+	        cs: {$add: ["$totalMinionsKilled", "$neutralMinionsKilled"]},
+			perks: 1,
 			items: 1,
 			win: 1,
 			gameEndedInEarlySurrender: 1,
-			"teams.ally": {$map: {
-	            input: "$teams.ally.picks",
-	            as: "pick",
-	            in: {
-	                championName: "$$pick.championName",
-	                position: "$$pick.position"
-	            }
-	        }},
-			"teams.enemy": {$map: {
-	            input: "$teams.enemy.picks",
-	            as: "pick",
-	            in: {
-	                championName: "$$pick.championName",
-	                position: "$$pick.position"
-	            }
-	        }}
+			participants: "$info.participants"
 		}},
+	    {$addFields: {
+	    	csMin: {$cond: [
+				{$eq: ["$cs", 0]},
+				0,
+				{$round: [{$divide: ["$cs", {$divide: ["$gameDuration", 60]}]}, 1]}
+			]},
+	    	kda: {$cond: [
+	    		{$eq: ["$deaths", 0]},
+	    		{$add: ["$kills", "$assists"]},
+	    		{$round: [{$divide: [{$add: ["$kills", "$assists"]}, "$deaths"]}, 2]}
+	    	]},
+			"participants.ally": {$concatArrays: [
+				"$participants.ally", [{
+					championId: "$championId",
+					championName: "$championName",
+					riotIdGameName: "$riotIdGameName",
+					riotIdTagline: "$riotIdTagline",
+					relationship: "ally",
+					position: "$position"
+				}]
+			]}
+	    }},
 		{$facet: {
 
-
-			// Match History
 			history: [
-				{$limit: 20},
+				{$limit: 30},
 				{$project: {
+					matchId: 1,
 					gameVersion: 1,
-					gameTimestamp: 1,
-					maxTimePlayed: 1,
+					gameDateTimestamp: 1,
+					gameDuration: 1,
+					gameLength: 1,
 					championName: 1,
+					summoner1Id: 1,
+					summoner2Id: 1,
+					champLevel: 1,
+					goldEarned: 1,
+					visionScore: 1,
+					wardsKilled: 1,
+					visionWardsBoughtInGame: 1,
+					detectorWardsPlaced: 1,
+					wardsPlaced: 1,
 					summonerName: 1,
 					position: 1,
-					teams: 1,
+					kills: 1,
+					deaths: 1,
+					assists: 1,
+					kda: 1,
+			        cs: 1,
+			        csMin: 1,
+					participants: 1,
 					items: 1,
 					win: 1,
 					gameEndedInEarlySurrender: 1,
-					"runes.keystone": "$runes.primaryStyle.keystone.perk",
-					"runes.styles": [
-						"$runes.primaryStyle.slot1.perk",
-						"$runes.primaryStyle.slot2.perk",
-						"$runes.primaryStyle.slot3.perk",
-						"$runes.subStyle.slot1.perk",
-						"$runes.subStyle.slot2.perk"
-					],
-					"runes.stats": 1
+					perks: 1
 				}}
 			],
 
 			// My Champions
 			champions: [
+				{$match: {gameEndedInEarlySurrender: false}},
 				{$project: {
 					championName: 1,
 					kills: 1,
@@ -113,134 +141,68 @@ app.get("/", (req, res, next) => {
 					matches: {$sum: 1}
 				}},
 				{$addFields: {
+					championName: "$_id",
 					losses: {$subtract: ["$matches", "$wins"]},
-					winrate: {$cond: [{$eq: ["$matches", 0]}, 0, {$divide: ["$wins", "$matches"]}]}
+					winrate: {$cond: [
+						{$eq: ["$matches", 0]},
+						0,
+						{$round: [{$multiply: [{$divide: ["$wins", "$matches"]}, 100]}, 0]}
+					]}
 				}},
-				// {$match: {$expr: {$gte: ["$matches", 3]}}},
 				{$sort: {matches: -1, wins: -1}},
 				{$limit: 6}
-			],
-
-			// "Losing To..."
-			losingTo: [
-				{$project: {
-					enemy: "$teams.enemy",
-					win: 1
-				}},
-				{$unwind: "$enemy"},
-				{$set: {
-					championName: "$enemy.championName",
-				}},
-				{$group: {
-					_id: "$championName",
-					wins: {$sum: {$cond: ["$win", 1, 0]}},
-					matches: {$sum: 1}
-				}},
-				{$match: {$expr: {$gte: ["$matches", 3]}}},
-				{$addFields: {
-					losses: {$subtract: ["$matches", "$wins"]},
-					winrate: {$cond: [{$eq: ["$matches", 0]}, 0, {$divide: ["$wins", "$matches"]}]}
-				}},
-				// {$match: {$expr: {$gt: ["$matches", 3]}}},
-				{$match: {$and: [{$expr: {$gt: ["$matches", 3]}}, {$expr: {$lt: ["$winrate", 0.5]}}]}},
-				{$sort: {winrate: 1, losses: -1, _id: 1}},
-				{$limit: 4},
 			]
-
 
 		}}
 	]
+
+	// check if req.query specifies a champion
+	if (req.query.champion !== undefined) { res.locals.aggregation[3]["$facet"].history.unshift({$match: {championName: new RegExp(req.query.champion, "i")}}) }
+
  	next()
+
 }, query, (req, res, next) => {
-	res.locals.history = res.locals.data[0].history.map(function(element, index) {
-		return {
-			summoner: element.summonerName,
-			role: element.position,
-			champion: element.championName,
-			win: element.win,
-			length: tools.gameLength(element.maxTimePlayed),
-			version: element.gameVersion.substring(0, 5),
-			// date: tools.formatDate(element.gameTimestamp),
-			date: tools.formatDate(element.gameTimestamp) + " · " + tools.formatTime(element.gameTimestamp),
-			keystone: element.runes.keystone.replaceAll(" ", ""),
-			styles: element.runes.styles.map(function(element) { return element.replaceAll(" ", "").replaceAll(":", "") }),
-			stats: tools.formatRuneStats(element.runes.stats),
-			items: tools.formatItems(element.items),
-			participants: tools.formatParticipants(element.teams),
-			remake: element.gameEndedInEarlySurrender
-		}
-	})
-	
-	res.locals.champions = res.locals.data[0].champions.map(function(element, index) {
-		return {
-			champion: element._id,
-			wins: element.wins,
-			losses: element.losses,
-			winrate: Math.round(element.winrate*100),
-			played: element.matches,
-			kda: ((element.kills + element.assists)/element.deaths).toFixed(2),
-			kills: (element.kills/element.matches).toFixed(1),
-			deaths: (element.deaths/element.matches).toFixed(1),
-			assists: (element.assists/element.matches).toFixed(1)
-		}
+	res.locals.history = res.locals.data[0].history.map(function(e, i) {
+
+		e.version = e.gameVersion.substring(0, e.gameVersion.indexOf(".", 3))
+		e.length = tools.gameLength(e.gameDuration)
+		e.date = tools.formatDate(e.gameDateTimestamp) + " · " + tools.formatTime(e.gameDateTimestamp)
+		e.participants = tools.formatParticipants(e.participants)									// .ally.push({"championName": e.championName, "position": e.position})
+
+		e.champion = dd.champion(e.championName)
+		e.summoner1 = dd.summoner(e.summoner1Id)
+		e.summoner2 = dd.summoner(e.summoner2Id)
+		e.items = e.items.map(function(item, index, array) {
+			return dd.item(item)
+		})
+		e.keystone = dd.rune(e.perks.styles.primaryStyle.selections[0].perk)
+		e.styles = tools.formatRuneStyles(e.perks.styles)
+		e.stats = tools.formatRuneStats(e.perks.statPerks)
+
+		return e
 	})
 
-	res.locals.matchups = res.locals.data[0].losingTo.map(function(element, index) {
-		return {
-			champion: element._id,
-			wins: element.wins,
-			losses: element.losses,
-			winrate: Math.round(element.winrate*100),
-			played: element.matches
-		}
+	res.locals.champions = res.locals.data[0].champions.map(function(e, i) {
+		e.kda = ((e.kills + e.assists)/e.deaths).toFixed(2)
+		e.kills = (e.kills/e.matches).toFixed(1)
+		e.deaths = (e.deaths/e.matches).toFixed(1)
+		e.assists = (e.assists/e.matches).toFixed(1)
+
+		e.champion = dd.champion(e.championName)
+		
+		return e
 	})
 
 	next()
 }, (req, res) => {
-	res.render("overview.ejs", {
-		pageTitle: "Recent Overview"
-	})
+	// res.send(res.locals.history)
+	res.render("home-page.ejs", {})
 })
 
 
 
-
-
-// Error Handling
-app.use("/204", (req, res, next) => {
-	res.locals.type = "NO CONTENT FOUND"
-	res.locals.details = "No documents matched the query parameters."
-	next()
-})
-
-app.use("/400", (req, res, next) => {
-	res.locals.type = "BAD REQUEST"
-	res.locals.details = "No query parameters given."
-	next()
-})
-
-app.use("/404", (req, res, next) => {
-	res.locals.type = "PAGE NOT FOUND"
-	res.locals.details = "The requested URL does not exist on this server."
-	next()
-})
-
-app.use((req, res, next) => {
-	res.status(parseInt(req.originalUrl.replace("/", "")))
-	next()
-})
-
-app.get(["/204", "/400", "/404"], (req, res) => {
-	res.render("error.ejs", {
-		statusCode: res.statusCode,
-		statusType: res.locals.type,
-		statusDetails: res.locals.details
-	})
-})
-
-app.use("*", (req, res) => {
-	res.status(404).redirect("/404")
-})
+app.get("/test", (req, res) => { res.render("test.ejs") })
+app.get("/test2", (req, res) => { res.render("test2.ejs") })
 
 
 

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<% history.forEach(function(element, index) { %>
+
+<div class="grid-row <% if (element.gameEndedInEarlySurrender === true) { %>remake<% } else if (element.win === true) { %>win<% } else if (element.win === false) { %>loss<% } %>">
+
+
+    <a class="match-details" target="_blank" href="/match/details?matchid=<%= element.matchId %>"></a>
+
+    <div class="dd-center" style="background-image: url('<%= element.champion.img.centered %>');"></div>
+    <div class="champion-level v-container"><%= element.champLevel %></div>
+
+
+    <ul class="match-data">
+        <div class="side-bar"></div>
+        <li class="strong"><% if (element.gameEndedInEarlySurrender === true) { %>Remake<% } else if (element.win === true) { %>Victory<% } else if (element.win === false) { %>Defeat<% } %></li>
+        <li class="break"><%= element.length %></li>
+        <li><%= element.date.slice(0, -3) %><span class="small"><%= element.date.slice(-2) %></span></li>
+        <li class="player"><%= element.summonerName %></li>
+    </ul>
+    
+    
+    <div class="icon-container v-container">
+        <div class="runes h-container">
+
+            <img class="keystone" src="<%= element.keystone.img %>">
+
+            <div class="rune-options grid-container">
+            <% element.styles.forEach(function(style, index) { %>
+                <img src="<%= style.img %>" alt="Rune">
+            <% }) %>
+            </div>
+
+            <div class="rune-stats v-container">
+                <img src="assets/dragontail/perk-images/StatMods/<%= element.stats.offense %>.png" alt="Stat">
+                <img src="assets/dragontail/perk-images/StatMods/<%= element.stats.flex %>.png" alt="Stat">
+                <img src="assets/dragontail/perk-images/StatMods/<%= element.stats.defense %>.png" alt="Stat">
+            </div>
+
+            <div class="summoner-spells v-container">
+                <img src="<%= element.summoner1.img %>">
+                <img src="<%= element.summoner2.img %>">
+            </div>
+
+        </div>
+
+        <table class="items">
+            <tr>
+            <% for (let i = 0; i < 7; i++) { if (element.items[i] != undefined) { %>
+                <td><img src="<%= element.items[i].img %>" alt="Item"></td>
+            <% } else { %><td></td><% }} %>
+            </tr>
+        </table>
+    </div>
+
+
+    <ul class="stat-data">
+        <li class="strong center"><%= element.kills %> / <span><%= element.deaths %></span> / <%= element.assists %></li>
+        <li class="break center"><%= element.kda.toFixed(2) %>:1</li>
+        <li class="strong"><span class="small"><img src="assets/icons/svgs/minion-grey.svg" style="height:13px;display:inline-block;vertical-align:text-top;"> CS</span> <%= element.cs %> (<%= element.csMin %><span class="small">/min</span>)</li>
+        <li><img src="assets/icons/svgs/gold-grey.svg" style="height:12px;display:inline-block;vertical-align:text-top;"> <%= element.goldEarned.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></li>
+    </ul>
+
+
+    <div class="vision-data v-container">
+        <div class="vision-pinks v-container shadow" style="background-image:url('/assets/dragontail/item/2055.png');"><%= element.visionWardsBoughtInGame %></div>
+        <div class="vision-score v-container shadow" style="background-image:url('/assets/dragontail/item/3340.png');"><%= element.visionScore %></div>
+        <div class="vision-killed v-container shadow" style="background-image:url('/assets/dragontail/item/3364.png');"><%= element.wardsKilled %></div>
+    </div>
+
+
+    <table class="participants">
+
+        <colgroup>
+            <col width="24px">
+            <col width="20px">
+            <col width="auto">
+            <col width="20px">
+            <col width="auto">
+        </colgroup>
+
+        <tbody>
+
+            <% element.participants.forEach(function(participant, index) { %>
+            <tr<% if (element.position == participant.position) { %> class="player"<% } %>>
+                <td><img class="role" src="assets/icons/svgs/role/role-<%= participant.position %><% if (element.position == participant.position) { %>-w<% } %>.svg"></td>
+
+                <td class="ally"><img src="<%= participant.ally.champion.img.squarecrop %>"></td>
+
+                <td class="ally"><%= participant.ally.riotIdGameName %></td>
+
+                <td><img src="<%= participant.enemy.champion.img.squarecrop %>"></td>
+
+                <td><%= participant.enemy.riotIdGameName %></td>
+            </tr>
+            <% }) %>
+
+        </tbody>
+
+    </table>
+
+    
+
+</div>
+
+<% }) %>
+
+<!-- {
+    "_id": "66f056499992db31fa5e7a0b",
+    "assists": 10,
+    "championName": "Vex",
+    "deaths": 8,
+    "gameEndedInEarlySurrender": false,
+    "kills": 12,
+    "perks": {
+        "statPerks": {
+          "defense": 5011,
+          "flex": 5008,
+          "offense": 5008
+        },
+        "styles": {
+          "primaryStyle": {
+            "description": "primaryStyle",
+            "selections": [
+              {
+                "perk": 8112,
+                "var1": 1781,
+                "var2": 0,
+                "var3": 0
+              },
+              {
+                "perk": 8126,
+                "var1": 934,
+                "var2": 0,
+                "var3": 0
+              },
+              {
+                "perk": 8138,
+                "var1": 30,
+                "var2": 0,
+                "var3": 0
+              },
+              {
+                "perk": 8106,
+                "var1": 4,
+                "var2": 0,
+                "var3": 0
+              }
+            ],
+            "style": 8100
+          },
+          "subStyle": {
+            "description": "subStyle",
+            "selections": [
+              {
+                "perk": 8233,
+                "var1": 23,
+                "var2": 30,
+                "var3": 0
+              },
+              {
+                "perk": 8237,
+                "var1": 721,
+                "var2": 0,
+                "var3": 0
+              }
+            ],
+            "style": 8200
+          }
+        }
+    },
+    "summonerName": "Skylar Vox",
+    "win": false,
+    "position": "MIDDLE",
+    "gameDateTimestamp": "2024-09-19T23:21:06.026Z",
+    "items": [3137, 3157, 3020, 6655, 4645, 3145, 3363],
+    "gameVersion": "14.18.618.2357",
+    "gameDuration": 2220,
+    "cs": 243,
+    "csMin": 6.6,
+    "kda": 2.75
+
+            element.summoner1
+            element.summoner2
+            element.summonerLevel: 1,
+            element.goldEarned: 1,
+            element.visionScore: 1,
+            element.wardsKilled: 1,
+            element.visionWardsBoughtInGame: 1, // control wards bought
+            
+            element.detectorWardsPlaced: 1, // control wards placed
+            element.wardsPlaced: 1, // total number of wards placed (ALL ward types)
+} -->

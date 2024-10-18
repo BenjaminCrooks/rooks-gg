@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<title>Data Table - Win Rates</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Rooks">
+<meta name="description" content="Win rate table">
+
+<link rel="icon" href="assets/icons/rooksIconGG.png">
+<link rel="stylesheet" href="styles.css">
+<script src="plugins/jquery-3.4.1.min.js"></script>
+
+<style>
+
+	main {
+		width: auto;
+		align-items: center;
+		gap: 64px;
+		padding: 0px 8px 8px 8px;
+	}
+
+	table {
+		table-layout: auto;
+/*		width: 100%;*/
+	}
+
+	th {
+		height: 48px;
+	}
+
+	td {
+		height: 64px;
+		padding: 8px 16px;
+	}
+
+	table ul {
+		gap: 8px;
+	}
+
+	.winrate-bar {
+		width: 100%;
+		font-size: 11px;
+	}
+
+	td.champion-name, td.winrate-perc {
+		padding-left: 4px;
+		text-align: left;
+		font-family: Roboto Bold;
+	}
+
+	tr > td:first-of-type { font-family: Roboto Medium; } /* rank; col 1 */
+	td.icon { padding: 8px; }
+	td.icon.role { padding: 18px; }
+	td.icon > img { width: 100%; }
+
+	span.icon {
+		display: inline-block;
+		height: 1em;
+		width: 1em;
+		background-repeat: no-repeat;
+    	background-position: top 0% left 0%;
+    	background-size: cover;
+    	vertical-align: top;
+	}
+
+	span.icon.cs { background-image: url("assets/icons/svgs/minion-grey.svg"); }
+	span.icon.gold { background-image: url("assets/icons/svgs/gold-grey.svg"); }
+
+</style>
+
+</head>
+
+<body>
+
+<%- include("partials/navigation-bar") %>
+
+
+<main>
+
+	
+	<table class="bevel">
+	<!-- <table> -->
+
+        <colgroup>
+            <col width="64px"> <!-- rank -->
+            <% if (rows[0].position != undefined) { %><col width="64px" class="role"> <!-- role icon --><% } %>
+        	<col width="64px"> <!-- champion icon -->
+            <col width="96px"> <!-- champion name -->
+            <col width="128px"> <!-- kda -->
+            <col width="256px"> <!-- win rate bar -->
+            <col width="64px"> <!-- win rate % -->
+            <col width="80px"> <!-- matches played -->
+            <col width="80px"> <!-- pick rate -->
+            <col width="80px"> <!-- cs -->
+            <col width="80px"> <!-- gold -->
+            <col width="80px"> <!-- damage -->
+            <col width="48px"> <!-- vision score -->
+            <col width="48px"> <!-- control wards -->
+        </colgroup>
+
+        <thead>
+        	<tr class="title">
+        		<th colspan="100%"><h3>Win Rates</h3></th>
+        	</tr>
+        	<tr>
+        		<th>Rank</th>
+        		<% if (rows[0].position != undefined) { %><th>Role</th><% } %>
+        		<th colspan="2">Champion</th>
+        		<th>KDA</th>
+        		<th colspan="2">Win Rate</th>
+        		<th>Matches</th>
+        		<th>Pick Rate</th>
+        		<th><span class="icon cs"></span> CS</th>
+        		<th><span class="icon gold"></span> Gold</th>
+        		<th>Damage</th>
+        		<th>Vision Score</th>
+        		<th>Control Wards</th>
+        	</tr>
+        </thead>
+
+        <tbody>
+
+        <% rows.forEach(function(row, index) { %>
+            <tr>
+
+            	<td><%= index + 1 %></td>
+
+        		<% if (row.position != undefined) { %><td class="role icon"><img src="assets/icons/svgs/role/role-<%= row.position %>-w.svg"></td><% } %>
+
+            	<td class="champion icon"><img src="<%= row.champion.img.squarecrop %>"></td>
+
+                <td class="champion-name"><%= row.champion.name %></td>
+
+            	<td><ul class="center">
+            		<li class="strong<% if (row.kda >= 6) { %> legendary<% } else if (row.kda >= 4.5) { %> epic<% } else if (row.kda >= 3) { %> rare<% } else if (row.kda <= 2) { %> boosted<% } %>"><%= row.kda %><span class="dull">:1</span></li>
+            		<li><%= row.kills %> / <%= row.deaths %> / <%= row.assists %></li>
+            	</ul></td>
+
+                <td><div class="winrate-bar">
+			        <% if (row.wins !== 0) { %>
+			        <div style="width:<%= row.winrate %>%;"><%= row.wins %>W</div>
+			        <% }; if (row.losses !== 0) { %>
+			        <span><%= row.losses %>L</span>
+			        <% } %>
+				</div></td>
+
+                <td class="winrate-perc<% if (row.winrate >= 70) { %> legendary<% } else if (row.winrate >= 60) { %> epic<% } else if (row.winrate >= 55) { %> rare<% } else if (row.winrate <= 40) { %> boosted<% } %>"><%= row.winrate %><span class="dull">%</span></td>
+
+            	<td><%= row.matches %> Played</td>
+
+            	<td class="strong"><%= row.pickrate %><span class="dull">%</span></td>
+
+            	<td><ul class="center">
+            		<li class="strong"><%= row.cs %></li>
+            		<li><span class="dull">(<%= row.csMin %><span class="small">/min</span>)</span></li>
+            	</ul></td>
+
+            	<td><ul class="center">
+            		<li class="strong"><%= row.goldEarned %></li>
+            		<li><span class="dull">(<%= row.goldMin %><span class="small">/min</span>)</span></li>
+            	</ul></td>
+
+            	<td class="strong"><%= row.totalDamageDealtToChampions %></td>
+
+            	<!-- <td><ul class="center">
+            		<li><%= row.visionScore %> <span class="small dull">Vision Score</span></li>
+            		<li><%= row.visionWardsBoughtInGame %> <span class="small dull">Control wards</span></li>
+            	</ul></td> -->
+
+            	<td ><%= row.visionScore %></td>
+
+            	<td><%= row.visionWardsBoughtInGame %></td>
+
+            </tr>
+        <% }) %>
+
+        </tbody>
+
+    </table>
+
+
+</main>
+
+</body>
+
+</html>
