@@ -7,9 +7,20 @@ function aggregationMatch (req, res, next) {
 		
 	res.locals.queryMatch.push({$expr: {$gt: ["$info.gameDuration", 0]}}) // ignore random bugged game
 	if (req.baseUrl != "") { res.locals.queryMatch.push({gameEndedInEarlySurrender: false}) } // only include remakes on homepage
-	if (req.query.season === undefined) { res.locals.queryMatch.push({$or: [{"info.gameVersion": new RegExp("^14.19")}, {"info.gameVersion": new RegExp("^14.20")}]}) }
+
+	if (req.query.season === undefined) {
+		var splitVer = {$split: [{$substrCP: [ "$info.gameVersion", 0, {$indexOfCP: [ "$info.gameVersion", ".", 3 ]} ] }, "."]}
+		res.locals.queryMatch.push(
+			// {$or: [{"info.gameVersion": new RegExp("^14.19")}, {"info.gameVersion": new RegExp("^14.20")}]}
+			{$and: [
+				{$expr: {$gte: [{$toInt: {$arrayElemAt: [splitVer, 0]}}, 14]}},
+				{$expr: {$gte: [{$toInt: {$arrayElemAt: [splitVer, 1]}}, 19]}}
+			]}
+		)
+	}
 		// {"info.gameVersion": new RegExp("^14.1[0-9]")}
 		// S2024 split 1 (14.1 → 14.9); split 2 (14.10 → 14.18); split 3 (14.19+)
+
 	if (req.query.account != undefined) { res.locals.queryMatch.push({summonerName: new RegExp(req.query.account, "i")}) }
 
 	

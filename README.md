@@ -151,6 +151,10 @@ Simply displays all available data for a given match. Used to allow for an in-de
 
 ## Development Log
 
+### v2.0.1
+**Bug Fix**
+- Query param [season=All] now functions for all champions 
+
 ### v2.0.0
 **General Code Cleanup**
 - Tidied up redundant code, DOM elements, and styles

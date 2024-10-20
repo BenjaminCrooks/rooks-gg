@@ -32,6 +32,7 @@ app.get("/", (req, res, next) => {
 	    {$project: {
 	    	matchId: "$metadata.matchId",
 	    	gameVersion: "$info.gameVersion",
+	    	splitVersion: {$split: [{$substrCP: [ "$info.gameVersion", 0, {$indexOfCP: [ "$info.gameVersion", ".", 3 ]} ] }, "."]},
 			gameDateTimestamp: 1,
 			gameDuration: "$info.gameDuration",
 			gameLength: 1,
@@ -124,6 +125,11 @@ app.get("/", (req, res, next) => {
 
 			// My Champions
 			champions: [
+				// {$match: {$or: [{gameVersion: new RegExp("^14.19")}, {gameVersion: new RegExp("^14.20")}]}},
+				{$match: {$and: [
+					{$expr: {$gte: [{$toInt: {$arrayElemAt: ["$splitVersion", 0]}}, 14]}},
+					{$expr: {$gte: [{$toInt: {$arrayElemAt: ["$splitVersion", 1]}}, 19]}}
+				]} },
 				{$match: {gameEndedInEarlySurrender: false}},
 				{$project: {
 					championName: 1,
