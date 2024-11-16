@@ -21,6 +21,8 @@ The match data is provided via [RIOT Games' developer API](https://developer.rio
 ├── node_modules
 ├── public
 │   ├── assets
+│   │   ├── cdragon		# community dragon assets
+│   │   ├── data		# holds personally created/obtained data
 │   │   ├── dragontail
 │   │   │   ├── champion
 │   │   │   │   ├── centered
