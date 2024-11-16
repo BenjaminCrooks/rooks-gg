@@ -11,17 +11,22 @@ var query = require("../controllers/query.js")
 router.use("/value-compare", (req, res, next) => {
 
 	if (req.query.champion === undefined) { req.query.champion = "Anivia" }
-	if (req.query.runes === undefined) {
-		req.query.runes = [8014, 8017, 8299]
-	} else {
-		req.query.runes = req.query.runes.map(function(rune) {
-			rune = dd.rune(rune)
-			return rune.id
-		}).filter(function(rune) {
-			return rune != undefined
-		})
-	}
 	if (req.query.datatype === undefined) { req.query.datatype = "damage" }
+
+	if (req.query.rune === undefined) {
+		req.query.rune = [8014, 8017, 8299]
+	} else if (typeof req.query.rune === "string") {
+		req.query.rune = [Number(req.query.rune)]
+	}
+
+	req.query.rune = req.query.rune.map(function(rune) {
+		rune = dd.rune(rune)
+		return rune.id
+	}).filter(function(rune) {
+		return rune != undefined
+	})
+
+	console.log(req.query) // ★ ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ★
 
 	res.locals.queryMatch = [
 		{championName: new RegExp(req.query.champion, "i")},
@@ -43,7 +48,7 @@ router.use("/value-compare", (req, res, next) => {
 				as: "perk",
 				in: {$in: [
 					"$$perk",
-					req.query.runes // ★ ──────────────────────────────────────────────────────────────────────────────────── ★
+					req.query.rune // ★ ──────────────────────────────────────────────────────────────────────────────────── ★
 				]}
 			}
 		}}}
@@ -69,7 +74,7 @@ router.use("/value-compare", (req, res, next) => {
 				as: "rune",
 				cond: {$in: [
 					"$$rune.perk",
-					req.query.runes // ★ ──────────────────────────────────────────────────────────────────────────────────── ★
+					req.query.rune // ★ ──────────────────────────────────────────────────────────────────────────────────── ★
 				]}
 			}}
 		}},
@@ -146,7 +151,11 @@ router.use("/value-compare", (req, res, next) => {
 
 router.get("/value-compare", (req, res) => {
 	// res.send(res.locals.data[0])
-	res.render("table-runes.ejs", {})
+	res.render("table-runes.ejs", {
+		runeArray: dd.runeData,
+		checked: req.query.rune,
+		enabled: [ 8112, 8126, 8369, 8014, 8017, 8299, 8214, 8229, 8237 ]
+	})
 })
 
 

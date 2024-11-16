@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<title>Profile Icons</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Rooks">
+<meta name="description" content="Profile Icons">
+
+<link rel="icon" href="assets/icons/rooksIconGG.png">
+<link rel="stylesheet" href="styles.css">
+<script src="plugins/jquery-3.4.1.min.js"></script>
+
+
+<style>
+
+body {
+    height: calc(100vh - 56px);
+}
+
+main {
+    width: 60vw;
+    height: 100%;
+    display: grid;
+    gap: 0px;
+    grid-template-columns: 622px auto;
+    grid-template-rows: 60% auto 1fr;
+    grid-template-areas:
+    "icons random"
+    "icons options"
+    "icons button";
+}
+
+
+/* Icon Grid ★ ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ★ */
+
+#icon-grid {
+    grid-area: icons;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(8, 64px);
+    grid-template-rows: repeat(auto-fill, 64px);
+    gap: 16px 8px;
+    border: 3px ridge #614a25;
+    padding: 24px;
+    overflow: scroll;
+    background-color: var(--purple100);
+}
+
+#icon-grid .frame {
+    cursor: pointer;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    padding: 4px;
+}
+
+#icon-grid img {
+    width: 100%;
+    object-fit: cover;
+    border: 3px ridge #614a25;
+    filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.75));
+    transition: transform 0.25s ease-out;
+}
+
+#icon-grid .frame[data-name]:hover::before {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, 3px) rotate(45deg);
+
+    content: "";
+    width: 16px;
+    height: 16px;
+    border: 1px solid #614a25;
+    background-color: var(--purple400);
+}
+
+#icon-grid .frame[data-name]:hover::after {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, 6px);
+
+    content: attr(data-name);
+    width: 96px;
+    padding: 6px;
+    border-radius: 2px;
+    background-color: var(--purple400);
+    color: #b8b8b8;
+    text-align: center;
+    font-size: 11px;
+    font-family: Roboto Medium;
+    font-variant: small-caps;
+    filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.75));
+    z-index: 3;
+}
+
+
+/* Random Icon ★ ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ★ */
+
+#rand-frame {
+    grid-area: random;
+    height: 100%;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 24px;
+}
+
+#rand-frame > .frame {
+    position: relative;
+    padding: 24px;
+    width: 256px;
+    aspect-ratio: 1 / 1;
+}
+
+h2 {
+    height: 3em;
+    text-align: center;
+    padding: 0px 48px;
+}
+
+.rand-img {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    width: calc(100% - 24px - 24px);
+}
+
+.rand-img:last-of-type {
+    border: 3px ridge #614a25;
+}
+
+.rand-img:first-of-type {
+    filter: blur(25px);
+}
+
+
+/* Options ★ ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ★ */
+
+#options {
+    grid-area: options;
+    display: grid;
+    grid-template-columns: 20px 1fr 20px 1fr;
+    grid-template-rows: repeat(auto-fill, 20px);
+    gap: 28px 0px;
+    padding: 24px 64px 48px 64px;
+}
+
+input {
+    background-color: var(--purple200);
+}
+
+input[type=checkbox] {
+    width: 20px;
+    border-radius: 3px;
+    border: 2px solid var(--purple500);
+}
+
+input[type=checkbox]:hover, button:hover {
+    outline: 2px solid var(--purple700);
+}
+
+input[type=checkbox]:checked {
+    background-image: url("assets/icons/checkmark.png");
+    background-color: var(--purple500);
+}
+
+label {
+    cursor: pointer;
+    color: #787878;
+    padding: 4px 4px 4px 12px;
+    user-select: none;
+}
+
+input[type=checkbox]:checked + label {
+    font-family: Roboto Medium;
+    color: inherit;
+}
+
+
+/* Note (options) ★ ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ★ */
+
+#note {
+    grid-column: 3 / -1;
+    display: flex;
+    align-items: center;
+    font-style: italic;
+    font-size: 10px;
+    color: #787878;
+}
+
+
+/* Randomize Button ★ ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ★ */
+
+button {
+    width: 96px;
+    height: 32px;
+    grid-area: button;
+    padding: 10px 14px;
+    border-radius: 3px;
+    font-family: Roboto Medium;
+    margin-left: 64px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<%- include("partials/navigation-bar") %>
+
+
+<main>
+    <div id="icon-grid">
+
+        <% icons.forEach(function(icon) { %>
+        <div class="frame v-container" data-name="<%= icon.name %>"<% if (icon.type !== undefined) { %> data-type="<%= icon.type %>"<% } %>>
+            <img src="<%= icon.img %>" loading="lazy">
+        </div>
+        <% }) %>
+
+    </div>
+
+    <div id="rand-frame" class="v-container">
+        <div class="frame">
+            <img class="rand-img" src="assets/icons/svgs/blank.svg">
+            <img class="rand-img" src="assets/icons/svgs/blank.svg">
+        </div>
+        <h2>Icon</h2>
+    </div>
+
+    <div id ="options">
+        <input checked type="checkbox" data-filter="Misc" id="Misc"><label for="Misc" style="font-style: italic; font-family: Roboto Light;">* Misc</label>
+        <input checked type="checkbox" data-filter="Prestige" id="Prestige"><label for="Prestige">Prestige</label>
+        <input checked type="checkbox" data-filter="Graphic" id="Graphic"><label for="Graphic">Graphic</label>
+        <input checked type="checkbox" data-filter="Illustration" id="Illustration"><label for="Illustration">Illustration</label>
+        <input checked type="checkbox" data-filter="Champie" id="Champie"><label for="Champie">Champie</label>
+        <div id="note">(shift click to disable siblings)</div>
+    </div>
+
+    <button id="randomize" type="submit">Randomize</button>
+</main>
+
+
+<script>
+
+function toClipboard(text) {
+    let $input = $("<input>")
+    $("body").append($input)
+    $input.val(text).select()
+    document.execCommand("copy")
+    $input.remove()
+}
+
+
+$(document).ready(function() {
+
+    var shifted = false
+    $(document).on("keyup keydown", function(x){ shifted = x.shiftKey })
+
+
+    $("input[type=checkbox]").change(function() {
+        if (shifted) {
+            $(this).prop("checked", true).siblings().filter("input[type=checkbox]").prop("checked", false)
+            $("#icon-grid > .frame:not([data-type=" + $(this).data("filter") + "])").hide()
+            $("#icon-grid > .frame[data-type=" + $(this).data("filter") + "]").show()
+        } else if (this.checked) {
+            $("#icon-grid > .frame[data-type=" + $(this).data("filter") + "]").show()
+        } else {
+            $("#icon-grid > .frame[data-type=" + $(this).data("filter") + "]").hide()
+        }
+    })
+
+    
+    $("button#randomize").on("click", function() {
+        let randIcon = $("#icon-grid > .frame:visible").eq(Math.floor(Math.random() * $("#icon-grid > .frame:visible").length))
+        $(".rand-img").attr("src", randIcon.find("img").attr("src"))
+        $("#rand-frame > h2").text(randIcon.data("name"))
+        toClipboard(randIcon.data("name"))
+    })
+
+})
+
+</script>
+
+
+</body>
+
+</html>

@@ -13,52 +13,174 @@
 
 <style>
 
-	main {
-		width: auto;
-		align-items: center;
-		gap: 64px;
-		background-color: transparent;
-	}
+main {
+	width: auto;
+	align-items: center;
+	gap: 64px;
+	background-color: transparent;
+}
 
-	th {
-		height: 2rem;
-		padding: 16px 8px;
-	}
+th {
+	height: 2rem;
+	padding: 16px 8px;
+}
 
-	td {
-		height: 48px;
-		padding: 4px 16px;
-	}
+td {
+	height: 48px;
+	padding: 4px 16px;
+}
 
-	td img {
-		width: 32px;
-		height: 32px;
-	}
+td img {
+	width: 32px;
+	height: 32px;
+}
 
-	td .h-container {
-		height: 100%;
-		gap: 8px;
-	}
+td .h-container {
+	height: 100%;
+	gap: 8px;
+}
 
-	div.champion > img {
-		border-radius: 4px;
-		border: 2px solid;
-	}
+div.champion > img {
+	border-radius: 4px;
+	border: 2px solid;
+}
 
-	ul {
-		gap: 4px;
-	}
+ul {
+	gap: 4px;
+}
 
-	ul.right > li.strong {
-		font-size: 12px;
-	}
+ul.right > li.strong {
+	font-size: 12px;
+}
 
-	tr.Victory div.champion > img { border-color: var(--win-blue100); }
-	tr.Defeat div.champion > img { border-color: var(--loss-red100); }
+tr.Victory div.champion > img { border-color: var(--win-blue100); }
+tr.Defeat div.champion > img { border-color: var(--loss-red100); }
 
-	.winrate-bar {
-		font-size: 10px;
-	}
+.winrate-bar {
+	font-size: 10px;
+}
+
+
+#query-selection {
+	position: fixed;
+	top: 53%;
+	left: 8px;
+	transform: translate(0, -50%);
+	height: 90vh;
+	width: auto;
+	background-color: rgba(0,0,0,0.25);
+	padding: 16px;
+	gap: 16px;
+}
+
+#rune-grid {
+	position: relative;
+	display: grid;
+	grid-template-columns: repeat(3, 40px);
+	gap: 4px;
+	justify-content: center;
+	border: 3px ridge #614a25;
+	padding: 12px;
+	background-color: var(--purple200);
+	overflow: scroll;
+}
+
+#rune-grid > div.keystone, #rune-grid > div.style {
+    display: flex;
+    flex-direction: column;
+	width: 100%;
+	aspect-ratio: 1 / 1;
+	align-items: center;
+	justify-content: center;
+}
+
+.rune-border {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 8px;
+	height: 8px;
+	border-right: 2px ridge #614a25;
+	transform: translate(-4px, -4px) rotate(45deg);
+	background-color: var(--purple200);
+	z-index: 5;
+}
+
+.rune-break {
+	position: relative;
+	grid-column: 1/-1;
+	margin: 0 6px;
+	height: 6px;
+	margin-bottom: 6px;
+	border-bottom: 1px solid #614a25;
+}
+
+.rune-break::before {
+	content: "";
+	position: absolute;
+	top: 100%;
+	right: 100%;
+	transform: translate(0px, -50%) rotate(45deg);
+	width: 3px;
+	aspect-ratio: 1 / 1;
+	border: 1px solid #614a25;
+}
+.rune-break::after {
+	content: "";
+	position: absolute;
+	top: 100%;
+	left: 100%;
+	transform: translate(0px, -50%) rotate(45deg);
+	width: 3px;
+	aspect-ratio: 1 / 1;
+	border: 1px solid #614a25;
+}
+
+input[type=checkbox] {
+	width: 100%;
+	aspect-ratio: 1 / 1;
+    background-size: auto 100%;
+    border-radius: 50%;
+    filter: grayscale(100%);
+    transition: filter 0.1s ease-in;
+}
+
+input[type=checkbox]:checked {
+	filter: grayscale(0%);
+}
+
+input[type=checkbox]:disabled {
+	cursor: auto; /* not-allowed */
+	opacity: 35%;
+	filter: grayscale(100%) brightness(50%) contrast(120%);
+}
+
+div.style > input {
+	width: 70%;
+	border: 2px ridge;
+	filter: grayscale(100%) drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+div.style.Precision > input { border-color: #bba87b; }	/* precision afa788 bba87b c7aa6f */
+div.style.Domination > input { border-color: #d84545; }	/* domination d44242 d84545 dc4747 */
+div.style.Sorcery > input { border-color: #858ff8; }	/* sorcery 9da8fb 858ff8 6d76f5 */
+div.style.Resolve > input { border-color: #a2d289; }	/* resolve a1d586 a2d289 a4d08d */
+div.style.Inspiration > input { border-color: #48afbb; }/* inspiration 49a9b8 48afbb 48b3be */
+
+
+#reload {
+	padding: 10px 14px;
+    border-radius: 3px;
+    font-family: Roboto Medium;
+    cursor: pointer;
+    color: white;
+    background-color: var(--purple500);
+    text-align: center;
+}
+
+#reload:hover { color: var(--purple200); outline: 2px solid var(--purple700); }
+
 
 </style>
 
@@ -67,6 +189,64 @@
 <body>
 
 <%- include("partials/navigation-bar") %>
+
+
+<div id="query-selection" class="v-container">
+
+	<select id="champion-dropdown">
+		<option value="Hwei">Hwei</option>
+		<option value="Anivia">Anivia</option>
+		<option value="Ziggs">Ziggs</option>
+	</select>
+
+
+	<div id="rune-grid">
+
+		<div class="rune-border"></div>
+
+		<% runeArray.forEach(function(style, styleIndex, styleArray) { %>
+			<% style.slots.forEach(function(slot, slotIndex) { %>
+				<% slot.runes.forEach(function(rune) { %>
+				<div class="<% if (slotIndex == 0) { %>keystone<% } else { %>style<% } %> <%= style.key %>">
+					<input <% if (!(enabled.includes(rune.id))) { %>disabled <% } else if (checked.includes(rune.id)) { %>checked <% } %>data-rune="<%= rune.id %>" type="checkbox" style="background-image: url('/assets/dragontail/<%= rune.icon %>');">
+				</div>
+				<% }) %>
+			<% }) %>
+		<% if (!(styleIndex === styleArray.length - 1)) { %>
+			<div class="rune-break"></div>
+		<% } %>
+		<% }) %>
+
+	</div>
+
+
+	<a id="reload" href="/runes/value-compare?champion=Hwei">Load Runes</a>
+
+</div>
+
+<script>
+	$(document).ready(function() {
+
+		$("#rune-grid input[type=checkbox]").change(function() {
+			let runeStr = "&rune=" + $(this).data("rune")
+			if (this.checked) {
+				$("#reload").attr("href", $("#reload").attr("href") + runeStr)
+			} else {
+				$("#reload").attr("href", $("#reload").attr("href").replace(runeStr, ""))
+			}
+		})
+
+		$("#champion-dropdown").change(function() {
+			$("#champion-dropdown option:not(:selected)").each(function(element, index) {
+				$("#reload").attr("href", $("#reload").attr("href").replace($(this).val(), ""))
+			})
+			$("#reload").attr("href", $("#reload").attr("href").replace("champion=", "champion=" + $("#champion-dropdown option:selected").val()))
+		})
+		// $("#q-sortby option:selected").val().trim()
+
+	})
+</script>
+
 
 <main>
 	
@@ -182,6 +362,7 @@
 
 
 </main>
+
 
 </body>
 

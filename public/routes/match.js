@@ -25,6 +25,30 @@ router.use("/details", (req, res, next) => { // "/details/:matchid"
  	next()
 }, query, (req, res, next) => {
 	res.locals.data = res.locals.data[0]
+	// .map(function(e, i) {
+
+	// 	e.version = tools.version(e.gameVersion)
+	// 	e.length = tools.gameLength(e.gameDuration)
+	// 	e.gameDate = e.gameDateTimestamp.toLocaleDateString("en-US", {
+	// 		timeZone: "America/New_York",
+	// 		year: "numeric",
+	// 		month: "short",
+	// 		day: "numeric",
+	// 		weekday: "short"
+	// 	})
+	// 	e.gameEnd = e.gameDateTimestamp.toLocaleTimeString("en-US", {
+	// 		timeZone: "America/New_York",
+	// 		hour: "numeric",
+	// 		minute: "numeric"
+	// 	})
+	// 	e.gameStart = (new Date(e.gameStartTimestamp)).toLocaleTimeString("en-US", {
+	// 		timeZone: "America/New_York",
+	// 		hour: "numeric",
+	// 		minute: "numeric"
+	// 	})
+
+	// 	return e
+	// })
 
 	next()
 })

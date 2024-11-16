@@ -148,8 +148,34 @@ GET     /match/details?matchid=NA1_1234567890
 Simply displays all available data for a given match. Used to allow for an in-depth data analysis for an individual match.
 
 
+### Profile Icons
+```
+GET     /profile-icons/all
+```
+
+Used to easily view all of my (more favored) profile icons without undesired ones littering the interface (such as what would show when viewing my profile icons in the client's collection tab); with the added functionality to randomly select an icon! (if I'm on a losing streak = my icon "ran out of luck") I wanted to be able to specify what icon theme to randomly select from, so you're able to filter the left-hand grid display based on the overarching icon theme (this also influences the pool of icons that can be randomly selected). Unfortunately there were no resources available (from datadragon nor from communitydragon) to get both of an icon's name and id, so I had to manually make a JSON file populating said information.
+
+![Icons](./docs/profileicons.png "Random icon selection")
+
+
 
 ## Development Log
+
+### v2.1.0
+**Profile Icons**
+- Random profile icon re-added
+- Now shows icon name on hover
+- Icon category filter functionality added
+
+**Misc**
+- Added sessions to match history (if multiple games were played in 1 sitting, then they get flagged as part of a "session")
+- Pp.gg links added to match history rows
+- Champion icons in the win rate table now link to /?champion=[champion clicked]
+- Temporary testing paths were added to experiment with the variable font ROBOTO FLEX
+- Began experimenting with visualizations for live game functionality
+
+**Known Bugs**
+- Rune comparing randomly ceased functioning
 
 ### v2.0.1
 **Bug Fix**

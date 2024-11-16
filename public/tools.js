@@ -1,6 +1,19 @@
 var dd = require("./data-dragon.js")
 
 module.exports = {
+	version: function (gameVersion) {
+		/**
+		 * Formats the game version
+		 * 
+		 * @param {number}
+		 * @returns {string}
+		 */
+
+
+		return gameVersion.substring(0, gameVersion.indexOf(".", 3))
+	},
+
+
 	gameLength: function (seconds) {
 		/**
 		 * Formats a given second integer into a readable form
@@ -58,25 +71,6 @@ module.exports = {
 	},
 
 
-	formatItems: function (items) {
-		/**
-		 * Formats and filters item array
-		 * 
-		 * @param {array} items - Item array
-		 * @returns {array} - Filtered item array
-		 */
-
-		let trinkets = [
-			2055, // pink wards
-			3340, // yellow trinket
-			3363, // blue trinket
-			3364 // sweeper trinket
-		]
-
-		return items.filter(function(element) { return element !== 0 && !(trinkets.includes(element)) }).sort()
-	},
-
-
 	formatRuneStats: function (stats) {
 		/**
 		 * Converts rune stat IDs into corresponding file names
@@ -100,21 +94,6 @@ module.exports = {
 		    "flex": statObj[stats["flex"]],
 		    "defense": statObj[stats["defense"]]
 		}
-	},
-
-	formatRuneStyles: function (styles) {
-		/**
-		 * Converts perk style IDs into corresponding file names
-		 * 
-		 * @param {Object} styles - Rune styles array
-		 * @returns {array} - Array of rune objects
-		 */
-		
-		let styleArray = styles.primaryStyle.selections.slice(1, 4).concat(styles.subStyle.selections)
-		
-		return styleArray.map(function(element, index, array) {
-			return dd.rune(element.perk)
-		})
 	},
 
 

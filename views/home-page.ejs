@@ -56,23 +56,22 @@ main > div { background-color: var(--purple200); }
     padding: 4px 8px;
 }
 
-table tr a {
-    display: block;
-    height: 100%;
-}
-
 .left-col table.bevel img {
     height: 100%;
     border-radius: 4px;
 }
-
-
 
 .left-col ul { gap: 4px; }
 
 .left-col li.strong { font-size: 12px; }
 
 .winrate-bar { font-size: 10px; }
+
+.left-col table td > * { max-height: 39.5px; }
+.left-col table a {
+    display: block;
+    height: 100%;
+}
 
 
 /* Match History ────────────────────────────────────────────────────────────────────── */
@@ -87,7 +86,7 @@ table tr a {
 
 .grid-row {
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     border-radius: 4px;
     display: grid;
     grid-template-columns: subgrid;
@@ -108,6 +107,48 @@ table tr a {
 .loss div.side-bar { background-color: var(--loss-red100); }
 .remake div.side-bar { background-color: var(--remake-grey100); }
 
+
+/* blue 3b8bea    red ef392e    green 57bc3c    yellow f5ab0c    orange ff6d32    pink ff56af    purple 932fea */
+div.session1:first-of-type::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 32px;
+    height: 64px;
+    background-color: #932fea;
+    border-radius: 0px 4px 4px 0px;
+    transform: translate(8px, 0px);
+}
+div.session1:first-of-type::after {
+    content: "";
+    position: absolute;
+    top: 0%;
+    left: 100%;
+    width: 12px;
+    height: calc(100% + 2px);
+    background-color: #932fea;
+    border-radius: 0px 4px 4px 0px;
+    transform: translate(8px, 0px);
+}
+div.session1:not(:first-of-type)::after {
+    content: "";
+    position: absolute;
+    top: 0%;
+    left: 100%;
+    width: 12px;
+    height: calc(100% + 12px);
+    background-color: #932fea;
+    border-radius: 0px 0px 4px 0px;
+    transform: translate(8px, -10px);
+}
+.session2::after { content: ""; position: absolute; top: 0%; left: 100%; width: 12px; height: calc(100% + 2px); background-color: #57bc3c; transform: translate(8px, 0px); }
+.session3::after { content: ""; position: absolute; top: 0%; left: 100%; width: 12px; height: calc(100% + 2px); background-color: #ff6d32; transform: translate(8px, 0px); }
+.session4::after { content: ""; position: absolute; top: 0%; left: 100%; width: 12px; height: calc(100% + 2px); background-color: #f5ab0c; transform: translate(8px, 0px); }
+.session5::after { content: ""; position: absolute; top: 0%; left: 100%; width: 12px; height: calc(100% + 2px); background-color: #3b8bea; transform: translate(8px, 0px); }
+.session6::after { content: ""; position: absolute; top: 0%; left: 100%; width: 12px; height: calc(100% + 2px); background-color: #ff56af; transform: translate(8px, 0px); }
+.session7::after { content: ""; position: absolute; top: 0%; left: 100%; width: 12px; height: calc(100% + 2px); background-color: #ef392e; transform: translate(8px, 0px); }
+.session8::after { content: ""; position: absolute; top: 0%; left: 100%; width: 12px; height: calc(100% + 2px); background-color: #932fea; transform: translate(8px, 0px); }
 
 
 .match-data { grid-column: 1; z-index: 1; }
@@ -135,6 +176,7 @@ div.dd-center {
 
     background-blend-mode: luminosity;
     filter: brightness(100%) grayscale(25%) contrast(100%);
+    border-radius: 4px 0px 0px 4px;
 }
 
 div.champion-level {
@@ -188,6 +230,7 @@ ul.match-data {
         rgba(0,0,0,0) 100%
     );
     margin-right: auto;
+    border-radius: 4px 0px 0px 4px;
 }
 
 div.grid-row li > span.small { font-size: 0.8rem; }
@@ -200,6 +243,12 @@ ul.match-data li.strong { font-size: 14px; }
     left: 0;
     height: 100%;
     width: 8px;
+    border-radius: 4px 0px 0px 4px;
+}
+
+.match-data a:hover {
+    color: white;
+    text-decoration: underline;
 }
 
 
@@ -226,7 +275,7 @@ img.keystone  { width: 38px; height: 38px; }
 
 .rune-stats > img {
     width: 17px;
-    border: 1px solid rgb(187, 152, 52);
+    border: 1px solid rgb(187, 152, 52); /* border (cebd81 d4b772 dab063), background (1e2328 1b2024 0f1214) */
     border-radius: 50%;
     background-color: #282828;
 }
@@ -339,6 +388,47 @@ tr.player > td:nth-child(3)  {
     color: #c8c8c8;
 }
 
+table.participants td > a:hover {
+    text-decoration: underline;
+    color: #e8e8e8;
+}
+
+
+/* Tooltip ───────────────────────────────────────────────────────────────────────── */
+div[data-desc] { position: relative; overflow: visible; cursor: help; }
+div[data-desc]:hover::before {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, 3px) rotate(45deg);
+
+    content: "";
+    width: 8px;
+    height: 8px;
+    background-color: var(--iceWhite);
+    z-index: 3;
+}
+div[data-desc]:hover::after {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, 6px);
+
+    content: attr(data-desc);
+    min-width: 64px;
+    max-width: 256px;
+    width: auto;
+    padding: 8px;
+    border-radius: 2px;
+    background-color: var(--iceWhite);
+    color: #383838;
+    font-size: 10px;
+    font-family: Roboto Bold;
+    white-space: nowrap;
+    filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.75));
+    z-index: 3;
+}
+
 </style>
 
 </head>
@@ -356,13 +446,13 @@ tr.player > td:nth-child(3)  {
 
 
 	<div id="match-history" class="grid-row-container">
-		<%- include("partials/home/match-history", {history}) %>
+		<%- include("partials/match-history", {history}) %>
 	</div>
 
 
     <div id="champions" class="row-container left-col">
         <table class="bevel">
-            <%- include("partials/home/champions", {champions}) %>
+            <%- include("partials/champions", {champions}) %>
         </table>
     </div>
 

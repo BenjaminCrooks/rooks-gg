@@ -16,7 +16,7 @@
 } -->
 
 <colgroup>
-    <col width="auto">
+    <col width="64px">
     <col width="auto">
     <col width="128px">
     <col width="auto">
@@ -27,7 +27,8 @@
 <tbody>
 <% champions.forEach(function(element, index) { %>
 <tr>
-    <td><img src="<%= element.champion.img.squarecrop %>"></td>
+    <td><a href="/?champion=<%= element.champion.name %>"><img src="<%= element.champion.img.squarecrop %>"></a></td>
+    <!-- <td><img src="<%= element.champion.img.squarecrop %>"></td> -->
     
     <td><ul class="center">
         <li class="strong<% if (element.kda >= 6) { %> legendary<% } else if (element.kda >= 4) { %> epic<% } else if (element.kda <= 1) { %> boosted<% } %>"><%= element.kda %>:1</li>

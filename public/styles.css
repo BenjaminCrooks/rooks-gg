@@ -61,7 +61,10 @@ span.italic { font-style: italic; }
 
 /*span.subscript { vertical-align: sub; }*/
 
-a { text-decoration: none; }
+a {
+    text-decoration: none;
+    color: inherit;
+}
 
 header {
     /*width: 95%;
@@ -74,6 +77,48 @@ header {
 
 div {}
 
+
+/* Inputs ★ ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ★ */
+select { /* dropdown menu */
+/*    appearance: none;*/
+    background-repeat: no-repeat;
+    background-color: var(--purple200);
+    border: none;
+    outline: none;
+    color: white;
+    padding: 4px;
+}
+
+/*select:focus { outline: 1px solid var(--iceWhite); }*/
+
+option {} /* dropdown option */
+
+input {
+    background-repeat: no-repeat;
+}
+
+input[type=checkbox] {
+    appearance: none;
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+    background-position: center;
+    background-size: auto 100%;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    color: white;
+    background-color: var(--purple500);
+}
+
+button:hover {
+    color: var(--purple200);
+    /*outline: 2px solid var(--purple700);*/
+}
+
+
+/* Lists ★ ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ★ */
 ul {
     list-style: none;
     padding: 0px;
@@ -90,7 +135,7 @@ li {
     font-size: inherit;
     color: inherit;
     white-space: nowrap;
-    overflow: hidden;
+    /*overflow: hidden;*/
     text-overflow: ellipsis;
 }
 
@@ -110,7 +155,7 @@ li.boosted, td.boosted { color: #ff5f5f; } /* ff3333 */
 
 
 
-/* Tables */
+/* Tables ★ ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ★ */
 table {
     table-layout: fixed;
     border-collapse: collapse;
@@ -174,7 +219,7 @@ table.bevel img, table.bevel .winrate-bar { border-radius: 2px; }
 
 
 
-/* Navigation Bar */
+/* Navigation Bar ★ ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ★ */
 #navigation-bar {
   width: 100%;
   height: 56px;
@@ -210,7 +255,7 @@ table.bevel img, table.bevel .winrate-bar { border-radius: 2px; }
 
 
 
-/* Row Elements */
+/* Row Elements ★ ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ★ */
 .winrate-bar {
     height: 50%;
     display: flex;
@@ -242,7 +287,7 @@ table.bevel img, table.bevel .winrate-bar { border-radius: 2px; }
 }
 
 
-/* Flex Elements */
+/* Flex Elements ★ ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ★ */
 .grid-row-container { display: grid; }
 
 .grid-container { display: grid; }

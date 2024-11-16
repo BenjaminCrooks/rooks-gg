@@ -26,14 +26,23 @@ Object.entries(champion).forEach(function([key, value]) {
 // Runes
 var runesReforged = JSON.parse(fs.readFileSync("./public/assets/dragontail/data/runesReforged.JSON", "utf8"))
 var runes = {}
-runesReforged.forEach(function(element) {
+runesReforged.forEach(function(element, eleIndex) {
 	runes[element.id] = { "id": element.id, "key": element.key, "icon": element.icon, "name": element.name, "img": path.join("/assets/dragontail", element.icon) }
-	element.slots.forEach(function(slot) {
-		slot.runes.forEach(function(item) {
-			item.img = path.join("/assets/dragontail", item.icon)
+	// runesReforged[eleIndex].img = path.join("/assets/dragontail", element.icon)
+	element.slots.forEach(function(slot, slotIndex) {
+		slot.runes.forEach(function(item, itemIndex) {
+			item.img = path.join("/assets/dragontail", item.icon) // ★ actually assigning img = "/path"? ───────────────────────────────────────────────────────────────────────────────────────────── ★
 			runes[item.id] = item
+			// runesReforged[eleIndex].slots[slotIndex].runes[] = path.join("/assets/dragontail", element.icon)
 		}) 
 	})
+})
+
+var cDragonPerks = JSON.parse(fs.readFileSync("./public/assets/cdragon/perks.JSON", "utf8"))
+cDragonPerks.forEach(function(perk) {
+	if (perk.id in runes) {
+		runes[perk.id]["endOfGameStatDescs"] = perk.endOfGameStatDescs
+	}
 })
 
 
@@ -55,22 +64,35 @@ Object.entries(summoner).forEach(function([key, value]) {
 
 
 module.exports = {
-	rune: function (id) {
+
+	runeData: runesReforged,
+
+	rune: function (rune) {
 		/**
 		 * Obtains rune data object by id
 		 * 
-		 * @param {number} id
+		 * @param {Object|number} - perk (+ vars) object | perk id
 		 * @returns {Object} - rune data object
 		 */
 
-		return runes[id]
+		if (typeof rune === 'object') {
+			let runeObject = JSON.parse(JSON.stringify(runes[rune.perk]))
+			runeObject.endOfGameStatDescs = runeObject.endOfGameStatDescs.map(function(statDesc) {
+				return statDesc.replace("@eogvar1@", rune.var1).replace("@eogvar2@", rune.var2).replace("@eogvar3@", rune.var3)
+			})
+			return runeObject
+		} else if (typeof rune === 'number') {
+			return JSON.parse(JSON.stringify(runes[rune]))
+		} else {
+			return undefined
+		}
 	},
 
 	champion: function (input) {
 		/**
 		 * Obtains champion data object by key OR id
 		 * 
-		 * @param {string} key
+		 * @param {string} - key
 		 * @returns {Object} - champion data object
 		 */
 
@@ -81,7 +103,7 @@ module.exports = {
 		/**
 		 * Obtains item data object by key
 		 * 
-		 * @param {number} id
+		 * @param {number} - id
 		 * @returns {Object} - item data object
 		 */
 
@@ -92,7 +114,7 @@ module.exports = {
 		/**
 		 * Obtains summoner spell data object by key
 		 * 
-		 * @param {number} key
+		 * @param {number} - key
 		 * @returns {Object} - summoner spell data object
 		 */
 

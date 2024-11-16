@@ -2,7 +2,7 @@
 
 <% history.forEach(function(element, index) { %>
 
-<div class="grid-row <% if (element.gameEndedInEarlySurrender === true) { %>remake<% } else if (element.win === true) { %>win<% } else if (element.win === false) { %>loss<% } %>">
+<div class="grid-row <% if (element.gameEndedInEarlySurrender === true) { %>remake<% } else if (element.win === true) { %>win<% } else if (element.win === false) { %>loss<% }; if (element.session != undefined) { %> session<%= element.session %><% }  %>">
 
 
     <a class="match-details" target="_blank" href="/match/details?matchid=<%= element.matchId %>"></a>
@@ -16,18 +16,18 @@
         <li class="strong"><% if (element.gameEndedInEarlySurrender === true) { %>Remake<% } else if (element.win === true) { %>Victory<% } else if (element.win === false) { %>Defeat<% } %></li>
         <li class="break"><%= element.length %></li>
         <li><%= element.date.slice(0, -3) %><span class="small"><%= element.date.slice(-2) %></span></li>
-        <li class="player"><%= element.summonerName %></li>
+        <li class="player"><a target="_blank" href="https://www.op.gg/summoners/na/<%= element.riotIdGameName %>-<%= element.riotIdTagline %>"><%= element.summonerName %></a></li>
     </ul>
     
     
     <div class="icon-container v-container">
         <div class="runes h-container">
 
-            <img class="keystone" src="<%= element.keystone.img %>">
+            <div data-desc="<%= element.keystone.endOfGameStatDescs.join(', ') %>"><img class="keystone" src="<%= element.keystone.img %>"></div>
 
             <div class="rune-options grid-container">
             <% element.styles.forEach(function(style, index) { %>
-                <img src="<%= style.img %>" alt="Rune">
+                <div data-desc="<%= style.endOfGameStatDescs.join(', ') %>"><img src="<%= style.img %>" alt="Rune"></div>
             <% }) %>
             </div>
 
@@ -87,11 +87,13 @@
 
                 <td class="ally"><img src="<%= participant.ally.champion.img.squarecrop %>"></td>
 
-                <td class="ally"><%= participant.ally.riotIdGameName %></td>
+                <td class="ally"><a target="_blank" href="https://www.op.gg/summoners/na/<%= participant.ally.riotIdGameName %>-<%= participant.ally.riotIdTagline %>"><%= participant.ally.riotIdGameName %></a></td>
+                <!-- <td class="ally"><%= participant.ally.riotIdGameName %></td> -->
 
                 <td><img src="<%= participant.enemy.champion.img.squarecrop %>"></td>
 
-                <td><%= participant.enemy.riotIdGameName %></td>
+                <td><a target="_blank" href="https://www.op.gg/summoners/na/<%= participant.enemy.riotIdGameName %>-<%= participant.enemy.riotIdTagline %>"><%= participant.enemy.riotIdGameName %></a></td>
+                <!-- <td><%= participant.enemy.riotIdGameName %></td> -->
             </tr>
             <% }) %>
 
