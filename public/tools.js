@@ -1,6 +1,38 @@
 var dd = require("./data-dragon.js")
 
 module.exports = {
+	assignColor: function (val, range) {
+		const labels = [ "legendary", "epic", "rare" ] // "boosted"
+		let color = undefined
+
+		if (val < range[-1]) {
+			color = "boosted"
+		} else {
+			for (let i = 0; i < range.length - 1; i++) {
+				if (val >= range[i]) {
+					color = labels[i]
+					break
+				}
+			}
+		}
+
+		return {
+			val: val,
+			color: color
+		}
+	},
+
+	kda: function (kda) {
+		let range = [ 6, 4.5, 3, 1 ]
+		return this.assignColor(kda, range)
+	},
+
+	winRate: function (winRate) {
+		let range = [ 70, 60, 55, 40 ]
+		return this.assignColor((winRate).toFixed(0), range)
+	},
+
+
 	version: function (gameVersion) {
 		/**
 		 * Formats the game version

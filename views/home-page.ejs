@@ -108,49 +108,6 @@ main > div { background-color: var(--purple200); }
 .remake div.side-bar { background-color: var(--remake-grey100); }
 
 
-/* blue 3b8bea    red ef392e    green 57bc3c    yellow f5ab0c    orange ff6d32    pink ff56af    purple 932fea */
-div.session1:first-of-type::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 100%;
-    width: 32px;
-    height: 64px;
-    background-color: #932fea;
-    border-radius: 0px 4px 4px 0px;
-    transform: translate(8px, 0px);
-}
-div.session1:first-of-type::after {
-    content: "";
-    position: absolute;
-    top: 0%;
-    left: 100%;
-    width: 12px;
-    height: calc(100% + 2px);
-    background-color: #932fea;
-    border-radius: 0px 4px 4px 0px;
-    transform: translate(8px, 0px);
-}
-div.session1:not(:first-of-type)::after {
-    content: "";
-    position: absolute;
-    top: 0%;
-    left: 100%;
-    width: 12px;
-    height: calc(100% + 12px);
-    background-color: #932fea;
-    border-radius: 0px 0px 4px 0px;
-    transform: translate(8px, -10px);
-}
-.session2::after { content: ""; position: absolute; top: 0%; left: 100%; width: 12px; height: calc(100% + 2px); background-color: #57bc3c; transform: translate(8px, 0px); }
-.session3::after { content: ""; position: absolute; top: 0%; left: 100%; width: 12px; height: calc(100% + 2px); background-color: #ff6d32; transform: translate(8px, 0px); }
-.session4::after { content: ""; position: absolute; top: 0%; left: 100%; width: 12px; height: calc(100% + 2px); background-color: #f5ab0c; transform: translate(8px, 0px); }
-.session5::after { content: ""; position: absolute; top: 0%; left: 100%; width: 12px; height: calc(100% + 2px); background-color: #3b8bea; transform: translate(8px, 0px); }
-.session6::after { content: ""; position: absolute; top: 0%; left: 100%; width: 12px; height: calc(100% + 2px); background-color: #ff56af; transform: translate(8px, 0px); }
-.session7::after { content: ""; position: absolute; top: 0%; left: 100%; width: 12px; height: calc(100% + 2px); background-color: #ef392e; transform: translate(8px, 0px); }
-.session8::after { content: ""; position: absolute; top: 0%; left: 100%; width: 12px; height: calc(100% + 2px); background-color: #932fea; transform: translate(8px, 0px); }
-
-
 .match-data { grid-column: 1; z-index: 1; }
 .icon-container { grid-column: 2; z-index: 1; }
 .stat-data { grid-column: 3; z-index: 1; }
@@ -158,9 +115,9 @@ div.session1:not(:first-of-type)::after {
 .participants { grid-column: 5; z-index: 1; }
 
 
-.grid-row.win div.dd-center { background-color: rgba(83, 131, 232, 0.3); }
-.grid-row.loss div.dd-center { background-color: rgba(232, 64, 87, 0.3); }
-.grid-row.remake div.dd-center { background-color: rgba(158, 158, 177, 0.3); }
+.grid-row.win div.dd-center { background-color: var(--img-bg-blue); }
+.grid-row.loss div.dd-center { background-color: var(--img-bg-red); }
+.grid-row.remake div.dd-center { background-color: var(--img-bg-remake); }
 
 
 div.dd-center {
@@ -429,6 +386,22 @@ div[data-desc]:hover::after {
     z-index: 3;
 }
 
+
+
+.session-stats {
+    position: absolute;
+    top: 16px;
+    left: calc(100% + 28px);
+    width: 128px;
+    height: 96px;
+    color: white;
+    gap: 4px;
+}
+
+li.thin.indent > span.small { vertical-align: top; }
+
+li.strong > span.small { font-family: Roboto; }
+
 </style>
 
 </head>
@@ -463,6 +436,71 @@ div[data-desc]:hover::after {
 
 
 </main>
+
+
+<script>
+    $(document).ready(function() {
+
+        var sessions = $("#match-history .grid-row[data-session]")
+        var maxSession = $(sessions[sessions.length - 1]).data("session")
+
+        var colorCodes = [
+            "932fea", "57bc3c", "ff6d32", "f5ab0c", "3b8bea", "ff56af", "ef392e",
+            "932fea", "57bc3c", "ff6d32", "f5ab0c", "3b8bea", "ff56af", "ef392e"
+        ]
+
+        for (let sessNum = 1; sessNum < (maxSession + 1); sessNum++) {
+            var sessGroup = $("#match-history .grid-row[data-session=" + sessNum + "]")
+            var sessFirst = $(sessGroup[0])
+            var sessLast = $(sessGroup[sessGroup.length - 1])
+
+            var sessClass = "session" + sessNum
+            $(sessFirst).addClass(sessClass)
+
+            var sessHeight = ($(sessFirst).height() * sessGroup.length) + (8 * (sessGroup.length - 1))
+            var sessColor = colorCodes[sessNum-1]
+
+            var sessList = $("<ul class='session-stats'></ul>")
+            $(sessFirst).append(sessList)
+
+            var sessWins = $(sessGroup).filter(".win").length
+            var sessWinPerc = ((sessWins / sessGroup.length) * 100).toFixed(0)
+            var sessStart = $(sessLast).find("ul.match-data").data("start")
+            var sessEnd = $(sessFirst).find("ul.match-data").data("end")
+
+            var sessWinrate = $(`<li class='strong'>${sessWinPerc}% <span class='small'>W/R</span></li>`)
+            var sessPlayed = $(`<li class='half-break'>${sessGroup.length} Played</li>`)
+            var sessTimeStart = $(`<li>${sessStart} - ${sessEnd}</li>`)
+
+            var differenceInMs = new Date($(sessFirst).find("ul.match-data").data("date-end")) - new Date($(sessLast).find("ul.match-data").data("date-start"))
+            var totalMinutes = Math.floor(differenceInMs / (1000 * 60))
+            var sessHour = Math.floor(totalMinutes / 60)
+            var sessMin = totalMinutes % 60
+            var sessLength = $(`<li class='italic dull thin indent'>(${sessHour} <span class='small'>hr</span> ${sessMin} <span class='small'>min</span>)</li>`)
+
+            $(sessList).append(sessWinrate, sessPlayed, sessTimeStart, sessLength)
+
+
+            var css = `
+                .${sessClass}::after {
+                    content: "";
+                    position: absolute;
+                    top: 0%;
+                    left: 100%;
+                    width: 12px;
+                    height: ${sessHeight}px;
+                    background-color: #${sessColor};
+                    transform: translate(8px, 0px);
+                    border-radius: 0px 4px 4px 0px;
+                    filter: brightness(60%);
+                }
+            `
+            $("<style>").prop("type", "text/css").html(css).appendTo("head")
+        }
+
+    })
+</script>
+
 
 </body>
 

@@ -36,6 +36,7 @@ app.get("/", (req, res, next) => {
 	    	splitVersion: {$split: [{$substrCP: [ "$info.gameVersion", 0, {$indexOfCP: [ "$info.gameVersion", ".", 3 ]} ] }, "."]},
 			gameDateTimestamp: 1,
 			gameStartTimestamp: "$info.gameStartTimestamp",
+			gameEndTimestamp: "$info.gameEndTimestamp",
 			gameDuration: "$info.gameDuration",
 			gameLength: 1,
 			championId: 1,
@@ -95,6 +96,7 @@ app.get("/", (req, res, next) => {
 					gameVersion: 1,
 					gameDateTimestamp: 1,
 					gameStartTimestamp: 1,
+					gameEndTimestamp: 1,
 					gameDuration: 1,
 					gameLength: 1,
 					summonerName: 1,
@@ -186,6 +188,18 @@ app.get("/", (req, res, next) => {
 		e.version = tools.version(e.gameVersion)
 		e.length = tools.gameLength(e.gameDuration)
 		e.date = tools.formatDate(e.gameDateTimestamp) + " · " + tools.formatTime(e.gameDateTimestamp)
+		e.timeStamps = {
+			start: (new Date(e.gameStartTimestamp)).toLocaleTimeString("en-US", {
+				timeZone: "America/New_York",
+				hour: "numeric",
+				minute: "numeric"
+			}),
+			end: e.gameDateTimestamp.toLocaleTimeString("en-US", {
+				timeZone: "America/New_York",
+				hour: "numeric",
+				minute: "numeric"
+			})
+		}
 		e.participants = tools.formatParticipants(e.participants)									// .ally.push({"championName": e.championName, "position": e.position})
 
 		e.champion = dd.champion(e.championName)
@@ -198,21 +212,6 @@ app.get("/", (req, res, next) => {
 		e.stats = tools.formatRuneStats(e.perks.statPerks)
 
 		return e
-	})
-
-	let sessionCount = 0
-	res.locals.history.forEach(function(ele, ind, arr) {
-		// if not last element
-		if (!(ind === arr.length - 1)) {
-			// element + next element within an hour of each other
-			if (Math.abs(ele.gameDateTimestamp - arr[ind+1].gameDateTimestamp) / (1000*60*60) <= 1) {
-				if (ele.session === undefined) {
-					sessionCount += 1
-					ele.session = sessionCount
-				}
-				arr[ind+1].session = sessionCount
-			}
-		}
 	})
 
 
@@ -229,6 +228,59 @@ app.get("/", (req, res, next) => {
 	})
 
 	next()
+
+}, (req, res, next) => { // Session data mutation
+	var sessions = []
+	var nSession = 0
+	res.locals.history.forEach(function(match, ind, arr) {
+
+		// if not last element
+		if (!(ind === arr.length - 1)) {
+
+			// element + next element within an hour of each other
+			if (Math.abs(match.gameDateTimestamp - arr[ind+1].gameDateTimestamp) / (1000*60*60) <= 1) {
+
+				// if previous match was in same session, ignore
+				if (match.session === undefined) {
+					nSession += 1
+					match.session = nSession
+					sessions.push(
+						{matches: [match]}
+					)
+				}
+
+				// add session # to NEXT match in list
+				arr[ind+1].session = nSession
+				sessions[nSession-1].matches.push(arr[ind+1])
+			}
+		}
+	})
+
+	res.locals.sessions = sessions.map(function(session, ind, arr) {
+		var wins = session.matches.filter(match => {
+			return match.win === true
+		}).length
+		
+		var start = new Date(session.matches[session.matches.length-1].gameStartTimestamp)
+		var stop = new Date(session.matches[0].gameEndTimestamp)
+
+        var differenceInMs = stop - start
+        var totalMinutes = Math.floor(differenceInMs / (1000 * 60))
+
+		session.winrate = tools.winRate((wins/session.matches.length)*100),
+		session.played = session.matches.length,
+		session.start = tools.formatTime(start),
+		session.stop = tools.formatTime(stop),
+		session.duration = {
+			h: Math.floor(totalMinutes / 60),
+			m: totalMinutes % 60
+		}
+
+		return session
+	})
+
+	next()
+
 }, (req, res) => {
 	// console.log(res.locals.history[0].participants)
 	res.render("home-page.ejs", {})

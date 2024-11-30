@@ -16,13 +16,7 @@
 main {
 	width: 70vw;
 	min-height: 100vh;
-  color: #989898; /*d8d8d8*/
-	font-size: 14px;
-}
-
-span {
-  color: white;
-  margin-left: 0.5em;
+    background-color: inherit;
 }
 
 ul {
@@ -34,74 +28,268 @@ li > ul > li:last-child { margin-bottom: 1em; }
 
 
 
-span[data-desc] { position: relative; }
-span[data-desc]:hover::after {
-  content: attr(data-desc);
-  position: absolute;
-  left: 50%;
-  bottom: 100%;
-  min-width: 64px;
-  max-width: 200px;
-  background-color: white;
-  color: black;
-  font-size: 12px;
-  padding: 6px;
-  z-index: 3;
-  transform: translate(-50%, -4px);
+table#stats {
+    height: 800px;
+    overflow: scroll;
+}
+thead th {
+    position: sticky;
+    top: 104px;
+    height: 56px;
+    background-color: transparent;
+}
+
+tbody td {
+    height: 38px;
+    padding: 8px;
+}
+
+table img {
+    width: 32px;
+    margin: 0 auto;
+    border-radius: 4px;
+}
+
+/*tr.section:first-of-type > th { height: 40px; }*/
+tr.section > th {
+    color: #e8e8e8;
+    height: 48px;
+    vertical-align: bottom;
+    border-top: 12px solid var(--purple100);
+    text-align: left;
+    font-size: 14px;
+    padding: 12px;
+}
+
+table#stats tr > td:first-of-type {
+    border-right: 1px solid var(--purple100);
+    text-align: left;
+    padding: 8px 8px 8px 24px;
+}
+
+table#runes ul {
+    font-size: 8px;
+    gap: 0.75em;
+}
+
+table#runes li.strong { font-size: 9px; color: #c8c8c8; }
+
+table#runes td {
+    padding: 8px 0px;
+}
+
+table#runes img {
+    width: 24px;
+}
+
+
+
+/*thead th > img {
+    width: 36px;
+    border-width: 2px;
+    border-style: solid;
+}
+thead th > img.team100 { border-color: var(--win-blue100) ; }
+thead th > img.team200 { border-color: var(--loss-red100) ; }*/
+
+
+thead th.team100 { background-color: var(--img-bg-blue); }
+thead th.team200 { background-color: var(--img-bg-red); }
+th.dd-cent {
+    background-position: bottom 80% right 50%;
+    background-size: 180% auto;
+
+    background-blend-mode: luminosity;
+    filter: brightness(100%) grayscale(25%) contrast(100%);
+}
+
+h3, h4 { font-family: Roboto Medium; font-weight: normal; }
+h3 > span, h4 > span {
+    font-family: Roboto;
+    font-weight: normal;
+    color: #b8b8b8;
 }
 
 </style>
 
 </head>
 
+
 <body>
 
 <%- include("partials/navigation-bar") %>
 
 
-<!--                                                                                     <li>VARIABLE <span><%= data.VARIABLE %></span></li> -->
-
 <main>
-  <h3>matchId <span><%= data.metadata.matchId %></span></h3><br><br>
-  <ul>
-    <li>championName <span data-desc="<%= data.championName %>"><%= data.championName %></span></li>
-    <li>champLevel <span><%= data.champLevel %></span></li>
-    <li>champExperience <span><%= data.champExperience %></span></li>
-    <li>championId <span><%= data.championId %></span></li>
-    <li>champExperience <span><%= data.champExperience %></span></li>
 
-    <li><ul>
-      <li>Perks</li>
-      <% data.perks.styles.primaryStyle.selections.forEach(function(element) { %>
-      <li><ul>
-        <li>perk <span><%= element.perk %></span></li>
-        <li>var1 <span><%= element.var1 %></span></li>
-        <li>var2 <span><%= element.var2 %></span></li>
-        <li>var3 <span><%= element.var3 %></span></li>
-      </ul></li>
-      <% }) %>
-      <% data.perks.styles.subStyle.selections.forEach(function(element) { %>
-      <li><ul>
-        <li>perk <span><%= element.perk %></span></li>
-        <li>var1 <span><%= element.var1 %></span></li>
-        <li>var2 <span><%= element.var2 %></span></li>
-        <li>var3 <span><%= element.var3 %></span></li>
-      </ul></li>
-      <% }) %>
-      <li>defense <span><%= data.perks.statPerks.defense %></span></li>
-      <li>flex <span><%= data.perks.statPerks.flex %></span></li>
-      <li>offense <span><%= data.perks.statPerks.offense %></span></li>
-    </ul></li>
-  </ul>
+<h3><span class="dull">matchId</span> – <%= data.metadata.matchId %></h3>
+<h4><span class="dull">gameVersion</span> – <%= data.info.gameVersion %></h4>
+<h4><span class="dull">gameId</span> – <%= data.info.gameId %></h4>
+<br>
+<h4><span class="dull">gameCreation</span> – <%= (new Date(data.info.gameCreation)).toLocaleTimeString("en-US", {timeZone: "America/New_York",hour: "numeric",minute: "numeric"}) %></h4>
+<h4><span class="dull">gameStartTimestamp</span> – <%= (new Date(data.info.gameStartTimestamp)).toLocaleTimeString("en-US", {timeZone: "America/New_York",hour: "numeric",minute: "numeric"}) %></h4>
+<h4><span class="dull">gameEndTimestamp</span> – <%= (new Date(data.info.gameEndTimestamp)).toLocaleTimeString("en-US", {timeZone: "America/New_York",hour: "numeric",minute: "numeric"}) %></h4>
+<h4><span class="dull">gameDateTimestamp</span> – <%= data.gameDateTimestamp %></h4>
+<h4><span class="dull">gameDuration</span> – <%= data.info.gameDuration %></h4>
+<br><br>
 
 
-  <br><br><br>
+<table id="stats" class="default">
 
-	<ul>
-	<% Object.keys(data).forEach(function(element) { %>
-		<li><%= element %><span class="dull">&nbsp&nbsp&nbsp&nbsp<%= data[element] %></span></li>
-	<% }) %>
-	</ul>
+    <colgroup>
+        <col width="128px">
+        <col width="auto">
+        <col width="auto">
+        <col width="auto">
+        <col width="auto">
+        <col width="auto">
+        <col width="auto">
+        <col width="auto">
+        <col width="auto">
+        <col width="auto">
+        <col width="auto">
+    </colgroup>
+
+    <thead>
+        <tr>
+            <th></th>
+            <% data.participants.forEach(function(player, index, array) { %>
+            <!-- <th><img class="team<%= player.teamId  %>" src="<%= player.champion.img.centered %>"></th> -->
+
+            <th class="dd-cent team<%= player.teamId  %>" style="background-image: url('<%= player.champion.img.centered %>')"></th>
+            <% }) %>
+        </tr>
+    </thead>
+
+    <tbody>
+    <% matchVars.forEach(function(section, ind, arr) { %>
+        <tr class="section"><th colspan="100%"><%= section.header %></th></tr>
+
+        <% section.variables.forEach(function(variable) {%>
+        <tr>
+            <td><%= variable %></td>
+            <% data.participants.forEach(function(player, index, array) { %>
+            <td><% if (player[variable] !== undefined) { %><%= player[variable] %><% } else { %>-<% } %></td>
+            <% }) %>
+        </tr>
+        <% }) %>
+    <% }) %>
+    </tbody>
+
+</table>
+
+
+
+
+
+<table id="runes" class="default alternate">
+
+    <colgroup>
+        <col width="32px">
+        <col width="auto">
+        <col width="32px">
+        <col width="auto">
+        <col width="32px">
+        <col width="auto">
+        <col width="32px">
+        <col width="auto">
+        <col width="32px">
+        <col width="auto">
+        <col width="32px">
+        <col width="auto">
+        <col width="32px">
+        <col width="auto">
+        <col width="32px">
+        <col width="auto">
+        <col width="32px">
+        <col width="auto">
+        <col width="32px">
+        <col width="auto">
+    </colgroup>
+
+    <thead>
+        <tr>
+            <th colspan="2"><img src="/assets/dragontail/champion/squarecrop/Hwei.png"></th>
+            <th colspan="2"><img src="/assets/dragontail/champion/squarecrop/Aatrox.png"></th>
+            <th colspan="2"><img src="/assets/dragontail/champion/squarecrop/Ahri.png"></th>
+            <th colspan="2"><img src="/assets/dragontail/champion/squarecrop/Akali.png"></th>
+            <th colspan="2"><img src="/assets/dragontail/champion/squarecrop/Akshan.png"></th>
+            <th colspan="2"><img src="/assets/dragontail/champion/squarecrop/Alistar.png"></th>
+            <th colspan="2"><img src="/assets/dragontail/champion/squarecrop/Ambessa.png"></th>
+            <th colspan="2"><img src="/assets/dragontail/champion/squarecrop/Aatrox.png"></th>
+            <th colspan="2"><img src="/assets/dragontail/champion/squarecrop/Amumu.png"></th>
+            <th colspan="2"><img src="/assets/dragontail/champion/squarecrop/Anivia.png"></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ArcaneComet\ArcaneComet.png"></td>
+            <td><ul class="left"><li class="strong">Arcane Comet</li><li>Total Damage Dealt: 1030</li></ul></td>
+
+            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ArcaneComet\ArcaneComet.png"></td>
+            <td><ul class="left"><li class="strong">Arcane Comet</li><li>Total Damage Dealt: 1030</li></ul></td>
+
+            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ArcaneComet\ArcaneComet.png"></td>
+            <td><ul class="left"><li class="strong">Arcane Comet</li><li>Total Damage Dealt: 1030</li></ul></td>
+
+            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ArcaneComet\ArcaneComet.png"></td>
+            <td><ul class="left"><li class="strong">Arcane Comet</li><li>Total Damage Dealt: 1030</li></ul></td>
+
+            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ArcaneComet\ArcaneComet.png"></td>
+            <td><ul class="left"><li class="strong">Arcane Comet</li><li>Total Damage Dealt: 1030</li></ul></td>
+
+            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ArcaneComet\ArcaneComet.png"></td>
+            <td><ul class="left"><li class="strong">Arcane Comet</li><li>Total Damage Dealt: 1030</li></ul></td>
+
+            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ArcaneComet\ArcaneComet.png"></td>
+            <td><ul class="left"><li class="strong">Arcane Comet</li><li>Total Damage Dealt: 1030</li></ul></td>
+
+            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ArcaneComet\ArcaneComet.png"></td>
+            <td><ul class="left"><li class="strong">Arcane Comet</li><li>Total Damage Dealt: 1030</li></ul></td>
+
+            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ArcaneComet\ArcaneComet.png"></td>
+            <td><ul class="left"><li class="strong">Arcane Comet</li><li>Total Damage Dealt: 1030</li></ul></td>
+
+            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ArcaneComet\ArcaneComet.png"></td>
+            <td><ul class="left"><li class="strong">Arcane Comet</li><li>Total Damage Dealt: 1030</li></ul></td>
+        </tr>
+        <tr>
+            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ManaflowBand\ManaflowBand.png"></td>
+            <td><ul class="left"><li class="strong">Manaflow Band</li><li>Total bonus mana: 250</li><li>Total mana restored: 675</li></ul></td>
+
+            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ManaflowBand\ManaflowBand.png"></td>
+            <td><ul class="left"><li class="strong">Manaflow Band</li><li>Total bonus mana: 250</li><li>Total mana restored: 675</li></ul></td>
+
+            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ManaflowBand\ManaflowBand.png"></td>
+            <td><ul class="left"><li class="strong">Manaflow Band</li><li>Total bonus mana: 250</li><li>Total mana restored: 675</li></ul></td>
+
+            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ManaflowBand\ManaflowBand.png"></td>
+            <td><ul class="left"><li class="strong">Manaflow Band</li><li>Total bonus mana: 250</li><li>Total mana restored: 675</li></ul></td>
+
+            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ManaflowBand\ManaflowBand.png"></td>
+            <td><ul class="left"><li class="strong">Manaflow Band</li><li>Total bonus mana: 250</li><li>Total mana restored: 675</li></ul></td>
+
+            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ManaflowBand\ManaflowBand.png"></td>
+            <td><ul class="left"><li class="strong">Manaflow Band</li><li>Total bonus mana: 250</li><li>Total mana restored: 675</li></ul></td>
+
+            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ManaflowBand\ManaflowBand.png"></td>
+            <td><ul class="left"><li class="strong">Manaflow Band</li><li>Total bonus mana: 250</li><li>Total mana restored: 675</li></ul></td>
+
+            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ManaflowBand\ManaflowBand.png"></td>
+            <td><ul class="left"><li class="strong">Manaflow Band</li><li>Total bonus mana: 250</li><li>Total mana restored: 675</li></ul></td>
+
+            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ManaflowBand\ManaflowBand.png"></td>
+            <td><ul class="left"><li class="strong">Manaflow Band</li><li>Total bonus mana: 250</li><li>Total mana restored: 675</li></ul></td>
+
+            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ManaflowBand\ManaflowBand.png"></td>
+            <td><ul class="left"><li class="strong">Manaflow Band</li><li>Total bonus mana: 250</li><li>Total mana restored: 675</li></ul></td>
+        </tr>
+    </tbody>
+
+</table>
+
+
 </main>
 
 <!-- {
@@ -117,7 +305,6 @@ span[data-desc]:hover::after {
 "teamId": 100,
 
 "timePlayed": 1615,
-"win": true,
 "gameDateTimestamp": "2024-10-17T22:58:14.985Z",
 "gameLength": {
   "h": 0,
@@ -138,36 +325,13 @@ span[data-desc]:hover::after {
 "role": "SOLO",
 "position": "MIDDLE",
 
-"spell1Casts": 137,
-"spell2Casts": 86,
-"spell3Casts": 91,
-"spell4Casts": 9,
 
-"summoner1Casts": 4,
-"summoner1Id": 4,
-"summoner2Casts": 5,
-"summoner2Id": 12,
-
-"neutralMinionsKilled": 12,
-"totalAllyJungleMinionsKilled": 9,
-"totalEnemyJungleMinionsKilled": 0,
-"totalMinionsKilled": 165,
-
-"detectorWardsPlaced": 0,
-"sightWardsBoughtInGame": 0,
-"visionScore": 20,
-"visionWardsBoughtInGame": 0,
-"wardsKilled": 4,
-"wardsPlaced": 9,
 
 "assists": 13,
 "deaths": 4,
 "kills": 8,
 
 
-"goldEarned": 12590,
-"goldSpent": 11650,
-"consumablesPurchased": 2,
 "item0": 6653,
 "item1": 3020,
 "item2": 3040,
@@ -176,86 +340,176 @@ span[data-desc]:hover::after {
 "item5": 1082,
 "item6": 3340,
 "items": [6653, 3020, 3040, 4628, 4630, 1082, 3340]
-"itemsPurchased": 23,
 
 
-"doubleKills": 1,
-"pentaKills": 0,
-"tripleKills": 0,
-"unrealKills": 0,
-"quadraKills": 0,
-"killingSprees": 3,
-"largestCriticalStrike": 0,
-"largestKillingSpree": 3,
-"largestMultiKill": 2,
-
-"baronKills": 0,
-"dragonKills": 0,
-"firstBloodAssist": false,
-"firstBloodKill": false,
-"firstTowerAssist": true,
-"firstTowerKill": false,
-"inhibitorKills": 0,
-"inhibitorTakedowns": 0,
-"inhibitorsLost": 0,
-"nexusKills": 0,
-"nexusLost": 0,
-"nexusTakedowns": 0,
-"objectivesStolen": 0,
-"objectivesStolenAssists": 0,
-"turretKills": 1,
-"turretTakedowns": 4,
-"turretsLost": 3,
 
 
-"damageDealtToBuildings": 3687,
-"damageDealtToObjectives": 7705,
-"damageDealtToTurrets": 3687,
-"damageSelfMitigated": 7682,
-"magicDamageDealt": 128409,
-"magicDamageDealtToChampions": 31404,
-"magicDamageTaken": 8804,
-"physicalDamageDealt": 14675,
-"physicalDamageDealtToChampions": 1219,
-"physicalDamageTaken": 6274,
-"trueDamageDealt": 4775,
-"trueDamageDealtToChampions": 34,
-"trueDamageTaken": 596,
-"totalDamageDealt": 147859,
-"totalDamageDealtToChampions": 32658,
-"totalDamageShieldedOnTeammates": 1100,
-"totalDamageTaken": 15676,
-"totalHeal": 1366,
-"totalHealsOnTeammates": 0,
-"timeCCingOthers": 37,
-"totalTimeCCDealt": 778,
-"totalTimeSpentDead": 141,
-"totalUnitsHealed": 1,
 
 
-"allInPings": 0,
-"assistMePings": 0,
-"basicPings": 0,
-"commandPings": 2,
-"dangerPings": 0,
-"enemyMissingPings": 2,
-"enemyVisionPings": 2,
-"getBackPings": 1,
-"holdPings": 0,
-"needVisionPings": 0,
-"onMyWayPings": 1,
-"pushPings": 1,
-"visionClearedPings": 0,
-
-"longestTimeSpentLiving": 653,
-
-
-"gameEndedInEarlySurrender": false,
-"gameEndedInSurrender": true,
-"teamEarlySurrendered": false,
 
 "championTransform": 0,
 "eligibleForProgression": true,
+
+
+
+"perks": {
+  "statPerks": {
+    "defense": 5011,
+    "flex": 5008,
+    "offense": 5008
+  },
+  "styles": {
+    "primaryStyle": {
+      "description": "primaryStyle",
+      "selections": [
+        {
+          "perk": 8229,
+          "var1": 1975,
+          "var2": 0,
+          "var3": 0
+        },
+        {
+          "perk": 8226,
+          "var1": 250,
+          "var2": 1401,
+          "var3": 0
+        },
+        {
+          "perk": 8210,
+          "var1": 25,
+          "var2": 0,
+          "var3": 0
+        },
+        {
+          "perk": 8236,
+          "var1": 24,
+          "var2": 0,
+          "var3": 0
+        }
+      ],
+      "style": 8200
+    },
+    "subStyle": {
+      "description": "subStyle",
+      "selections": [
+        {
+          "perk": 9105,
+          "var1": 15,
+          "var2": 30,
+          "var3": 0
+        },
+        {
+          "perk": 8017,
+          "var1": 1388,
+          "var2": 0,
+          "var3": 0
+        }
+      ],
+      "style": 8000
+    }
+  }
+},
+
+
+  
+  "platformId": "NA1",
+
+  "queueId": 420,
+
+"metadata": {
+  "dataVersion": "2",
+  "matchId": "NA1_5135488965",
+  "participants": [
+    "AsCERcDixmc0HP_CCHiQxWHzpOHpcFYQyOr3O89Dxg449_1vGMFMObidvRLW8pcBpmAKzR3wrTiuwQ",
+    "EuYlaB3mQepnU4Xyvw9wa_4TkCEpBaWweRbd3qdfJQNX745bU_Exwly1YcBOttwmqaD4F6ytOQjTqg",
+    "_zVHA_4i3q9uekhqXCBAdi56hklK61-mKeLSB61lE-lsmfLBivTBbHu9jmf9D5CAKSKkPBJVKtwdVw",
+    "B5oJ85EpNO61smqCoBthCVXKIu3xSthwAxw-y5SwGH9yhWvPdapdg0HYd1Fw0FQz_lO7t5KstRF3xA",
+    "eIBhgmRJdeUNmVUgeQPQkWSY-PiQm_o_GwrCwHdtDnD5PybfNu2rpb0dDbbfLlMhgFETK_TgCzTtIQ",
+    "9IxS7mk6fw1LkW8t31Ah__cy8OymHJX4caFmEuPW6-FA77e9R_RtoewbiSBHzhfGxbhgd4ujIygxLw",
+    "eK0FMQ21O4dIC3w46lcWFzYXu8wXMqUuqYH1hm5NESrLcpBs78x9L_H8eRn6Ct3HQb7Fti5ubnc7PQ",
+    "rcdS2NzdyEYu3bx1MZ2XTq2cHB4HlZ5-tViVqphYa1MDtVuS3cL0jO3OSzNtz8Ea7A5mdX4T0xqSuA",
+    "7u70VS9vYuQi2EFrNrhPNORTyzpwiLoISOAYocdda02j5uf9WO02SnMjRShLMlSV_J-KK6jBYgoMLA",
+    "v9t1rkSQyMzeVuNOUqmoLSbhuYkkp0azcmKeMwhowhumz6nRCJBh8Z7i93W5pnrWmrs77F9OOUD3NQ"
+  ]
+},
+
+"info": {
+  "endOfGameResult": "GameComplete",
+  
+  "gameVersion": "14.20.623.6777",
+  "gameId": 5135488965,
+  "gameCreation": 1729218651331,
+  "gameStartTimestamp": 1729218679985,
+  "gameEndTimestamp": 1729220295786,
+  "gameDuration": 1615,
+
+  "gameMode": "CLASSIC",
+  "gameName": "teambuilder-match-5135488965",
+  "gameType": "MATCHED_GAME",
+  "mapId": 11,
+
+  "participants": {
+    "ally": [
+      { "championId": 82, "championName": "Mordekaiser", "riotIdGameName": "Roach bully", "riotIdTagline": "1850", "relationship": "ally", "position": "TOP" },
+      { "championId": 62, "championName": "MonkeyKing", "riotIdGameName": "KingPinTheUnit", "riotIdTagline": "NA1", "relationship": "ally", "position": "JUNGLE" },
+      { "championId": 202, "championName": "Jhin", "riotIdGameName": "Jari", "riotIdTagline": "NA1", "relationship": "ally", "position": "BOTTOM" },
+      { "championId": 64, "championName": "LeeSin", "riotIdGameName": "Coreytime", "riotIdTagline": "NA1", "relationship": "ally", "position": "SUPPORT" }
+    ],
+    "enemy": [
+      { "championId": 223, "championName": "TahmKench", "riotIdGameName": "TopGuru", "riotIdTagline": "NA1", "relationship": "enemy", "position": "TOP" },
+      { "championId": 107, "championName": "Rengar", "riotIdGameName": "HuntedByRengar", "riotIdTagline": "7682", "relationship": "enemy", "position": "JUNGLE" },
+      { "championId": 134, "championName": "Syndra", "riotIdGameName": "Buu", "riotIdTagline": "BBQ", "relationship": "enemy", "position": "MIDDLE" },
+      { "championId": 429, "championName": "Kalista", "riotIdGameName": "Pro Hater", "riotIdTagline": "NA1", "relationship": "enemy", "position": "BOTTOM" },
+      { "championId": 412, "championName": "Thresh", "riotIdGameName": "Lil Benny", "riotIdTagline": "NA1", "relationship": "enemy", "position": "SUPPORT" }
+    ]
+  },
+
+  "teams": [
+    {
+      "bans": [
+        { "championId": 555, "pickTurn": 1 },
+        { "championId": 266, "pickTurn": 2 },
+        { "championId": 77, "pickTurn": 3 },
+        { "championId": 7, "pickTurn": 4 },
+        { "championId": 78, "pickTurn": 5 }
+      ],
+      "objectives": {
+        "baron": { "first": true, "kills": 1 },
+        "champion": { "first": false, "kills": 38 },
+        "dragon": { "first": true, "kills": 3 },
+        "horde": { "first": false, "kills": 2 },
+        "inhibitor": { "first": true, "kills": 1 },
+        "riftHerald": { "first": true, "kills": 1 },
+        "tower": { "first": true, "kills": 9 }
+      },
+      "teamId": 100,
+      "win": true
+    },
+    {
+      "bans": [
+        { "championId": 266, "pickTurn": 6 },
+        { "championId": 77, "pickTurn": 7 },
+        { "championId": 7, "pickTurn": 8 },
+        { "championId": 201, "pickTurn": 9 },
+        { "championId": 119, "pickTurn": 10 }
+      ],
+      "objectives": {
+        "baron": { "first": false, "kills": 0 },
+        "champion": { "first": true, "kills": 26 },
+        "dragon": { "first": false, "kills": 1 },
+        "horde": { "first": true, "kills": 4 },
+        "inhibitor": { "first": false, "kills": 0 },
+        "riftHerald": { "first": false, "kills": 0 },
+        "tower": { "first": false, "kills": 3 }
+      },
+      "teamId": 200,
+      "win": false
+    }
+  ],
+
+  "tournamentCode": ""
+
+
 
 
 
@@ -394,286 +648,6 @@ span[data-desc]:hover::after {
   "wardTakedownsBefore20M": 0,
   "wardsGuarded": 0
 },
-"perks": {
-  "statPerks": {
-    "defense": 5011,
-    "flex": 5008,
-    "offense": 5008
-  },
-  "styles": {
-    "primaryStyle": {
-      "description": "primaryStyle",
-      "selections": [
-        {
-          "perk": 8229,
-          "var1": 1975,
-          "var2": 0,
-          "var3": 0
-        },
-        {
-          "perk": 8226,
-          "var1": 250,
-          "var2": 1401,
-          "var3": 0
-        },
-        {
-          "perk": 8210,
-          "var1": 25,
-          "var2": 0,
-          "var3": 0
-        },
-        {
-          "perk": 8236,
-          "var1": 24,
-          "var2": 0,
-          "var3": 0
-        }
-      ],
-      "style": 8200
-    },
-    "subStyle": {
-      "description": "subStyle",
-      "selections": [
-        {
-          "perk": 9105,
-          "var1": 15,
-          "var2": 30,
-          "var3": 0
-        },
-        {
-          "perk": 8017,
-          "var1": 1388,
-          "var2": 0,
-          "var3": 0
-        }
-      ],
-      "style": 8000
-    }
-  }
-},
-"metadata": {
-  "dataVersion": "2",
-  "matchId": "NA1_5135488965",
-  "participants": [
-    "AsCERcDixmc0HP_CCHiQxWHzpOHpcFYQyOr3O89Dxg449_1vGMFMObidvRLW8pcBpmAKzR3wrTiuwQ",
-    "EuYlaB3mQepnU4Xyvw9wa_4TkCEpBaWweRbd3qdfJQNX745bU_Exwly1YcBOttwmqaD4F6ytOQjTqg",
-    "_zVHA_4i3q9uekhqXCBAdi56hklK61-mKeLSB61lE-lsmfLBivTBbHu9jmf9D5CAKSKkPBJVKtwdVw",
-    "B5oJ85EpNO61smqCoBthCVXKIu3xSthwAxw-y5SwGH9yhWvPdapdg0HYd1Fw0FQz_lO7t5KstRF3xA",
-    "eIBhgmRJdeUNmVUgeQPQkWSY-PiQm_o_GwrCwHdtDnD5PybfNu2rpb0dDbbfLlMhgFETK_TgCzTtIQ",
-    "9IxS7mk6fw1LkW8t31Ah__cy8OymHJX4caFmEuPW6-FA77e9R_RtoewbiSBHzhfGxbhgd4ujIygxLw",
-    "eK0FMQ21O4dIC3w46lcWFzYXu8wXMqUuqYH1hm5NESrLcpBs78x9L_H8eRn6Ct3HQb7Fti5ubnc7PQ",
-    "rcdS2NzdyEYu3bx1MZ2XTq2cHB4HlZ5-tViVqphYa1MDtVuS3cL0jO3OSzNtz8Ea7A5mdX4T0xqSuA",
-    "7u70VS9vYuQi2EFrNrhPNORTyzpwiLoISOAYocdda02j5uf9WO02SnMjRShLMlSV_J-KK6jBYgoMLA",
-    "v9t1rkSQyMzeVuNOUqmoLSbhuYkkp0azcmKeMwhowhumz6nRCJBh8Z7i93W5pnrWmrs77F9OOUD3NQ"
-  ]
-},
-"info": {
-  "endOfGameResult": "GameComplete",
-  "gameCreation": 1729218651331,
-  "gameDuration": 1615,
-  "gameEndTimestamp": 1729220295786,
-  "gameId": 5135488965,
-  "gameMode": "CLASSIC",
-  "gameName": "teambuilder-match-5135488965",
-  "gameStartTimestamp": 1729218679985,
-  "gameType": "MATCHED_GAME",
-  "gameVersion": "14.20.623.6777",
-  "mapId": 11,
-  "participants": {
-    "ally": [
-      {
-        "championId": 82,
-        "championName": "Mordekaiser",
-        "riotIdGameName": "Roach bully",
-        "riotIdTagline": "1850",
-        "relationship": "ally",
-        "position": "TOP"
-      },
-      {
-        "championId": 62,
-        "championName": "MonkeyKing",
-        "riotIdGameName": "KingPinTheUnit",
-        "riotIdTagline": "NA1",
-        "relationship": "ally",
-        "position": "JUNGLE"
-      },
-      {
-        "championId": 202,
-        "championName": "Jhin",
-        "riotIdGameName": "Jari",
-        "riotIdTagline": "NA1",
-        "relationship": "ally",
-        "position": "BOTTOM"
-      },
-      {
-        "championId": 64,
-        "championName": "LeeSin",
-        "riotIdGameName": "Coreytime",
-        "riotIdTagline": "NA1",
-        "relationship": "ally",
-        "position": "SUPPORT"
-      }
-    ],
-    "enemy": [
-      {
-        "championId": 223,
-        "championName": "TahmKench",
-        "riotIdGameName": "TopGuru",
-        "riotIdTagline": "NA1",
-        "relationship": "enemy",
-        "position": "TOP"
-      },
-      {
-        "championId": 107,
-        "championName": "Rengar",
-        "riotIdGameName": "HuntedByRengar",
-        "riotIdTagline": "7682",
-        "relationship": "enemy",
-        "position": "JUNGLE"
-      },
-      {
-        "championId": 134,
-        "championName": "Syndra",
-        "riotIdGameName": "Buu",
-        "riotIdTagline": "BBQ",
-        "relationship": "enemy",
-        "position": "MIDDLE"
-      },
-      {
-        "championId": 429,
-        "championName": "Kalista",
-        "riotIdGameName": "Pro Hater",
-        "riotIdTagline": "NA1",
-        "relationship": "enemy",
-        "position": "BOTTOM"
-      },
-      {
-        "championId": 412,
-        "championName": "Thresh",
-        "riotIdGameName": "Lil Benny",
-        "riotIdTagline": "NA1",
-        "relationship": "enemy",
-        "position": "SUPPORT"
-      }
-    ]
-  },
-  "platformId": "NA1",
-  "queueId": 420,
-  "teams": [
-    {
-      "bans": [
-        {
-          "championId": 555,
-          "pickTurn": 1
-        },
-        {
-          "championId": 266,
-          "pickTurn": 2
-        },
-        {
-          "championId": 77,
-          "pickTurn": 3
-        },
-        {
-          "championId": 7,
-          "pickTurn": 4
-        },
-        {
-          "championId": 78,
-          "pickTurn": 5
-        }
-      ],
-      "objectives": {
-        "baron": {
-          "first": true,
-          "kills": 1
-        },
-        "champion": {
-          "first": false,
-          "kills": 38
-        },
-        "dragon": {
-          "first": true,
-          "kills": 3
-        },
-        "horde": {
-          "first": false,
-          "kills": 2
-        },
-        "inhibitor": {
-          "first": true,
-          "kills": 1
-        },
-        "riftHerald": {
-          "first": true,
-          "kills": 1
-        },
-        "tower": {
-          "first": true,
-          "kills": 9
-        }
-      },
-      "teamId": 100,
-      "win": true
-    },
-    {
-      "bans": [
-        {
-          "championId": 266,
-          "pickTurn": 6
-        },
-        {
-          "championId": 77,
-          "pickTurn": 7
-        },
-        {
-          "championId": 7,
-          "pickTurn": 8
-        },
-        {
-          "championId": 201,
-          "pickTurn": 9
-        },
-        {
-          "championId": 119,
-          "pickTurn": 10
-        }
-      ],
-      "objectives": {
-        "baron": {
-          "first": false,
-          "kills": 0
-        },
-        "champion": {
-          "first": true,
-          "kills": 26
-        },
-        "dragon": {
-          "first": false,
-          "kills": 1
-        },
-        "horde": {
-          "first": true,
-          "kills": 4
-        },
-        "inhibitor": {
-          "first": false,
-          "kills": 0
-        },
-        "riftHerald": {
-          "first": false,
-          "kills": 0
-        },
-        "tower": {
-          "first": false,
-          "kills": 3
-        }
-      },
-      "teamId": 200,
-      "win": false
-    }
-  ],
-  "tournamentCode": ""
 },
 } -->
 

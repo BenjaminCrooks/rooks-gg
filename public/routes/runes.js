@@ -20,7 +20,7 @@ router.use("/value-compare", (req, res, next) => {
 	}
 
 	req.query.rune = req.query.rune.map(function(rune) {
-		rune = dd.rune(rune)
+		rune = dd.rune(parseInt(rune))
 		return rune.id
 	}).filter(function(rune) {
 		return rune != undefined

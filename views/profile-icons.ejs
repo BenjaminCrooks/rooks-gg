@@ -34,17 +34,33 @@ main {
 
 /* Icon Grid ★ ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ★ */
 
-#icon-grid {
+#icon-frame {
     grid-area: icons;
+    border: 3px ridge #614a25;
+    background-color: var(--purple100);
     height: 100%;
+}
+
+#icon-grid {
+    /*grid-area: icons;
+    border: 3px ridge #614a25;
+    background-color: var(--purple100);*/
+    height: 100%;
+    overflow: scroll;
     display: grid;
     grid-template-columns: repeat(8, 64px);
     grid-template-rows: repeat(auto-fill, 64px);
     gap: 16px 8px;
-    border: 3px ridge #614a25;
     padding: 24px;
-    overflow: scroll;
-    background-color: var(--purple100);
+    /*background: linear-gradient( 0deg,*/
+    -webkit-mask-image: linear-gradient( 0deg,
+        rgba(0,0,0,0) 0%,
+        rgba(0,0,0,0) 1%,
+        rgba(0,0,0,1) 4%,
+        rgba(0,0,0,1) 96%,
+        rgba(0,0,0,0) 99%,
+        rgba(0,0,0,0) 100%
+    );
 }
 
 #icon-grid .frame {
@@ -53,6 +69,7 @@ main {
     width: 100%;
     aspect-ratio: 1 / 1;
     padding: 4px;
+/*    transition: opacity 0.25s ease-out;*/
 }
 
 #icon-grid img {
@@ -72,7 +89,7 @@ main {
     content: "";
     width: 16px;
     height: 16px;
-    border: 1px solid #614a25;
+    border: 2px solid #614a25;
     background-color: var(--purple400);
 }
 
@@ -147,10 +164,6 @@ h2 {
     padding: 24px 64px 48px 64px;
 }
 
-input {
-    background-color: var(--purple200);
-}
-
 input[type=checkbox] {
     width: 20px;
     border-radius: 3px;
@@ -176,6 +189,10 @@ label {
 input[type=checkbox]:checked + label {
     font-family: Roboto Medium;
     color: inherit;
+}
+
+.frame[data-type="Champie"] {
+    display: none;
 }
 
 
@@ -214,7 +231,7 @@ button {
 
 
 <main>
-    <div id="icon-grid">
+    <div id="icon-frame"><div id="icon-grid">
 
         <% icons.forEach(function(icon) { %>
         <div class="frame v-container" data-name="<%= icon.name %>"<% if (icon.type !== undefined) { %> data-type="<%= icon.type %>"<% } %>>
@@ -222,10 +239,10 @@ button {
         </div>
         <% }) %>
 
-    </div>
+    </div></div>
 
     <div id="rand-frame" class="v-container">
-        <div class="frame">
+        <div class="frame" data-name="">
             <img class="rand-img" src="assets/icons/svgs/blank.svg">
             <img class="rand-img" src="assets/icons/svgs/blank.svg">
         </div>
@@ -237,7 +254,7 @@ button {
         <input checked type="checkbox" data-filter="Prestige" id="Prestige"><label for="Prestige">Prestige</label>
         <input checked type="checkbox" data-filter="Graphic" id="Graphic"><label for="Graphic">Graphic</label>
         <input checked type="checkbox" data-filter="Illustration" id="Illustration"><label for="Illustration">Illustration</label>
-        <input checked type="checkbox" data-filter="Champie" id="Champie"><label for="Champie">Champie</label>
+        <input unchecked type="checkbox" data-filter="Champie" id="Champie"><label for="Champie">Champie</label>
         <div id="note">(shift click to disable siblings)</div>
     </div>
 
@@ -272,6 +289,12 @@ $(document).ready(function() {
         } else {
             $("#icon-grid > .frame[data-type=" + $(this).data("filter") + "]").hide()
         }
+    })
+
+    
+    $("#icon-grid .frame").on("click", function() {
+        toClipboard($(this).data("name"))
+        $(this).css("opacity", 0).animate({opacity: 1}, 750)
     })
 
     

@@ -2,7 +2,7 @@
 
 <% history.forEach(function(element, index) { %>
 
-<div class="grid-row <% if (element.gameEndedInEarlySurrender === true) { %>remake<% } else if (element.win === true) { %>win<% } else if (element.win === false) { %>loss<% }; if (element.session != undefined) { %> session<%= element.session %><% }  %>">
+<div class="grid-row <% if (element.gameEndedInEarlySurrender === true) { %>remake<% } else if (element.win === true) { %>win<% } else if (element.win === false) { %>loss<% }; %>" <% if (element.session != undefined) { %> data-session="<%= element.session %>"<% } %>>
 
 
     <a class="match-details" target="_blank" href="/match/details?matchid=<%= element.matchId %>"></a>
@@ -10,8 +10,13 @@
     <div class="dd-center" style="background-image: url('<%= element.champion.img.centered %>');"></div>
     <div class="champion-level v-container"><%= element.champLevel %></div>
 
-
-    <ul class="match-data">
+    
+    <ul class="match-data"
+        data-date-start="<%= element.gameStartTimestamp %>"
+        data-date-end="<%= element.gameDateTimestamp %>"
+        data-start="<%= element.timeStamps.start %>"
+        data-end="<%= element.timeStamps.end %>"
+    >
         <div class="side-bar"></div>
         <li class="strong"><% if (element.gameEndedInEarlySurrender === true) { %>Remake<% } else if (element.win === true) { %>Victory<% } else if (element.win === false) { %>Defeat<% } %></li>
         <li class="break"><%= element.length %></li>

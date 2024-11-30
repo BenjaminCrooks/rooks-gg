@@ -163,6 +163,24 @@ Used to easily view all of my (more favored) profile icons without undesired one
 
 ## Development Log
 
+### v2.1.1
+**Match Details**
+- Routing now references participants db collection; gets full data for all 10 participants for a match
+- Began laying out front-end table layout
+
+**Home Page - Sessions**
+- Session data now dealt with serverside in a dedicated middleware func
+
+**Profile Icons**
+- Added category types to each icon for easier sorting
+- Slightly changed the UI layout; added more filter options
+- Shift clicking now selects a checkbox + deselects all others
+- Clicking an icon or the 'randomize' button now copies the icon name to the clipboard; allowing me to paste the name into the client collection tab to easily find it
+
+**Misc**
+- Winrate/KDA 'color class' now determined serverside; now passes through an obj including the value and the class
+- Fixed rune routing bug
+
 ### v2.1.0
 **Profile Icons**
 - Random profile icon re-added
@@ -171,7 +189,7 @@ Used to easily view all of my (more favored) profile icons without undesired one
 
 **Misc**
 - Added sessions to match history (if multiple games were played in 1 sitting, then they get flagged as part of a "session")
-- Pp.gg links added to match history rows
+- Op.gg links added to match history rows
 - Champion icons in the win rate table now link to /?champion=[champion clicked]
 - Temporary testing paths were added to experiment with the variable font ROBOTO FLEX
 - Began experimenting with visualizations for live game functionality

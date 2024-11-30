@@ -1,0 +1,162 @@
+[
+    {
+        "header": "Damage Dealt",
+        "variables": [
+          "totalDamageDealt",
+          "totalDamageDealtToChampions",
+          "magicDamageDealt",
+          "magicDamageDealtToChampions",
+          "physicalDamageDealt",
+          "physicalDamageDealtToChampions",
+          "trueDamageDealt",
+          "trueDamageDealtToChampions"
+        ]
+    },
+    {
+        "header": "Damage Taken",
+        "variables": [
+            "magicDamageTaken",
+            "physicalDamageTaken",
+            "trueDamageTaken",
+            "totalDamageTaken",
+            "damageSelfMitigated"
+        ]
+    },
+    {
+        "header": "Heal & Shield",
+        "variables": [
+            "totalHeal",
+            "totalHealsOnTeammates",
+            "totalUnitsHealed",
+            "totalDamageShieldedOnTeammates"
+        ]
+    },
+    {
+        "header": "Crowd Control",
+        "variables": [
+            "timeCCingOthers",
+            "totalTimeCCDealt"
+        ]
+    },
+
+
+    {
+        "header": "Combat",
+        "variables": [
+            "firstBloodAssist",
+            "firstBloodKill",
+            "totalTimeSpentDead",
+            "longestTimeSpentLiving",
+            "largestCriticalStrike",
+            "largestKillingSpree",
+            "killingSprees",
+            "largestMultiKill",
+            "doubleKills",
+            "tripleKills",
+            "quadraKills",
+            "pentaKills",
+            "unrealKills"
+        ]
+    },
+
+
+    {
+        "header": "Minions",
+        "variables": [
+            "neutralMinionsKilled",
+            "totalAllyJungleMinionsKilled",
+            "totalEnemyJungleMinionsKilled",
+            "totalMinionsKilled"
+        ]
+    },
+
+    {
+        "header": "Income",
+        "variables": [
+            "goldEarned",
+            "goldSpent",
+            "consumablesPurchased",
+            "itemsPurchased"
+        ]
+    },
+
+    {
+        "header": "Vision",
+        "variables": [
+            "detectorWardsPlaced",
+            "sightWardsBoughtInGame",
+            "visionScore",
+            "visionWardsBoughtInGame",
+            "wardsKilled",
+            "wardsPlaced"
+        ]
+    },
+
+
+    {
+        "header": "Objectives",
+        "variables": [
+            "damageDealtToBuildings",
+            "damageDealtToObjectives",
+            "damageDealtToTurrets",
+            "firstTowerAssist",
+            "firstTowerKill",
+            "turretKills",
+            "turretTakedowns",
+            "turretsLost",
+            "inhibitorKills",
+            "inhibitorTakedowns",
+            "inhibitorsLost",
+            "nexusKills",
+            "nexusLost",
+            "nexusTakedowns",
+            "baronKills",
+            "dragonKills",
+            "objectivesStolen",
+            "objectivesStolenAssists"
+        ]
+    },
+
+    {
+        "header": "Spells",
+        "variables": [
+            "spell1Casts",
+            "spell2Casts",
+            "spell3Casts",
+            "spell4Casts",
+            "summoner1Casts",
+            "summoner1Id",
+            "summoner2Casts",
+            "summoner2Id"
+        ]
+    },
+
+    {
+        "header": "Pings",
+        "variables": [
+            "basicPings",
+            "commandPings",
+            "getBackPings",
+            "holdPings",
+            "dangerPings",
+            "pushPings",
+            "onMyWayPings",
+            "allInPings",
+            "assistMePings",
+            "needVisionPings",
+            "enemyMissingPings",
+            "enemyVisionPings",
+            "visionClearedPings"
+        ]
+    },
+
+    {
+        "header": "Outcome",
+        "variables": [
+            "gameEndedInEarlySurrender",
+            "gameEndedInSurrender",
+            "teamEarlySurrendered",
+            "win"
+        ]
+    }
+]

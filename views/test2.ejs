@@ -28,7 +28,7 @@ main {
 	background-color: white;
 	width: 100%;
 	display: grid;
-	grid-template-columns: repeat(4, 1fr);
+	grid-template-columns: repeat(6, 1fr);
 	gap: 4px;
 	align-items: center;
 }
@@ -70,6 +70,7 @@ main > div > div {
 }
 
 /* default
+font-variation-settings:
 "opsz" 8,
 "wght" 400,
 "wdth" 100,
@@ -84,22 +85,39 @@ main > div > div {
 "YTLC" 514,
 "YTUC" 712;*/
 
+/* CONDENSED
+font-variation-settings:
+"opsz" 30,
+"wght" 400,
+"wdth" 80,
+"GRAD" 70,
+"slnt" 0,
+"XTRA" 460,
+"XOPQ" 100,
+"YOPQ" 79,
+"YTAS" 770,
+"YTDE" -203,
+"YTFI" 738,
+"YTLC" 560,
+"YTUC" 712;*/
+
 .flex {
 	font-family: Roboto Flex;
 	font-weight: 400;
+	font-stretch: 80%;
     font-variation-settings:
-		"opsz" 8, 		/*	Optical Size		   8 > 144 	*/
+		"opsz" 30, 		/*	Optical Size		   8 > 144 	*/
 		/*"wght" 400, 	/*	Weight			 100 > 1000		*/
-		"wdth" 100, 	/*	Width			  25 > 151 		*/
-		"GRAD" 0, 		/*	Grade			-200 > 150 		*/
+		/*"wdth" 80, 	/*	Width			  25 > 151 		*/
+		"GRAD" 70, 		/*	Grade			-200 > 150 		*/
 		"slnt" 0, 		/*	Slant			 -10 >   0 		*/
-		"XTRA" 445, 	/*	Counter Width	 323 > 603 		*/
-		"XOPQ" 89, 		/*	Thick Stroke		  27 > 175 	*/
+		"XTRA" 460, 	/*	Counter Width	 323 > 603 		*/
+		"XOPQ" 100, 		/*	Thick Stroke		  27 > 175 	*/
 		"YOPQ" 79, 		/*	Thin Stroke 		  25 > 135 	*/
-		"YTAS" 750, 	/*	Ascender Height	 649 > 854 		*/
+		"YTAS" 770, 	/*	Ascender Height	 649 > 854 		*/
 		"YTDE" -203, 	/*	Descender Depth	-305 > -98 		*/
 		"YTFI" 738, 	/*	Figure Height	 560 > 788 		*/
-		"YTLC" 514, 	/*	Lowercase Height	 416 > 570 	*/
+		"YTLC" 560, 	/*	Lowercase Height	 416 > 570 	*/
 		"YTUC" 712; 	/*	Uppercase Height	 528 > 760 	*/
 
 	opacity: 75%;
