@@ -12,6 +12,10 @@ The match data is provided via [RIOT Games' developer API](https://developer.rio
 [CommunityDragon PERKS](https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perks.json)
 
 
+### MongoDB Collections
+[Document Structures](/public/models)
+
+
 ## Project Directory
 ```
 .
