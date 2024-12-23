@@ -441,62 +441,47 @@ li.strong > span.small { font-family: Roboto; }
 <script>
     $(document).ready(function() {
 
-        var sessions = $("#match-history .grid-row[data-session]")
-        var maxSession = $(sessions[sessions.length - 1]).data("session")
-
-        var colorCodes = [
-            "932fea", "57bc3c", "ff6d32", "f5ab0c", "3b8bea", "ff56af", "ef392e",
-            "932fea", "57bc3c", "ff6d32", "f5ab0c", "3b8bea", "ff56af", "ef392e"
-        ]
-
-        for (let sessNum = 1; sessNum < (maxSession + 1); sessNum++) {
-            var sessGroup = $("#match-history .grid-row[data-session=" + sessNum + "]")
-            var sessFirst = $(sessGroup[0])
-            var sessLast = $(sessGroup[sessGroup.length - 1])
-
-            var sessClass = "session" + sessNum
-            $(sessFirst).addClass(sessClass)
-
-            var sessHeight = ($(sessFirst).height() * sessGroup.length) + (8 * (sessGroup.length - 1))
-            var sessColor = colorCodes[sessNum-1]
-
+        $("#match-history .grid-row[data-session]").each(function(index, match) {
+            var data = $(this).data().session
             var sessList = $("<ul class='session-stats'></ul>")
-            $(sessFirst).append(sessList)
+            $(this).append(sessList)
 
-            var sessWins = $(sessGroup).filter(".win").length
-            var sessWinPerc = ((sessWins / sessGroup.length) * 100).toFixed(0)
-            var sessStart = $(sessLast).find("ul.match-data").data("start")
-            var sessEnd = $(sessFirst).find("ul.match-data").data("end")
+            var wr = "strong"
+            if (data.winrate.color) {
+                wr = wr + " " + data.winrate.color
+            }
 
-            var sessWinrate = $(`<li class='strong'>${sessWinPerc}% <span class='small'>W/R</span></li>`)
-            var sessPlayed = $(`<li class='half-break'>${sessGroup.length} Played</li>`)
-            var sessTimeStart = $(`<li>${sessStart} - ${sessEnd}</li>`)
-
-            var differenceInMs = new Date($(sessFirst).find("ul.match-data").data("date-end")) - new Date($(sessLast).find("ul.match-data").data("date-start"))
-            var totalMinutes = Math.floor(differenceInMs / (1000 * 60))
-            var sessHour = Math.floor(totalMinutes / 60)
-            var sessMin = totalMinutes % 60
-            var sessLength = $(`<li class='italic dull thin indent'>(${sessHour} <span class='small'>hr</span> ${sessMin} <span class='small'>min</span>)</li>`)
+            var sessWinrate = $(`<li class='${wr}'>${data.winrate.val}% <span class='small'>W/R</span></li>`)
+            var sessPlayed = $(`<li class='half-break'>${data.played} Played</li>`)
+            var sessTimeStart = $(`<li>${data.start} - ${data.stop}</li>`)
+            var sessLength = $(`<li class='italic dull thin indent'>(${data.duration.h} <span class='small'>hr</span> ${data.duration.m} <span class='small'>min</span>)</li>`)
 
             $(sessList).append(sessWinrate, sessPlayed, sessTimeStart, sessLength)
 
 
+            var sessionClass = "session" + (index+1).toString()
+            var height = ($(this).height() * data.played) + (8 * (data.played - 1))
+            var color = "9687cf"
+            if (index % 2 === 0) {
+                color = "74699e"
+            }
+
             var css = `
-                .${sessClass}::after {
+                .${sessionClass}::after {
                     content: "";
                     position: absolute;
                     top: 0%;
                     left: 100%;
                     width: 12px;
-                    height: ${sessHeight}px;
-                    background-color: #${sessColor};
+                    height: ${height}px;
+                    background-color: #${color};
                     transform: translate(8px, 0px);
                     border-radius: 0px 4px 4px 0px;
                     filter: brightness(60%);
                 }
             `
-            $("<style>").prop("type", "text/css").html(css).appendTo("head")
-        }
+            $(this).addClass(`${sessionClass}`).append(`<style>${css}</style>`)
+        })
 
     })
 </script>

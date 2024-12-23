@@ -5,7 +5,7 @@ module.exports = {
 		const labels = [ "legendary", "epic", "rare" ] // "boosted"
 		let color = undefined
 
-		if (val < range[-1]) {
+		if (val < range[3]) {
 			color = "boosted"
 		} else {
 			for (let i = 0; i < range.length - 1; i++) {
@@ -29,7 +29,7 @@ module.exports = {
 
 	winRate: function (winRate) {
 		let range = [ 70, 60, 55, 40 ]
-		return this.assignColor((winRate).toFixed(0), range)
+		return this.assignColor((winRate).toFixed(1), range)
 	},
 
 

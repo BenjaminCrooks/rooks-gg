@@ -35,7 +35,7 @@ table#stats {
 thead th {
     position: sticky;
     top: 104px;
-    height: 56px;
+    height: 208px;
     background-color: transparent;
 }
 
@@ -96,8 +96,9 @@ thead th > img.team200 { border-color: var(--loss-red100) ; }*/
 thead th.team100 { background-color: var(--img-bg-blue); }
 thead th.team200 { background-color: var(--img-bg-red); }
 th.dd-cent {
-    background-position: bottom 80% right 50%;
-    background-size: 180% auto;
+    background-position: top 0% auto;
+/*    background-size: 100% auto;*/
+    background-size: cover;
 
     background-blend-mode: luminosity;
     filter: brightness(100%) grayscale(25%) contrast(100%);
@@ -156,7 +157,7 @@ h3 > span, h4 > span {
             <% data.participants.forEach(function(player, index, array) { %>
             <!-- <th><img class="team<%= player.teamId  %>" src="<%= player.champion.img.centered %>"></th> -->
 
-            <th class="dd-cent team<%= player.teamId  %>" style="background-image: url('<%= player.champion.img.centered %>')"></th>
+            <th class="dd-cent team<%= player.teamId  %>" style="background-image: url('<%= player.champion.img.loadingcrop %>')"></th>
             <% }) %>
         </tr>
     </thead>

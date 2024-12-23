@@ -7,7 +7,7 @@ router.use(express.static("public"))
 
 var dd = require("../data-dragon.js")
 var tools = require("../tools.js")
-var query = require("../controllers/query.js")
+var { liveGame, league } = require("../controllers/axios.js")
 
 
 let participantsModel = require("../models/participant-schema.js")
@@ -16,10 +16,142 @@ const matchVars = JSON.parse(fs.readFileSync("./public/assets/data/match-vars.JS
 
 
 
-// Live Game
+
 router.get("/live-game", (req, res) => {
-	res.render("live-game.ejs", {})
+	res.render("partials/player-search.ejs", {})
 })
+
+
+var liveData = {
+	info: {
+		// dummy gameId
+		gameId: 1111111111
+	}
+}
+
+router.get("/live-game/:gameName/:tagLine",
+liveGame,
+async (req, res, next) => {
+	if (res.locals.info.gameId === liveData.info.gameId) {
+		console.log(`Data reused: ${liveData.account.gameName}#${liveData.account.tagLine}\t${liveData.info.gameId}`)
+		res.locals = liveData
+		next()
+	} else {
+		const requests = await Promise.all(
+			res.locals.participants.map(async function(player) {
+				return league(player)
+			})
+		)
+
+		res.locals.participants = requests.map(function(response, index) {
+			const player = res.locals.participants[index]
+			const rankedSolo = response.filter(league => {
+				return league.queueType === "RANKED_SOLO_5x5"
+			})
+
+			if (rankedSolo.length > 0) {
+				const league = rankedSolo.at(0)
+				player.league = {
+					tier: league.tier.charAt(0).toUpperCase() + league.tier.substring(1).toLowerCase(),
+					img: path.join("/assets/icons/svgs/rank", league.tier.toLowerCase() + ".svg").replace(/\\/g,"/"),
+					rank: league.rank,
+					leaguePoints: league.leaguePoints,
+					wins: league.wins,
+					losses: league.losses,
+					played: league.wins+league.losses,
+					winrate: tools.winRate((league.wins/(league.wins+league.losses))*100),
+					veteran: league.veteran,
+					inactive: league.inactive,
+					freshBlood: league.freshBlood,
+					hotStreak: league.hotStreak
+				}
+			} else {
+				player.league = null
+			}
+
+			// return player
+
+			const runes = {
+				keystone: dd.rune(player.perks.perkIds.shift()),
+				styles: player.perks.perkIds.toSpliced(5, 3).map(function(styleId) {
+					return dd.rune(styleId)
+				}),
+				stats: player.perks.perkIds.toSpliced(0, 5).map(function(statId) {
+					return dd.statmod(statId)
+				})
+			}
+
+			return {
+				teamId: player.teamId,
+				profileIconId: player.profileIconId,
+				puuid: player.puuid,
+				summonerId: player.summonerId,
+				riotId: player.riotId,
+				gameName: player.riotId.split("#").at(0),
+				tagLine: player.riotId.split("#").at(1),
+				opgg: `https://www.op.gg/summoners/na/${player.riotId.replace("#", "-").replaceAll(" ", "%20")}`,
+				spell1: dd.summoner(player.spell1Id),
+				spell2: dd.summoner(player.spell2Id),
+				champion: dd.champion(player.championId),
+				runes,
+				league: player.league
+			}
+		})
+
+		// Match Info
+		// res.locals.info.gameStartTime
+		// res.locals.info.gameLength
+		res.locals.info.map = dd.maps(res.locals.info.mapId)
+
+		// Participants
+		// res.locals.participants = res.locals.participants.map(player => {
+		// 	const runes = {
+		// 		keystone: dd.rune(player.perks.perkIds.shift()),
+		// 		styles: player.perks.perkIds.toSpliced(5, 3).map(function(styleId) {
+		// 			return dd.rune(styleId)
+		// 		}),
+		// 		stats: player.perks.perkIds.toSpliced(0, 5).map(function(statId) {
+		// 			return dd.statmod(statId)
+		// 		})
+		// 	}
+
+		// 	return {
+		// 		teamId: player.teamId,
+		// 		profileIconId: player.profileIconId,
+		// 		puuid: player.puuid,
+		// 		summonerId: player.summonerId,
+		// 		riotId: player.riotId,
+		// 		gameName: player.riotId.split("#").at(0),
+		// 		tagLine: player.riotId.split("#").at(1),
+		// 		opgg: `https://www.op.gg/summoners/na/${player.riotId.replace("#", "-").replaceAll(" ", "%20")}`,
+		// 		spell1: dd.summoner(player.spell1Id),
+		// 		spell2: dd.summoner(player.spell2Id),
+		// 		champion: dd.champion(player.championId),
+		// 		runes,
+		// 		league: player.league
+		// 	}
+		// })
+
+		// Bans
+		res.locals.bans.bannedChampions.forEach(function(ban) {
+			res.locals.bans[ban.teamId.toString()].push({
+				pickTurn: ban.pickTurn,
+				champion: dd.champion(ban.championId)
+			})
+		})
+
+		next()
+	}
+}, (req, res) => {
+	liveData = res.locals
+	res.render("live-game.ejs", res.locals)
+})
+
+router.get("/live-game/:gameName/:tagLine", (req, res) => {
+	res.send(res.locals)
+})
+
+
 
 
 
@@ -108,37 +240,11 @@ router.use("/details", (req, res, next) => {
 		return p
 	})
 
-	// .map(function(e, i) {
-
-	// 	e.version = tools.version(e.gameVersion)
-	// 	e.length = tools.gameLength(e.gameDuration)
-	// 	e.gameDate = e.gameDateTimestamp.toLocaleDateString("en-US", {
-	// 		timeZone: "America/New_York",
-	// 		year: "numeric",
-	// 		month: "short",
-	// 		day: "numeric",
-	// 		weekday: "short"
-	// 	})
-	// 	e.gameEnd = e.gameDateTimestamp.toLocaleTimeString("en-US", {
-	// 		timeZone: "America/New_York",
-	// 		hour: "numeric",
-	// 		minute: "numeric"
-	// 	})
-	// 	e.gameStart = (new Date(e.gameStartTimestamp)).toLocaleTimeString("en-US", {
-	// 		timeZone: "America/New_York",
-	// 		hour: "numeric",
-	// 		minute: "numeric"
-	// 	})
-
-	// 	return e
-	// })
-
 	next()
 })
 
 
 router.get("/details", (req, res) => {
-	// res.send(res.locals.data)
 	res.render("match-details.ejs", { matchVars })
 })
 

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<title>Live Game</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Rooks">
+<meta name="description" content="Live Game">
+
+<link rel="icon" href="assets/icons/rooksIconGG.png">
+<link rel="stylesheet" href="styles.css">
+<script src="plugins/jquery-3.4.1.min.js"></script>
+
+<style>
+
+body {
+	gap: 16px;
+	justify-content: center;
+	height: 100%;
+	margin: 0px;
+}
+
+main {
+	width: 30vw;
+    background: none;
+    gap: 64px;
+    align-items: center;
+}
+
+input[type=text] {
+	background-color: var(--purple100);
+}
+
+#riotid-input {
+	border-radius: 8px;
+	gap: 8px;
+	padding: 12px;
+	background-color: var(--purple200);
+	width: 60%;
+}
+
+#riotid-input > * {
+	height: 32px;
+}
+
+#game-name {
+	width: calc(10em + 32px);
+	text-align: left;
+	flex-grow: 1;
+}
+
+#tag-line {
+	width: calc(4em + 18px);
+}
+
+#acc-search {
+	background-image: url("assets/icons/searchIcon.png");
+	background-size: 50% 50%;
+    background-position: center;
+}
+
+button {
+    padding: 8px;
+    border-radius: 2px;
+    font-family: Roboto;
+    font-size: 11px;
+    aspect-ratio: 1 / 1;
+}
+
+button[data-name] {
+	height: 32px;
+	font-family: Roboto Bold;
+	text-align: center;
+	padding-left: 12px;
+    white-space:nowrap;
+	color: #c8c8c8;
+	flex-grow: 1;
+}
+
+button[data-name] > span {
+	color: #a8a8a8;
+	display: inline-block;
+}
+
+
+#riotid-fav {
+	gap: 16px;
+	flex-wrap: wrap;
+}
+
+
+</style>
+
+</head>
+
+
+
+
+
+<body>
+
+<%- include("navigation-bar") %>
+
+
+<main>
+
+<div id="riotid-input" class="h-container">
+	<input id="game-name" placeholder="Game Name" type="text" autocomplete="off" maxlength="16" spellcheck="false" autofocus>
+	<input id="tag-line" placeholder="Tag" type="text" autocomplete="off" maxlength="5" spellcheck="false">
+	<button id="acc-search" type="submit"></button> <!-- ➜ -->
+</div>
+
+
+
+<div id="riotid-fav" class="h-container">
+	<button data-name="rRooks" data-tag="NA1">rRooks <span>#NA1</span></button>
+	<button data-name="Skylar Vox" data-tag="NA1">Skylar Vox <span>#NA1</span></button>
+	<button data-name="August Ames" data-tag="NA1">August Ames <span>#NA1</span></button>
+	<button data-name="Jari" data-tag="NA1">Jari <span>#NA1</span></button>
+	<button data-name="dyegozz" data-tag="NA1">dyegozz <span>#NA1</span></button>
+	<button data-name="HeckinCuteBorker" data-tag="NA1">HeckinCuteBorker <span>#NA1</span></button>
+	<button data-name="Zachypooxoxo" data-tag="NA1">Zachypooxoxo <span>#NA1</span></button>
+	<button data-name="Catalyst" data-tag="Wings">Catalyst <span>#Wings</span></button>
+	<button data-name="Moochh" data-tag="NA1">Moochh <span>#NA1</span></button>
+</div>
+
+</main>
+
+
+<script>
+
+	function inputValidity() {
+		var name = { len: $("#game-name").val().length, val: $("#game-name").val() }
+		var tag = { len: $("#tag-line").val().length, val: $("#tag-line").val() }
+
+		// valid game name = 3-16 & tag line = 3-5 characters long
+		if (name.len >= 3 && name.len <= 16 && tag.len >= 3 && tag.len <= 5 ) {
+			location.href = `/match/live-game/${name.val}/${tag.val}`
+		} else {
+			if (!name.len >= 3 || !name.len <= 16) {
+				$("#game-name").css("outline", "1px solid #ff3333").select()
+			} else if (!tag.len >= 3 || !tag.len <= 5) {
+				$("#tag-line").css("outline", "1px solid #ff3333").select()
+			}
+		}
+	}
+
+	$(document).ready(function() {
+		$("#game-name").val("rRooks")
+		$("#tag-line").val("NA1")
+
+		$("#riotid-fav > button").on("click", function() {
+			$("#tag-line").val($(this).data("tag"))
+			$("#game-name").val($(this).data("name")).focus()
+		})
+
+		$(document).on("focus", "input[type=text]", function() {
+			$(this).select()
+		})
+
+		$("#acc-search").on("click", function() {
+			inputValidity()
+		})
+
+		$(window).keyup(function(x) {
+			if (x.keyCode == 13) {
+				inputValidity()
+			}
+		})
+	})
+</script>
+
+</body>
+
+</html>

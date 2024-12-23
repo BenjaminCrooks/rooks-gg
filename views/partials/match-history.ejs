@@ -2,7 +2,7 @@
 
 <% history.forEach(function(element, index) { %>
 
-<div class="grid-row <% if (element.gameEndedInEarlySurrender === true) { %>remake<% } else if (element.win === true) { %>win<% } else if (element.win === false) { %>loss<% }; %>" <% if (element.session != undefined) { %> data-session="<%= element.session %>"<% } %>>
+<div class="grid-row <% if (element.gameEndedInEarlySurrender === true) { %>remake<% } else if (element.win === true) { %>win<% } else if (element.win === false) { %>loss<% }; %>" <% if (element.session != undefined) { %> data-session="<%= JSON.stringify(element.session) %>"<% } %>>
 
 
     <a class="match-details" target="_blank" href="/match/details?matchid=<%= element.matchId %>"></a>

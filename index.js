@@ -1,3 +1,4 @@
+require("dotenv").config()
 const express = require("express")
 const app = express()
 
@@ -5,7 +6,7 @@ const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
 const path = require("path")
 
-mongoose.connect("mongodb://localhost:27017/lol")
+mongoose.connect(process.env.DB_CONNECT)
 
 app.set("view engine", "ejs")
 app.use(bodyParser.json())
@@ -241,22 +242,22 @@ app.get("/", (req, res, next) => {
 			if (Math.abs(match.gameDateTimestamp - arr[ind+1].gameDateTimestamp) / (1000*60*60) <= 1) {
 
 				// if previous match was in same session, ignore
-				if (match.session === undefined) {
+				if (match.sessionNum === undefined) {
 					nSession += 1
-					match.session = nSession
+					match.sessionNum = nSession
 					sessions.push(
 						{matches: [match]}
 					)
 				}
 
-				// add session # to NEXT match in list
-				arr[ind+1].session = nSession
+				// add session # to next match in list
+				arr[ind+1].sessionNum = nSession
 				sessions[nSession-1].matches.push(arr[ind+1])
 			}
 		}
 	})
 
-	res.locals.sessions = sessions.map(function(session, ind, arr) {
+	sessions.forEach(function(session) {
 		var wins = session.matches.filter(match => {
 			return match.win === true
 		}).length
@@ -267,30 +268,27 @@ app.get("/", (req, res, next) => {
         var differenceInMs = stop - start
         var totalMinutes = Math.floor(differenceInMs / (1000 * 60))
 
-		session.winrate = tools.winRate((wins/session.matches.length)*100),
-		session.played = session.matches.length,
-		session.start = tools.formatTime(start),
-		session.stop = tools.formatTime(stop),
-		session.duration = {
-			h: Math.floor(totalMinutes / 60),
-			m: totalMinutes % 60
-		}
-
-		return session
+        session.matches[0].session = {
+			winrate: tools.winRate((wins/session.matches.length)*100),
+			played: session.matches.length,
+			start: tools.formatTime(start),
+			stop: tools.formatTime(stop),
+			duration: {
+				h: Math.floor(totalMinutes / 60),
+				m: totalMinutes % 60
+			}
+        }
 	})
 
 	next()
 
 }, (req, res) => {
-	// console.log(res.locals.history[0].participants)
+	// console.log(res.locals.history[8].session)
 	res.render("home-page.ejs", {})
 })
 
-app.get("/test", (req, res) => { res.render("test.ejs") })
-app.get("/test2", (req, res) => { res.render("test2.ejs") })
 
 
-
-app.listen(1111, () => {
-	console.log("\nRooks.GG\nv1.1.0\n")
+app.listen(process.env.PORT, () => {
+	console.log("\nRooks.GG\nv2.2.1\n")
 })

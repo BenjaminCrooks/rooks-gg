@@ -7,9 +7,9 @@
 <meta name="author" content="Rooks">
 <meta name="description" content="Live Game">
 
-<link rel="icon" href="assets/icons/rooksIconGG.png">
-<link rel="stylesheet" href="styles.css">
-<script src="plugins/jquery-3.4.1.min.js"></script>
+<link rel="icon" href="/assets/icons/rooksIconGG.png">
+<link rel="stylesheet" href="/styles.css">
+<script src="/plugins/jquery-3.4.1.min.js"></script>
 
 <style>
 
@@ -18,125 +18,224 @@ body {
 	gap: 16px;
 }
 
-body > * {
-	width: 60vw;
+main {
+	width: auto;
+	gap: 24px;
 }
 
-/*main { width: 60vw; }
-main > * {
-	width: 100%;
-}*/
-
-body > header {
-	height: 64px;
-	justify-content: space-around;
-/*		background-color: rgba(128, 128, 128, 0.25);*/
-}
 
 .bans {
+	height: 36px;
 	gap: 8px;
 }
 
-.frame {
+.bans .frame {
 	position: relative;
-	width: 32px;
+	height: 100%;
 	aspect-ratio: 1 / 1;
 	border-radius: 4px;
 }
 
-.bans .frame { width: 32px; }
-
-.bans img, .prev-match img {
+.bans img {
+	height: 100%;
+	border-radius: inherit;
 	filter: contrast(110%) grayscale(100%);
-	width: 100%;
-	border-radius: 4px;
 }
 
-.blue .frame { background-color: var(--img-bg-blue); }
-.red .frame { background-color: var(--img-bg-red); }
-
-.bans.blue .frame { border: 1px solid var(--win-blue100); }
-.bans.red .frame { border: 1px solid var(--loss-red100); }
-.blue { color: var(--win-blue100); }
-.red { color: var(--loss-red100); }
-
-
-
-
-body > div.row {
-	border-radius: 4px;
-	overflow: hidden;
-	position: relative;
-	height: 128px;
-	gap: 32px;
-	background: linear-gradient(90deg, rgba(40,52,78,1) 0%, rgba(40,52,78,1) 45%, rgba(89,52,59,1) 55%, rgba(89,52,59,1) 100%);
-}
-
-div.row .role {
+.bans svg {
 	position: absolute;
-	top: calc(50% - 24px);
-	left: calc(50% - 24px);
-	width: 48px;
-	height: 48px;
-	background-image: url("assets/icons/svgs/role/role-TOP.svg");
-	background-position: center;
-	background-size: 100% 100%;
-	background-repeat: no-repeat;
+	bottom: 0;
+	left: 50%;
+	width: 12px;
+	transform: translate(-50%, 50%);
 }
 
-ul {
-/*	font-family: Roboto Medium;*/
-	gap: 8px;
-	z-index: 1;
+.team100 .frame { background-color: var(--img-bg-blue); }
+.team200 .frame { background-color: var(--img-bg-red); }
+
+.bans.team100 .frame { border: 1px solid var(--win-blue100); }
+.bans.team200 .frame { border: 1px solid var(--loss-red100); }
+
+
+
+td {
+	padding: 16px;
+	background-color: transparent;
 }
 
-/*li { line-height: 1.5em; }*/
-/*li.tall { line-height: 2em; }*/
+span.iconmask {
+	display: inline-block;
+	height: 1em;
+	width: 1em;
+	vertical-align: top;
+  	background-color: #b8b8b8;
+  	/*margin: 0 0.1em;*/
+}
 
 span.icon {
 	display: inline-block;
-	height: 2em;
-	width: 2em;
-	background-repeat: no-repeat;
-	background-position: top 0 left 0;
-	background-size: cover;
+	height: 1em;
+	width: 1.5em;
 	vertical-align: top;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 120%;
+	margin: 0 0.1em;
 }
 
-span.icon.rank { margin-right: 4px; }
+a.icon {
+	display: inline-block;
+	height: 1em;
+	aspect-ratio: 1 / 1;
+	vertical-align: middle;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	border-radius: 2px;
+}
+a.icon:hover { outline: 1px solid white; }
+li.h-container { gap: 12px; }
 
-/*li > span.dull { font-family: Roboto; }*/
-
-li > .winrate-bar {
-	width: 10em;
-	height: 8px;
-	background-color: rgba(0, 0, 0, 0.35);
+.league-rank {
+	gap: 12px;
 }
 
-div.dd-center, div.dd-centwo {
-    width: 256px;
+
+/*★ RUNES CONTAINER ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ★*/
+
+.icon-container {
     height: 100%;
-/*    background-position: bottom 80% right 80%;*/
-    background-position: bottom 80% right 50%;
-    background-size: 120% auto;
+    padding: 14px 0px;
+    justify-content: space-between;
+}
+
+.runes, .rune-styles { gap: 2px; }
+
+img.keystone  { width: 38px; height: 38px; }
+
+.grid-container {
+    grid-template-columns: repeat(3, 21px);
+    grid-template-rows: repeat(2, 21px);
+    align-items: center;
+    justify-content: center;
+}
+
+/* Vertical Stat Mods */
+/*.rune-stats { margin-left: 2px; gap: 2px }
+.rune-stats > img { width: 17px; border: 1px solid rgb(187, 152, 52); border-radius: 50%; background-color: #282828; }*/
+
+/* Horizontal Stat Mods */
+img.stat-mod {
+    width: 16px;
+    border: 1px solid rgb(187, 152, 52);
+    border-radius: 50%;
+    background-color: #282828;
+    margin-top: 5px;
+}
+
+/* stat mod position correction */
+.rune-styles > *:nth-child(7), .rune-styles > *:nth-child(8) { margin-left: auto; }
+.rune-styles > *:nth-child(8), .rune-styles > *:nth-child(9) { margin-right: auto; }
+
+.summoner-spells {
+    gap: 4px;
+}
+
+.summoner-spells > img {
+    width: 24px;
+    border-radius: 4px;
+    margin-left: 8px;
+}
+
+/*★ ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ★*/
+
+
+table#participant-table {
+	background: linear-gradient(90deg, rgba(40, 52, 78, 1) 0%, rgba(40, 52, 78, 1) 45%, rgba(89, 52, 59, 1) 55%, rgba(89, 52, 59, 1) 100%);
+}
+
+table#participant-table > tbody > tr:first-of-type > td { border-top: 0px solid var(--purple100); }
+table#participant-table > tbody td { border-top: 1px solid var(--purple200); }
+
+table#participant-table td {
+	height: 136px;
+}
+
+.rune-styles img:nth-child(4), .rune-styles img:nth-child(5) {
+	transform: translate(50%, 0%);
+}
+
+span.bold {
+	font-family: Roboto Medium;
+}
+
+
+
+.winrate-bar {
+	height: 10px;
+	width: 10em;
+}
+span.bold { font-family: Roboto Bold; }
+
+td.dd-img {
+	/*position: absolute;
+	width: 400px;*/
+	padding: 0px;
+	background-position: bottom 95% right 50%;
+    background-size: auto 150%;
+    background-blend-mode: luminosity;
+    filter: brightness(100%) grayscale(25%) contrast(100%);
+}
+
+td.dd-img > ul {
+	width: 128px;
+	height: 100%;
+	gap: 8px;
+	padding: 8px;
+	color: var(--text200);
+	text-shadow:
+	    -1.5px -1.5px 0.1em rgba(0,0,0,0.75),
+	    1.5px -1.5px 0.1em rgba(0,0,0,0.75),
+	    -1.5px 1.5px 0.1em rgba(0,0,0,0.75),
+	    1.5px 1.5px 0.1em rgba(0,0,0,0.75);
+}
+
+td.dd-img li.strong { font-size: 13px; color: var(--text100); }
+td.dd-img li.strong span { color: var(--text400); font-family: Roboto; }
+td.dd-img li.strong a:hover { color: var(--text500); }
+
+td.dd-img.team100 > ul {
+	background: linear-gradient(90deg,
+		rgba(0,0,0,0.6) 0%,
+        rgba(0,0,0,0.6) 35%,
+        rgba(0,0,0,0) 100%
+	);
+}
+td.dd-img.team200 > ul {
+	margin-left: auto;
+	background: linear-gradient(90deg,
+		rgba(0,0,0,0) 0%,
+        rgba(0,0,0,0.6) 65%,
+        rgba(0,0,0,0.6) 100%
+	);
+}
+
+td.dd-img img {
+	width: 28px;
+	border-radius: 4px;
+    filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.35)) drop-shadow(-1px -1px 2px rgba(0, 0, 0, 0.35)) drop-shadow(1px -1px 2px rgba(0, 0, 0, 0.35)) drop-shadow(-1px 1px 2px rgba(0, 0, 0, 0.35));
+}
+
+td.dd-img.team100 {
+	background-color: rgba(83, 131, 232, 0.3);
     -webkit-mask-image: linear-gradient( 90deg,
         rgba(0,0,0,1) 0%,
         rgba(0,0,0,1) 75%,
         rgba(0,0,0,0) 100%
     );
-
-    background-blend-mode: luminosity;
-    filter: brightness(100%) grayscale(25%) contrast(100%);
-    background-color: rgba(83, 131, 232, 0.3);
 }
-
-div.dd-centwo {
-/*	transform: scaleX(-1);*/
-	position: absolute;
-    top: 0;
-    right: 0;
-    background-repeat: no-repeat;
-    background-color: rgba(232, 64, 87, 0.3);
+td.dd-img.team200 {
+	background-color: rgba(232, 64, 87, 0.3);
     -webkit-mask-image: linear-gradient( 90deg,
         rgba(0,0,0,0) 0%,
         rgba(0,0,0,1) 25%,
@@ -145,85 +244,38 @@ div.dd-centwo {
 }
 
 
-
-div.row .roons {
-	height: 100%;
-	width: 126px;
-	background-image: url("assets/icons/roons.png");
-	background-position: center;
-	background-size: contain;
-	background-repeat: no-repeat;
+tr#match-info th {
+	height: auto;
+	text-align: left;
+	vertical-align: top;
+	font-weight: normal;
+	padding: 10px 0px;
+	background-color: var(--purple300);
 }
 
-div.prev-match {
-	position: absolute;
-	bottom: 4px;
-	left: 4px;
-	gap: 4px;
-	/*background-color: var(--win-blue200);
-	padding: 2px;
-	border-radius: 2px;*/
+tr#match-info ul {
+	flex-direction: row;
+	font-size: 14px;
+	color: white;
+	font-family: Roboto Light;
 }
 
-.prev-match .frame {
-	width: 24px;
+tr#match-info ul li { padding: 2px 12px; }
+tr#match-info ul li ~ li { border-left: 1px solid var(--purple700); }
+tr#match-info ul li:last-of-type {
+	margin-left: auto;
+	border: none;
 }
 
-.prev-match .frame.win { border: 1px solid var(--win-blue100); }
-.prev-match .frame.loss { border: 1px solid var(--loss-red100); }
-
-
-
-.frame > svg {
-	position: absolute;
-	bottom: 0;
-	left: 50%;
-	width: 12px;
-	transform: translate(-50%, 50%);
+tr#team-info th {
+	vertical-align: bottom;
+	height: 80px;
+	padding: 16px;
 }
 
-
-div.summoner {
-	height: 100%;
-	gap: 4px 8px;
-	width: 192px;
-	/*white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;*/
-    padding: 8px;
-    background: linear-gradient( 90deg,
-        rgba(0,0,0,0.6) 50%,
-        rgba(0,0,0,0) 100%
-    );
-
-    display: grid;
-    grid-template-columns: 28px 1fr; /*1fr 2fr*/
-    grid-template-rows: 28px 28px 1fr; /* 168px */
-    grid-template-areas:
-    "spell1 info"
-    "spell2 info"
-    ". .";
-}
-
-ul.player-info {
-	z-index: 1;
-	grid-area: info;
-	gap: 6px;
-}
-
-div.summoner img {
-	width: 100%;
-	z-index: 1;
-	border-radius: 4px;
-}
-
-li > a { color: #C8C8C8; }
-
-/*ul.summoner li.h-container { gap: 8px; }
-ul.summoner li.h-container img {
-	width: 32px;
-	border-radius: 4px;
-}*/
+th.team100 { text-align: left; color: var(--win-blue100); }
+th.team200 { text-align: right; color: var(--loss-red100); }
+tr#team-info h3 { color: inherit; }
 
 </style>
 
@@ -237,74 +289,215 @@ ul.summoner li.h-container img {
 
 <%- include("partials/navigation-bar") %>
 
-<!-- <main> -->
-	<header class="h-container">
-		<h3 class="blue">Blue Team</h3>
-		<div class="blue bans h-container">
-			<div class="frame"><img src="/assets/dragontail/champion/squarecrop/Aatrox.png"></div>
-			<div class="frame"><img src="/assets/dragontail/champion/squarecrop/Ahri.png"></div>
-			<div class="frame"><img src="/assets/dragontail/champion/squarecrop/Akali.png"></div>
-			<div class="frame"><img src="/assets/dragontail/champion/squarecrop/Akshan.png"></div>
-			<div class="frame"><img src="/assets/dragontail/champion/squarecrop/Kassadin.png"></div>
-		</div>
 
-		<div class="red bans h-container">
-			<div class="frame"><img src="/assets/dragontail/champion/squarecrop/Aatrox.png"></div>
-			<div class="frame"><img src="/assets/dragontail/champion/squarecrop/Ahri.png"></div>
-			<div class="frame"><img src="/assets/dragontail/champion/squarecrop/Akali.png"></div>
-			<div class="frame"><img src="/assets/dragontail/champion/squarecrop/Akshan.png"></div>
-			<div class="frame"><img src="/assets/dragontail/champion/squarecrop/Kassadin.png"></div>
-		</div>
-		<h3 class="red">Red Team</h3>
-	</header>
+<main>
 
 
-	<% for (let i = 0; i < 5; i++) { %>
-	<div class="row h-container">
-		
-		<div class="dd-center" style="background-image: url('/assets/dragontail/champion/centered/Hwei_0.jpg');"></div>
-		<div class="dd-centwo" style="background-image: url('/assets/dragontail/champion/centered/Syndra_0.jpg');"></div>
-		<div class="role"></div>
+	<table id="participant-table" class="default">
 
-		<div class="prev-match h-container">
-			<div class="frame win"><img src="/assets/dragontail/champion/squarecrop/Aatrox.png"></div>
-			<div class="frame win"><img src="/assets/dragontail/champion/squarecrop/Ahri.png"></div>
-			<div class="frame loss"><img src="/assets/dragontail/champion/squarecrop/Akali.png"></div>
-			<div class="frame win"><img src="/assets/dragontail/champion/squarecrop/Akshan.png"></div>
-			<div class="frame loss"><img src="/assets/dragontail/champion/squarecrop/Kassadin.png"></div>
-			<div class="frame loss"><img src="/assets/dragontail/champion/squarecrop/Akali.png"></div>
-			<div class="frame loss"><img src="/assets/dragontail/champion/squarecrop/Akshan.png"></div>
-			<div class="frame win"><img src="/assets/dragontail/champion/squarecrop/Kassadin.png"></div>
-		</div>
-		
+        <colgroup>
+            <col width="256px">
+            <col width="auto">
+            <col width="auto">
+            <col width="96px">
+            <col width="auto">
+            <col width="auto">
+            <col width="256px">
+
+        </colgroup>
 
 
-		<div class="summoner">
-			<img src="/assets/dragontail/spell/SummonerFlash.png">
-			<img src="/assets/dragontail/spell/SummonerTeleport.png">
-			<ul class="player-info">
-				<li class="strong"><a target="_blank" href="https://www.op.gg/summoners/na/rRooks-NA1">Skylar Vox<span class="dull">&nbsp;#NA1</span></a></li>
-				<li>Level 420</li>
-				<li>Hwei</li>
-			</ul>
-		</div>
+<!-- ★ Match Info ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ★ -->
+        <thead>
+        	<tr id="match-info">
+        		<th colspan="100%">
+					<ul>
+						<li>
+							<span class="icon" style="background-image: url('<%= info.map.svg %>') no-repeat center;"></span>
+							<%= info.map.MapName %>
+						</li>
+						
+						<li><%= info.gameStartTime.slice(0, -3) %><span class="small"><%= info.gameStartTime.slice(-2) %></span></li>
 
-		<ul class="center">
-			<li class="tall"><span class="icon rank" style="background-image: url('assets/icons/svgs/rank/Emerald.svg');"></span> Emerald IV <span class="dull">&nbsp;(35LP)</span></li>
-			<li><div class="winrate-bar">
-		        <div style="width:69%; background-color: #0070dd;"></div>
-		       	<!-- a8a8a8 / epic ba67f2 / leg ff8000 -->
-		    </div></li>
-			<li><span style="color: #0070dd;">54.4<span class="dull">%</span></span> &nbsp;(37W&nbsp;&nbsp;31L)</li>
-		</ul>
+						<li><%= info.platformId %> <%= info.gameId %></li>
 
-		<div class="roons"></div>
+						<li class="h-container">
+							<a class="icon" target="_blank" href="<%= info.links.opgg %>" style="background-image: url('/assets/icons/svgs/opgg-purple.svg');"></a>
+							<a class="icon" target="_blank" href="<%= info.links.ugg %>" style="background-image: url('/assets/icons/svgs/icon-link.svg');"></a>
+							<a class="icon" target="_blank" href="<%= info.links.xdx %>" style="background-image: url('/assets/icons/svgs/icon-link.svg');"></a>
+							<a class="icon" target="_blank" href="<%= info.links.porofessor %>" style="background-image: url('/assets/icons/svgs/icon-link.svg');"></a>
+						</li>
+					</ul>
+        		</th>
+        	</tr>
 
-		<div class="roons" style="margin-left:100px;"></div>
-	</div>
-	<% } %>
 
-<!-- </main> -->
+<!-- ★ Bans ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ★ -->
+        	<tr id="team-info">
+        		<th class="team100"><h3>Blue Team</h3></th>
+        		<th class="team100 bans" colspan="2">
+        			<% if (bans.bannedChampions.length > 0) { %>
+        			<div class="team100 bans h-container">
+        			<% bans["100"].forEach(function(ban) { %>
+        				<div class="frame"><img src="<%= ban.champion.img.squarecrop %>"></div>
+        			<% }) %>
+        			</div>
+        			<% } %>
+        		</th>
+        		<th></th>
+
+        		<th class="team200 bans" colspan="2">
+        			<% if (bans.bannedChampions.length > 0) { %>
+        			<div class="team200 bans h-container">
+        			<% bans["200"].forEach(function(ban) { %>
+        				<div class="frame"><img src="<%= ban.champion.img.squarecrop %>"></div>
+        			<% }) %>
+        			</div>
+        			<% } %>
+        		</th>
+        		<th class="team200"><h3>Red Team</h3></th>
+        	</tr>
+        </thead>
+
+
+<!-- ★ Participant Table ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ★ -->
+        <tbody>
+        	<% for (let i = 0; i < participants.length/2; i++) {
+        		let blue = participants.at(i);
+        		let red = participants.at(i+5); %>
+			<tr>
+				<td class="dd-img team100" style="background-image: url('<%= blue.champion.img.centered %>');">
+					 <ul class="left">
+						<li class="strong"><a target="_blank" href="<%= blue.opgg %>"><%= blue.gameName %><span>#<%= blue.tagLine %></span></a></li>
+						<li class="break"><%= blue.champion.name %></li>
+						<li><img src="<%= blue.spell1.img %>"></li>
+						<li><img src="<%= blue.spell2.img %>"></li>
+					</ul>
+				</td>
+
+				<% if (blue.league !== null) { %>
+				<td><ul class="league-rank center">
+					<li class="tall">
+						<span class="icon rank" style="background-image: url('<%= blue.league.img %>');"></span>
+						<%= blue.league.tier.charAt(0).toUpperCase() + blue.league.tier.substring(1).toLowerCase() %>
+						<%= blue.league.rank %>
+						<span class="dull"><%= blue.league.leaguePoints %>LP</span>
+					</li>
+					<li><div class="winrate-bar"><div style="width:<%= blue.league.winrate.val %>%; background-color: #0070dd;"></div></div></li>
+					<li>
+						<span class="<%= blue.league.winrate.color %>">
+							<span class="bold"><%= blue.league.winrate.val %>%</span>
+						</span>
+						(<%= blue.league.played %> Played)
+					</li>
+
+					<li>
+					<% if (blue.league.veteran) { %><span class="icon rank" style="background-image: url('/assets/icons/svgs/icon_category_veterancy.svg');"></span><% } %>
+					<% if (blue.league.inactive) { %><span class="icon rank" style="background-image: url('/assets/icons/svgs/icon-medal.svg');"></span><% } %>
+					<% if (blue.league.freshBlood) { %><span class="icon rank" style="background-image: url('/assets/icons/svgs/icon_category_teamwork.svg');"></span><% } %>
+					<% if (blue.league.hotStreak) { %><span class="icon rank" style="background-image: url('/assets/icons/svgs/icon_category_expertise.svg');"></span><% } %>
+					</li>
+
+				</ul></td>
+				<% } else { %>
+				<td><span class="icon rank" style="background-image: url('/assets/icons/svgs/rank/unranked.svg'); background-size: cover; height: 1.5em; vertical-align: middle; "></span> Unranked</td>
+				<% } %>
+
+				<td>
+			        <div class="runes h-container">
+			            <div><img class="keystone" src="<%= blue.runes.keystone.img %>"></div>
+
+			            <div class="rune-styles grid-container">
+			            <% blue.runes.styles.forEach(function(style) { %>
+			                <img src="<%= style.img %>">
+			            <% }) %>
+			            	<img src="">
+			            <% blue.runes.stats.forEach(function(stat) { %>
+			                <img class="stat-mod" src="<%= stat.img %>">
+			            <% }) %>
+			            </div>
+
+			            <div class="rune-stats v-container" style="display: none;">
+			            <% blue.runes.stats.forEach(function(stat) { %>
+			                <img src="<%= stat.img %>">
+			            <% }) %>
+			            </div>
+			        </div>
+				</td>
+
+
+
+				<td class="filler"></td> <!-- Filler -->
+
+
+
+				<td>
+			        <div class="runes h-container">
+			            <div class="rune-stats v-container" style="display: none;">
+			            <% red.runes.stats.forEach(function(stat) { %>
+			                <img src="<%= stat.img %>">
+			            <% }) %>
+			            </div>
+
+			            <div class="rune-styles grid-container">
+			            <% red.runes.styles.forEach(function(style) { %>
+			                <img src="<%= style.img %>">
+			            <% }) %>
+			            	<img src="">
+			            <% red.runes.stats.forEach(function(stat) { %>
+			                <img class="stat-mod" src="<%= stat.img %>">
+			            <% }) %>
+			            </div>
+
+			            <div><img class="keystone" src="<%= red.runes.keystone.img %>"></div>
+			        </div>
+				</td>
+
+				<% if (red.league !== null) { %>
+				<td><ul class="league-rank center">
+					<li class="tall">
+						<span class="icon rank" style="background-image: url('<%= red.league.img %>');"></span>
+						<%= red.league.tier.charAt(0).toUpperCase() + red.league.tier.substring(1).toLowerCase() %>
+						<%= red.league.rank %>
+						<span class="dull"><%= red.league.leaguePoints %>LP</span>
+					</li>
+					<li><div class="winrate-bar"><div style="width:<%= red.league.winrate.val %>%; background-color: #0070dd;"></div></div></li>
+					<li>
+						<span class="<%= red.league.winrate.color %>">
+							<span class="bold"><%= red.league.winrate.val %>%</span>
+						</span>
+						(<%= red.league.wins %><span class="small">W</span> <%= red.league.losses %><span class="small">L</span>)
+					</li>
+
+					<li>
+					<% if (red.league.veteran) { %><span class="icon rank" style="background-image: url('/assets/icons/svgs/icon_category_veterancy.svg');"></span><% } %>
+					<% if (red.league.inactive) { %><span class="icon rank" style="background-image: url('/assets/icons/svgs/icon-medal.svg');"></span><% } %>
+					<% if (red.league.freshBlood) { %><span class="icon rank" style="background-image: url('/assets/icons/svgs/icon_category_teamwork.svg');"></span><% } %>
+					<% if (red.league.hotStreak) { %><span class="icon rank" style="background-image: url('/assets/icons/svgs/icon_category_expertise.svg');"></span><% } %>
+					</li>
+
+				</ul></td>
+				<% } else { %>
+				<td><span class="icon rank" style="background-image: url('/assets/icons/svgs/rank/unranked.svg'); background-size: cover; height: 1.5em; vertical-align: middle; "></span> Unranked</td>
+				<% } %>
+
+				<td class="dd-img team200" style="background-image: url('<%= red.champion.img.centered %>');">
+					<ul class="right">
+						<li class="strong"><a target="_blank" href="<%= red.opgg %>"><%= red.gameName %><span>#<%= red.tagLine %></span></a></li>
+						<li class="break"><%= red.champion.name %></li>
+						<li><img src="<%= red.spell1.img %>"></li>
+						<li><img src="<%= red.spell2.img %>"></li>
+					</ul>
+				</td>
+			<% } %>
+        </tbody>
+
+    </table>
+
+
+
+
+</main>
 
 
 <script>

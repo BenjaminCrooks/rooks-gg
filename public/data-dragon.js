@@ -17,10 +17,15 @@ Object.entries(champion).forEach(function([key, value]) {
 		"splash": imgPath("/champion/splash", value["id"]+"_0.jpg"),
 		"square": imgPath("/champion/square", value["id"]+".png"),
 		"squarecrop": imgPath("/champion/squarecrop", value["id"]+".png"),
-		"tiles": imgPath("/champion/tiles", value["id"]+"_0.jpg")
+		"tile": imgPath("/champion/tiles", value["id"]+"_0.jpg")
 	}
 	champion[value.key] = value
 })
+
+champion["-1"] = {
+	"name": "blank",
+	"img": { "square": "/assets/icons/svgs/blank.svg", "squarecrop": "/assets/icons/svgs/blank.svg" }
+}
 
 
 // Runes
@@ -38,10 +43,18 @@ runesReforged.forEach(function(element, eleIndex) {
 	})
 })
 
+var statMods = {}
 var cDragonPerks = JSON.parse(fs.readFileSync("./public/assets/cdragon/perks.JSON", "utf8"))
 cDragonPerks.forEach(function(perk) {
 	if (perk.id in runes) {
 		runes[perk.id]["endOfGameStatDescs"] = perk.endOfGameStatDescs
+	} else if (perk.id.toString().charAt(0) == "5") {
+		statMods[perk.id] = {
+			"id": perk.id,
+			"name": perk.name,
+			"shortDesc": perk.shortDesc,
+			"img": path.join("/assets/dragontail", perk.iconPath.slice(perk.iconPath.indexOf("perk-images")))
+		}
 	}
 })
 
@@ -61,6 +74,20 @@ Object.entries(summoner).forEach(function([key, value]) {
 	summoner[value.key] = value
 })
 
+
+// Maps
+var maps = JSON.parse(fs.readFileSync("./public/assets/dragontail/data/map.JSON", "utf8")).data
+Object.entries(maps).forEach(function([key, value]) {
+	value["img"] = imgPath(value["image"]["group"], value["image"]["full"])
+	if (value.MapId == 11) {
+		value["svg"] = path.join("/assets/icons/svgs/map", "classic.svg").replace(/\\/g,"/")
+	} else if (value.MapId == 12) {
+		value["svg"] = path.join("/assets/icons/svgs/map", "aram.svg").replace(/\\/g,"/")
+	} else if (value.MapId == 22) {
+		value["svg"] = path.join("/assets/icons/svgs/map", "cherry.svg").replace(/\\/g,"/")
+	}
+	summoner[value.key] = value
+})
 
 
 module.exports = {
@@ -86,6 +113,17 @@ module.exports = {
 		} else {
 			return undefined
 		}
+	},
+
+	statmod: function (id) {
+		/**
+		 * Obtains rune stat modifier object by perk id
+		 * 
+		 * @param {number} - id
+		 * @returns {Object} - stat mod data object
+		 */
+
+		return statMods[id]
 	},
 
 	champion: function (input) {
@@ -119,5 +157,9 @@ module.exports = {
 		 */
 
 		return summoner[key]
+	},
+
+	maps: function (key) {
+		return maps[key]
 	}
 }

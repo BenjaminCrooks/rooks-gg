@@ -8,7 +8,9 @@
 *::-webkit-scrollbar { display: none; }
 
 html {
-    font: 12px Roboto;
+/*    font: 12px Roboto;*/
+    font: 12px Roboto Flex;
+    font-weight: 400;
     color: #b8b8b8;
 }
 
@@ -63,6 +65,9 @@ span.italic, li.italic { font-style: italic; }
 
 a {
     text-decoration: none;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
     color: inherit;
 }
 
@@ -70,9 +75,9 @@ div {}
 
 
 /* Inputs ★ ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ★ */
-select { /* dropdown menu */
-/*    appearance: none;*/
-    background-repeat: no-repeat;
+select, input, button { background-repeat: no-repeat; }
+
+select {
     background-color: var(--purple200);
     border: none;
     outline: none;
@@ -82,12 +87,28 @@ select { /* dropdown menu */
 
 /*select:focus { outline: 1px solid var(--iceWhite); }*/
 
-option {} /* dropdown option */
+option {}
 
 input {
-    background-repeat: no-repeat;
     background-color: var(--purple200);
 }
+
+input[type=text] {
+    color: white;
+    font-family: Roboto Medium;
+    font-size: 14px;
+    border: none;
+    border-radius: 2px;
+    padding: 8px 12px;
+}
+
+input[type=text]:focus {
+/*    outline: 2px solid var(--purple700);*/
+    outline: none;
+    border: none;
+}
+
+input[type=text]:disabled {}
 
 input[type=checkbox] {
     appearance: none;
@@ -106,7 +127,7 @@ button {
 
 button:hover {
     color: var(--purple200);
-    /*outline: 2px solid var(--purple700);*/
+    outline: 2px solid var(--purple700);
 }
 
 
@@ -126,6 +147,7 @@ li {
     font-family: inherit;
     font-size: inherit;
     color: inherit;
+    line-height: inherit;
     white-space: nowrap;
     /*overflow: hidden;*/
     text-overflow: ellipsis;
@@ -207,6 +229,14 @@ table.bevel img, table.bevel .winrate-bar { border-radius: 2px; }
     1.5px -1.5px 0.1em black,
     -1.5px 1.5px 0.1em black,
     1.5px 1.5px 0.1em black;
+}
+
+.shadow-light {
+    text-shadow:
+    -1px -1px 0.05em black,
+    1px -1px 0.05em black,
+    -1px 1px 0.05em black,
+    1px 1px 0.05em black;
 }
 
 
@@ -387,11 +417,44 @@ table.bevel img, table.bevel .winrate-bar { border-radius: 2px; }
 @font-face { font-family: Roboto Condensed Black;       src: url(assets/fonts/RobotoCondensed-Black.ttf); }
 
 
-/*@font-face { font-family: Roboto Flex;             src: url(assets/fonts/RobotoFlex-VariableFont_GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,opsz,slnt,wdth,wght.ttf); }*/
-/*RobotoCondensed-VariableFont_wght*/
+@font-face {
+    font-family: Roboto Flex;
+    font-weight: 100 1000;
+    font-stretch: 25% 151%;
+    font-variation-settings:
+        "opsz" 8,
+        /*"wght" 400,*/
+        /*"wdth" 100,*/
+        "GRAD" 0,
+        "slnt" 0,
+        "XTRA" 445,
+        "XOPQ" 89,
+        "YOPQ" 79,
+        "YTAS" 750,
+        "YTDE" -203,
+        "YTFI" 738,
+        "YTLC" 514,
+        "YTUC" 712;
+    src: url(assets/fonts/RobotoFlex-VariableFont_GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,opsz,slnt,wdth,wght.ttf);
+}
 
-/* font-weight: var(--font-regular);
-font-style [slant, italic]
-font-optical-sizing [auto, none]
-font-stretch: 100%;
-https://fonts.google.com/knowledge/using_type/styling_type_on_the_web_with_variable_fonts */
+@font-face {
+    font-family: Roboto Flex Condensed;
+    font-weight: 100 1000;
+    font-stretch: 80%;
+    font-variation-settings:
+        "opsz" 30,
+        /*"wght" 400,*/
+        /*"wdth" 80,*/
+        "GRAD" 70,
+        "slnt" 0,
+        "XTRA" 460,
+        "XOPQ" 100,
+        "YOPQ" 79,
+        "YTAS" 770,
+        "YTDE" -203,
+        "YTFI" 738,
+        "YTLC" 560,
+        "YTUC" 712;
+    src: url(assets/fonts/RobotoFlex-VariableFont_GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,opsz,slnt,wdth,wght.ttf);
+}
