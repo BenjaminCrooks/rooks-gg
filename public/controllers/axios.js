@@ -53,7 +53,7 @@ const spectator = async function (req, res, next) {
 				gameQueueConfigId: response.data.gameQueueConfigId,
 				observers: response.data.observers,
 				platformId: response.data.platformId,
-				gameStartTime: startDay + "·" + startTime,
+				gameStartTime: startDay + " · " + startTime,
 				gameLength: response.data.gameLength,
 				links: {
 					opgg: `https://www.op.gg/summoners/na/${res.locals.account.gameName}-${res.locals.account.tagLine}/ingame`,

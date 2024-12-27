@@ -14,13 +14,13 @@
 <style>
 
 main {
-	width: 70vw;
-	min-height: 100vh;
+    width: 70vw;
+    min-height: 100vh;
     background-color: inherit;
 }
 
 ul {
-	gap: 1em;
+    gap: 1em;
 }
 
 li > ul > li:not(:first-of-type) { margin-left: 2em; }
@@ -155,9 +155,9 @@ h3 > span, h4 > span {
         <tr>
             <th></th>
             <% data.participants.forEach(function(player, index, array) { %>
-            <!-- <th><img class="team<%= player.teamId  %>" src="<%= player.champion.img.centered %>"></th> -->
+            <th><img class="team<%= player.teamId  %>" src="<%= player.champion.img.centered %>"></th>
 
-            <th class="dd-cent team<%= player.teamId  %>" style="background-image: url('<%= player.champion.img.loadingcrop %>')"></th>
+            <!-- <th class="dd-cent team<%= player.teamId  %>" style="background-image: url('<%= player.champion.img.loadingcrop %>')"></th> -->
             <% }) %>
         </tr>
     </thead>

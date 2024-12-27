@@ -15,6 +15,9 @@ The match data is provided via [RIOT Games' developer API](https://developer.rio
 ### MongoDB Collections
 [Document Structures](/public/models)
 
+### Data Dragon
+[Object Structures](/public/assets/dragontail)
+
 
 ## Project Directory
 ```

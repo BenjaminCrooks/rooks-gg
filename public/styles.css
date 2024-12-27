@@ -10,7 +10,8 @@
 html {
 /*    font: 12px Roboto;*/
     font: 12px Roboto Flex;
-    font-weight: 400;
+/*    font-weight: 400;
+    font-stretch: 100%;*/
     color: #b8b8b8;
 }
 
@@ -419,22 +420,24 @@ table.bevel img, table.bevel .winrate-bar { border-radius: 2px; }
 
 @font-face {
     font-family: Roboto Flex;
+    font-optical-sizing: auto;
     font-weight: 100 1000;
     font-stretch: 25% 151%;
+    font-style: normal;
     font-variation-settings:
-        "opsz" 8,
-        /*"wght" 400,*/
-        /*"wdth" 100,*/
-        "GRAD" 0,
-        "slnt" 0,
-        "XTRA" 445,
-        "XOPQ" 89,
-        "YOPQ" 79,
-        "YTAS" 750,
-        "YTDE" -203,
-        "YTFI" 738,
-        "YTLC" 514,
-        "YTUC" 712;
+        /*"opsz" 8,           /*  Optical Size           6 > 144  */
+        /*"wght" 400,*/     /*  Weight               100 > 1000 */
+        /*"wdth" 100,*/     /*  Width                 25 > 151  */
+        "GRAD" 0,           /*  Grade               -200 > 150  */
+        "slnt" 0,           /*  Slant                -10 >   0  */
+        "XTRA" 445,         /*  Counter Width        323 > 603  */
+        "XOPQ" 89,          /*  Thick Stroke          27 > 175  */
+        "YOPQ" 79,          /*  Thin Stroke           25 > 135  */
+        "YTAS" 750,         /*  Ascender Height      649 > 854  */
+        "YTDE" -203,        /*  Descender Depth     -305 > -98  */
+        "YTFI" 738,         /*  Figure Height        560 > 788  */
+        "YTLC" 514,         /*  Lowercase Height     416 > 570  */
+        "YTUC" 712;         /*  Uppercase Height     528 > 760  */
     src: url(assets/fonts/RobotoFlex-VariableFont_GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,opsz,slnt,wdth,wght.ttf);
 }
 
@@ -455,6 +458,52 @@ table.bevel img, table.bevel .winrate-bar { border-radius: 2px; }
         "YTDE" -203,
         "YTFI" 738,
         "YTLC" 560,
+        "YTUC" 712;
+    src: url(assets/fonts/RobotoFlex-VariableFont_GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,opsz,slnt,wdth,wght.ttf);
+}
+
+@font-face {
+    font-family: Roboto Normal;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-stretch: 100%;
+    font-style: normal;
+    font-variation-settings:
+        /*"opsz" 8,*/
+        /*"wght" 400,*/
+        /*"wdth" 100,*/
+        "GRAD" 0,
+        "slnt" 0,
+        "XTRA" 400,
+        "XOPQ" 88,
+        "YOPQ" 116,
+        "YTAS" 750,
+        "YTDE" -250,
+        "YTFI" 600,
+        "YTLC" 500,
+        "YTUC" 725;
+    src: url(assets/fonts/RobotoFlex-VariableFont_GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,opsz,slnt,wdth,wght.ttf);
+}
+
+@font-face {
+    font-family: Roboto Refresh;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-stretch: 100%;
+    font-style: normal;
+    font-variation-settings:
+        /*"opsz" 8,*/
+        /*"wght" 400,*/
+        /*"wdth" 100,*/
+        "GRAD" 0,
+        "slnt" 0,
+        "XTRA" 468,
+        "XOPQ" 96,
+        "YOPQ" 79,
+        "YTAS" 750,
+        "YTDE" -203,
+        "YTFI" 738,
+        "YTLC" 514,
         "YTUC" 712;
     src: url(assets/fonts/RobotoFlex-VariableFont_GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,opsz,slnt,wdth,wght.ttf);
 }

@@ -90,6 +90,19 @@ Object.entries(maps).forEach(function([key, value]) {
 })
 
 
+// Queues
+var queues = JSON.parse(fs.readFileSync("./public/assets/dragontail/data/queues.JSON", "utf8"))
+var queue = {}
+queues.forEach(function(element, index) {
+	if (element.description !== null) {
+		element.desc = element.description.replace(" games","")
+	} else {
+		element.desc = null
+	}
+	queue[element.queueId] = element
+})
+
+
 module.exports = {
 
 	runeData: runesReforged,
@@ -160,6 +173,24 @@ module.exports = {
 	},
 
 	maps: function (key) {
+		/**
+		 * Obtains map data object by key
+		 * 
+		 * @param {number} - key
+		 * @returns {Object} - map data object
+		 */
+
 		return maps[key]
+	},
+
+	queue: function (key) {
+		/**
+		 * Obtains queue data object by key
+		 * 
+		 * @param {number} - key
+		 * @returns {Object} - queue data object
+		 */
+
+		return queue[key]
 	}
 }

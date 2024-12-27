@@ -99,38 +99,9 @@ async (req, res, next) => {
 		})
 
 		// Match Info
-		// res.locals.info.gameStartTime
 		// res.locals.info.gameLength
 		res.locals.info.map = dd.maps(res.locals.info.mapId)
-
-		// Participants
-		// res.locals.participants = res.locals.participants.map(player => {
-		// 	const runes = {
-		// 		keystone: dd.rune(player.perks.perkIds.shift()),
-		// 		styles: player.perks.perkIds.toSpliced(5, 3).map(function(styleId) {
-		// 			return dd.rune(styleId)
-		// 		}),
-		// 		stats: player.perks.perkIds.toSpliced(0, 5).map(function(statId) {
-		// 			return dd.statmod(statId)
-		// 		})
-		// 	}
-
-		// 	return {
-		// 		teamId: player.teamId,
-		// 		profileIconId: player.profileIconId,
-		// 		puuid: player.puuid,
-		// 		summonerId: player.summonerId,
-		// 		riotId: player.riotId,
-		// 		gameName: player.riotId.split("#").at(0),
-		// 		tagLine: player.riotId.split("#").at(1),
-		// 		opgg: `https://www.op.gg/summoners/na/${player.riotId.replace("#", "-").replaceAll(" ", "%20")}`,
-		// 		spell1: dd.summoner(player.spell1Id),
-		// 		spell2: dd.summoner(player.spell2Id),
-		// 		champion: dd.champion(player.championId),
-		// 		runes,
-		// 		league: player.league
-		// 	}
-		// })
+		res.locals.info.queue = dd.queue(res.locals.info.gameQueueConfigId)
 
 		// Bans
 		res.locals.bans.bannedChampions.forEach(function(ban) {

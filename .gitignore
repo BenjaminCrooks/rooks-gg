@@ -4,3 +4,5 @@ public/assets/data/
 public/assets/fonts/
 public/assets/icons/
 public/plugins/
+public/assets/dragontail/*
+!public/assets/dragontail/README.md
