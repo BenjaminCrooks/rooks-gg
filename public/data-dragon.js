@@ -33,12 +33,10 @@ var runesReforged = JSON.parse(fs.readFileSync("./public/assets/dragontail/data/
 var runes = {}
 runesReforged.forEach(function(element, eleIndex) {
 	runes[element.id] = { "id": element.id, "key": element.key, "icon": element.icon, "name": element.name, "img": path.join("/assets/dragontail", element.icon) }
-	// runesReforged[eleIndex].img = path.join("/assets/dragontail", element.icon)
 	element.slots.forEach(function(slot, slotIndex) {
 		slot.runes.forEach(function(item, itemIndex) {
-			item.img = path.join("/assets/dragontail", item.icon) // ★ actually assigning img = "/path"? ───────────────────────────────────────────────────────────────────────────────────────────── ★
+			item.img = path.join("/assets/dragontail", item.icon)
 			runes[item.id] = item
-			// runesReforged[eleIndex].slots[slotIndex].runes[] = path.join("/assets/dragontail", element.icon)
 		}) 
 	})
 })
@@ -107,6 +105,8 @@ module.exports = {
 
 	runeData: runesReforged,
 
+	runes,
+
 	rune: function (rune) {
 		/**
 		 * Obtains rune data object by id
@@ -123,6 +123,8 @@ module.exports = {
 			return runeObject
 		} else if (typeof rune === 'number') {
 			return JSON.parse(JSON.stringify(runes[rune]))
+		} else if (!isNaN(Number(rune))) {
+			return JSON.parse(JSON.stringify(runes[Number(rune)]))
 		} else {
 			return undefined
 		}

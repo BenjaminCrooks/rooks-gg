@@ -161,27 +161,99 @@ router.use("/details", (req, res, next) => {
 			player: { $arrayElemAt: ["$player", 0] }
 		}},
 		{$project: {
-		  matchId: 1,
-		  participants: 1,
-		  player: 1,
-		  metadata: "$player.metadata",
-		  info: "$player.info",
-		  gameDateTimestamp: "$player.gameDateTimestamp",
-		  gameLength: "$player.gameLength"
+			matchId: 1,
+			participants: 1,
+			player: 1,
+			metadata: "$player.metadata",
+			info: "$player.info",
+			gameDateTimestamp: "$player.gameDateTimestamp",
+			gameLength: "$player.gameLength"
+		}},
+		{$set: {
+			participants: {
+				$map: {
+					input: "$participants",
+					as: "player",
+					in: {
+						$mergeObjects: [
+							"$$player",
+							{
+								items: [
+									"$$player.item0",
+									"$$player.item1",
+									"$$player.item2",
+									"$$player.item3",
+									"$$player.item4",
+									"$$player.item5",
+									"$$player.item6"
+								]
+							}
+						]
+					}
+				}
+			},
+			"player.perks.styles": {
+				$map: {
+					input: { $objectToArray: "$player.perks.styles" },
+					as: "style",
+					in: "$$style.v"
+				}
+			}
 		}},
 		{$unset: [ "player.metadata", "player.info", "player.gameDateTimestamp", "player.gameLength" ]},
 		{$project: {
-		  matchId: 1,
-		  participants: {
-		  	$concatArrays: [
-		  		"$participants",
-		  		["$player"]
-		  	]
-		  },
-		  metadata: 1,
-		  info: 1,
-		  gameDateTimestamp: 1,
-		  gameLength: 1
+		  	matchId: 1,
+		  	participants: {
+		  		$concatArrays: [
+			  		"$participants",
+			  		["$player"]
+			  	]
+			},
+			metadata: 1,
+			info: 1,
+			gameDateTimestamp: 1,
+			gameLength: 1						
+		}},
+		{$facet: {
+			info: [
+				{$project: {
+					matchId: 1,
+					metadata: 1,
+					info: 1,
+					gameDateTimestamp: 1,
+					gameLength: 1
+				}}
+			],
+
+			players: [
+				{$project: {
+					participants: 1
+				}},
+				{$unwind: "$participants"},
+				{$replaceRoot: {
+					newRoot: "$participants"
+				}},
+				{$set: {
+					"perks.styles": {
+						$reduce: {
+							input: {
+								$map: {
+									input: "$perks.styles",
+									as: "style",
+									in: "$$style.selections"
+								}
+							},
+							initialValue: [],
+							in: {
+								$concatArrays: [
+								"$$value",
+								"$$this"
+								]
+							}
+						}
+					}
+				}}
+			]
 		}}
 	]
 	
@@ -198,16 +270,17 @@ router.use("/details", (req, res, next) => {
 	})
 
 }, (req, res, next) => {
-	res.locals.data = res.locals.data[0]
 
-	res.locals.data.participants = res.locals.data.participants.sort(function(a, b) {
+	res.locals.general = res.locals.data[0].info[0]
+
+	res.locals.participants = res.locals.data[0].players.sort(function(a, b) {
 		return a.participantId - b.participantId
 	}).map(function(p) {
 		p.champion = dd.champion(p.championName)
 		p.summoner1 = dd.summoner(p.summoner1Id)
 		p.summoner2 = dd.summoner(p.summoner2Id)
-		// p.items = p.items.map(function(item) { return dd.item(item) })
-		// p.runes = 
+		p.items = p.items.map(function(item) { return dd.item(item) })
+		p.perks.styles = p.perks.styles.map(function(style) { return dd.rune(style) })
 		return p
 	})
 
@@ -216,6 +289,8 @@ router.use("/details", (req, res, next) => {
 
 
 router.get("/details", (req, res) => {
+	// res.send(res.locals.general)
+	// res.send(res.locals.participants[0])
 	res.render("match-details.ejs", { matchVars })
 })
 

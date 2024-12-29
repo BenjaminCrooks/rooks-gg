@@ -19,6 +19,7 @@ app.use("/runes", routes.runes)
 app.use("/win-rates", routes.winrates)
 app.use("/match", routes.match)
 app.use("/profile-icons", routes.icons)
+app.use("/data", routes.data)
 
 var dd = require("./public/data-dragon.js")
 var tools = require("./public/tools.js")
@@ -201,7 +202,7 @@ app.get("/", (req, res, next) => {
 				minute: "numeric"
 			})
 		}
-		e.participants = tools.formatParticipants(e.participants)									// .ally.push({"championName": e.championName, "position": e.position})
+		e.participants = tools.formatParticipants(e.participants)
 
 		e.champion = dd.champion(e.championName)
 		e.summoner1 = dd.summoner(e.summoner1Id)

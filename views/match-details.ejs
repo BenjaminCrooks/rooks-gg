@@ -32,10 +32,10 @@ table#stats {
     height: 800px;
     overflow: scroll;
 }
-thead th {
+table#stats thead th {
     position: sticky;
-    top: 104px;
-    height: 208px;
+    top: 56px;
+    height: 96px;
     background-color: transparent;
 }
 
@@ -50,7 +50,6 @@ table img {
     border-radius: 4px;
 }
 
-/*tr.section:first-of-type > th { height: 40px; }*/
 tr.section > th {
     color: #e8e8e8;
     height: 48px;
@@ -67,12 +66,67 @@ table#stats tr > td:first-of-type {
     padding: 8px 8px 8px 24px;
 }
 
+thead th.team100 { background-color: var(--img-bg-blue); }
+thead th.team200 { background-color: var(--img-bg-red); }
+
+th.dd-cent {
+    background-position: bottom 80% right 50%;
+    background-size: auto 140%;
+    background-blend-mode: luminosity;
+    filter: brightness(100%) grayscale(25%) contrast(100%);
+}
+
+h3, h4 {
+    font-family: Roboto Medium;
+    font-weight: normal;
+}
+
+h3 > span, h4 > span {
+    font-family: Roboto;
+    font-weight: normal;
+    color: #b8b8b8;
+}
+
+
+
+
+/*tbody td:nth-child(2)  { background-color: var(--blue100); } tbody td:nth-child(3)  { background-color: var(--blue200); } tbody td:nth-child(4)  { background-color: var(--blue300); } tbody td:nth-child(5)  { background-color: var(--blue400); } tbody td:nth-child(6)  { background-color: var(--blue500); } tbody td:nth-child(7)  { background-color: var(--blue600); } tbody td:nth-child(8)  { background-color: var(--blue700); } tbody td:nth-child(9)  { background-color: var(--blue800); } tbody td:nth-child(10) { background-color: var(--blue900); }*/
+/*tbody td:nth-child(2)  { background-color: var(--red100); } tbody td:nth-child(3)  { background-color: var(--red200); } tbody td:nth-child(4)  { background-color: var(--red300); } tbody td:nth-child(5)  { background-color: var(--red400); } tbody td:nth-child(6)  { background-color: var(--red500); } tbody td:nth-child(7)  { background-color: var(--red600); } tbody td:nth-child(8)  { background-color: var(--red700); } tbody td:nth-child(9)  { background-color: var(--red800); } tbody td:nth-child(10) { background-color: var(--red900); }*/
+
+td.team100:nth-child(even) { background-color: var(--blue100); }
+td.team100:nth-child(odd) { background-color: var(--blue200); }
+
+td.team200:nth-child(even) { background-color: var(--red100); }
+td.team200:nth-child(odd) { background-color: var(--red200); }
+
+table#stats tr:hover > td:first-of-type {
+    background-color: var(--purple500);
+}
+
+table#stats tr:hover > td {
+    color: white;
+}
+
+tr:hover td.team100:nth-child(even) { background-color: var(--blue300); }
+tr:hover td.team100:nth-child(odd) { background-color: var(--blue400); }
+
+tr:hover td.team200:nth-child(even) { background-color: var(--red300); }
+tr:hover td.team200:nth-child(odd) { background-color: var(--red400); }
+
+
+
+
+
 table#runes ul {
     font-size: 8px;
     gap: 0.75em;
+    width: 100%;
 }
 
-table#runes li.strong { font-size: 9px; color: #c8c8c8; }
+table#runes li.strong {
+    font-size: 9px;
+    color: #c8c8c8;
+}
 
 table#runes td {
     padding: 8px 0px;
@@ -80,35 +134,6 @@ table#runes td {
 
 table#runes img {
     width: 24px;
-}
-
-
-
-/*thead th > img {
-    width: 36px;
-    border-width: 2px;
-    border-style: solid;
-}
-thead th > img.team100 { border-color: var(--win-blue100) ; }
-thead th > img.team200 { border-color: var(--loss-red100) ; }*/
-
-
-thead th.team100 { background-color: var(--img-bg-blue); }
-thead th.team200 { background-color: var(--img-bg-red); }
-th.dd-cent {
-    background-position: top 0% auto;
-/*    background-size: 100% auto;*/
-    background-size: cover;
-
-    background-blend-mode: luminosity;
-    filter: brightness(100%) grayscale(25%) contrast(100%);
-}
-
-h3, h4 { font-family: Roboto Medium; font-weight: normal; }
-h3 > span, h4 > span {
-    font-family: Roboto;
-    font-weight: normal;
-    color: #b8b8b8;
 }
 
 </style>
@@ -123,15 +148,15 @@ h3 > span, h4 > span {
 
 <main>
 
-<h3><span class="dull">matchId</span> – <%= data.metadata.matchId %></h3>
-<h4><span class="dull">gameVersion</span> – <%= data.info.gameVersion %></h4>
-<h4><span class="dull">gameId</span> – <%= data.info.gameId %></h4>
+<h3><span class="dull">matchId</span> – <%= general.metadata.matchId %></h3>
+<h4><span class="dull">gameVersion</span> – <%= general.info.gameVersion %></h4>
+<h4><span class="dull">gameId</span> – <%= general.info.gameId %></h4>
 <br>
-<h4><span class="dull">gameCreation</span> – <%= (new Date(data.info.gameCreation)).toLocaleTimeString("en-US", {timeZone: "America/New_York",hour: "numeric",minute: "numeric"}) %></h4>
-<h4><span class="dull">gameStartTimestamp</span> – <%= (new Date(data.info.gameStartTimestamp)).toLocaleTimeString("en-US", {timeZone: "America/New_York",hour: "numeric",minute: "numeric"}) %></h4>
-<h4><span class="dull">gameEndTimestamp</span> – <%= (new Date(data.info.gameEndTimestamp)).toLocaleTimeString("en-US", {timeZone: "America/New_York",hour: "numeric",minute: "numeric"}) %></h4>
-<h4><span class="dull">gameDateTimestamp</span> – <%= data.gameDateTimestamp %></h4>
-<h4><span class="dull">gameDuration</span> – <%= data.info.gameDuration %></h4>
+<h4><span class="dull">gameCreation</span> – <%= (new Date(general.info.gameCreation)).toLocaleTimeString("en-US", {timeZone: "America/New_York",hour: "numeric",minute: "numeric"}) %></h4>
+<h4><span class="dull">gameStartTimestamp</span> – <%= (new Date(general.info.gameStartTimestamp)).toLocaleTimeString("en-US", {timeZone: "America/New_York",hour: "numeric",minute: "numeric"}) %></h4>
+<h4><span class="dull">gameEndTimestamp</span> – <%= (new Date(general.info.gameEndTimestamp)).toLocaleTimeString("en-US", {timeZone: "America/New_York",hour: "numeric",minute: "numeric"}) %></h4>
+<h4><span class="dull">gameDateTimestamp</span> – <%= general.gameDateTimestamp %></h4>
+<h4><span class="dull">gameDuration</span> – <%= general.info.gameDuration %></h4>
 <br><br>
 
 
@@ -154,26 +179,31 @@ h3 > span, h4 > span {
     <thead>
         <tr>
             <th></th>
-            <% data.participants.forEach(function(player, index, array) { %>
-            <th><img class="team<%= player.teamId  %>" src="<%= player.champion.img.centered %>"></th>
+            <% participants.forEach(function(player, index, array) { %>
+            <!-- <th><img class="team<%= player.teamId  %>" src="<%= player.champion.img.centered %>"></th> -->
 
-            <!-- <th class="dd-cent team<%= player.teamId  %>" style="background-image: url('<%= player.champion.img.loadingcrop %>')"></th> -->
+            <th class="dd-cent team<%= player.teamId %>" style="background-image: url('<%= player.champion.img.centered %>')"></th>
             <% }) %>
         </tr>
     </thead>
 
     <tbody>
     <% matchVars.forEach(function(section, ind, arr) { %>
+
         <tr class="section"><th colspan="100%"><%= section.header %></th></tr>
 
         <% section.variables.forEach(function(variable) {%>
         <tr>
             <td><%= variable %></td>
-            <% data.participants.forEach(function(player, index, array) { %>
-            <td><% if (player[variable] !== undefined) { %><%= player[variable] %><% } else { %>-<% } %></td>
+
+            <% participants.forEach(function(player, index, array) { %>
+            <td class="team<%= player.teamId %>">
+                <% if (player[variable] !== undefined) { %><%= player[variable] %><% } else { %>-<% } %>
+            </td>
             <% }) %>
         </tr>
         <% }) %>
+
     <% }) %>
     </tbody>
 
@@ -183,115 +213,64 @@ h3 > span, h4 > span {
 
 
 
+
+
+
+</main>
+
+
 <table id="runes" class="default alternate">
 
     <colgroup>
         <col width="32px">
-        <col width="auto">
+        <col width="128px">
         <col width="32px">
-        <col width="auto">
+        <col width="128px">
         <col width="32px">
-        <col width="auto">
+        <col width="128px">
         <col width="32px">
-        <col width="auto">
+        <col width="128px">
         <col width="32px">
-        <col width="auto">
+        <col width="128px">
         <col width="32px">
-        <col width="auto">
+        <col width="128px">
         <col width="32px">
-        <col width="auto">
+        <col width="128px">
         <col width="32px">
-        <col width="auto">
+        <col width="128px">
         <col width="32px">
-        <col width="auto">
+        <col width="128px">
         <col width="32px">
-        <col width="auto">
+        <col width="128px">
     </colgroup>
 
     <thead>
         <tr>
-            <th colspan="2"><img src="/assets/dragontail/champion/squarecrop/Hwei.png"></th>
-            <th colspan="2"><img src="/assets/dragontail/champion/squarecrop/Aatrox.png"></th>
-            <th colspan="2"><img src="/assets/dragontail/champion/squarecrop/Ahri.png"></th>
-            <th colspan="2"><img src="/assets/dragontail/champion/squarecrop/Akali.png"></th>
-            <th colspan="2"><img src="/assets/dragontail/champion/squarecrop/Akshan.png"></th>
-            <th colspan="2"><img src="/assets/dragontail/champion/squarecrop/Alistar.png"></th>
-            <th colspan="2"><img src="/assets/dragontail/champion/squarecrop/Ambessa.png"></th>
-            <th colspan="2"><img src="/assets/dragontail/champion/squarecrop/Aatrox.png"></th>
-            <th colspan="2"><img src="/assets/dragontail/champion/squarecrop/Amumu.png"></th>
-            <th colspan="2"><img src="/assets/dragontail/champion/squarecrop/Anivia.png"></th>
+            <% participants.forEach(function(player, index, array) { %>
+            <th colspan="2"><img src="<%= player.champion.img.squarecrop %>"></th>
+            <% }) %>
         </tr>
     </thead>
 
     <tbody>
+        <% for (let i = 0; i < 6; i++) { %>
         <tr>
-            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ArcaneComet\ArcaneComet.png"></td>
-            <td><ul class="left"><li class="strong">Arcane Comet</li><li>Total Damage Dealt: 1030</li></ul></td>
-
-            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ArcaneComet\ArcaneComet.png"></td>
-            <td><ul class="left"><li class="strong">Arcane Comet</li><li>Total Damage Dealt: 1030</li></ul></td>
-
-            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ArcaneComet\ArcaneComet.png"></td>
-            <td><ul class="left"><li class="strong">Arcane Comet</li><li>Total Damage Dealt: 1030</li></ul></td>
-
-            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ArcaneComet\ArcaneComet.png"></td>
-            <td><ul class="left"><li class="strong">Arcane Comet</li><li>Total Damage Dealt: 1030</li></ul></td>
-
-            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ArcaneComet\ArcaneComet.png"></td>
-            <td><ul class="left"><li class="strong">Arcane Comet</li><li>Total Damage Dealt: 1030</li></ul></td>
-
-            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ArcaneComet\ArcaneComet.png"></td>
-            <td><ul class="left"><li class="strong">Arcane Comet</li><li>Total Damage Dealt: 1030</li></ul></td>
-
-            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ArcaneComet\ArcaneComet.png"></td>
-            <td><ul class="left"><li class="strong">Arcane Comet</li><li>Total Damage Dealt: 1030</li></ul></td>
-
-            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ArcaneComet\ArcaneComet.png"></td>
-            <td><ul class="left"><li class="strong">Arcane Comet</li><li>Total Damage Dealt: 1030</li></ul></td>
-
-            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ArcaneComet\ArcaneComet.png"></td>
-            <td><ul class="left"><li class="strong">Arcane Comet</li><li>Total Damage Dealt: 1030</li></ul></td>
-
-            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ArcaneComet\ArcaneComet.png"></td>
-            <td><ul class="left"><li class="strong">Arcane Comet</li><li>Total Damage Dealt: 1030</li></ul></td>
+            <% participants.forEach(function(player, index, array) { %>
+            <td><img src="<%= player.perks.styles[i].img %>"></td>
+            <td>
+                <ul class="left">
+                    <li class="strong"><%= player.perks.styles[i].name %></li>
+                    <% player.perks.styles[i].endOfGameStatDescs.forEach(function(desc) { %>
+                    <li><%= desc %></li>
+                    <% }) %>
+                </ul>
+            </td>
+            <% }) %>
         </tr>
-        <tr>
-            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ManaflowBand\ManaflowBand.png"></td>
-            <td><ul class="left"><li class="strong">Manaflow Band</li><li>Total bonus mana: 250</li><li>Total mana restored: 675</li></ul></td>
-
-            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ManaflowBand\ManaflowBand.png"></td>
-            <td><ul class="left"><li class="strong">Manaflow Band</li><li>Total bonus mana: 250</li><li>Total mana restored: 675</li></ul></td>
-
-            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ManaflowBand\ManaflowBand.png"></td>
-            <td><ul class="left"><li class="strong">Manaflow Band</li><li>Total bonus mana: 250</li><li>Total mana restored: 675</li></ul></td>
-
-            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ManaflowBand\ManaflowBand.png"></td>
-            <td><ul class="left"><li class="strong">Manaflow Band</li><li>Total bonus mana: 250</li><li>Total mana restored: 675</li></ul></td>
-
-            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ManaflowBand\ManaflowBand.png"></td>
-            <td><ul class="left"><li class="strong">Manaflow Band</li><li>Total bonus mana: 250</li><li>Total mana restored: 675</li></ul></td>
-
-            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ManaflowBand\ManaflowBand.png"></td>
-            <td><ul class="left"><li class="strong">Manaflow Band</li><li>Total bonus mana: 250</li><li>Total mana restored: 675</li></ul></td>
-
-            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ManaflowBand\ManaflowBand.png"></td>
-            <td><ul class="left"><li class="strong">Manaflow Band</li><li>Total bonus mana: 250</li><li>Total mana restored: 675</li></ul></td>
-
-            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ManaflowBand\ManaflowBand.png"></td>
-            <td><ul class="left"><li class="strong">Manaflow Band</li><li>Total bonus mana: 250</li><li>Total mana restored: 675</li></ul></td>
-
-            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ManaflowBand\ManaflowBand.png"></td>
-            <td><ul class="left"><li class="strong">Manaflow Band</li><li>Total bonus mana: 250</li><li>Total mana restored: 675</li></ul></td>
-
-            <td><img src="\assets\dragontail\perk-images\Styles\Sorcery\ManaflowBand\ManaflowBand.png"></td>
-            <td><ul class="left"><li class="strong">Manaflow Band</li><li>Total bonus mana: 250</li><li>Total mana restored: 675</li></ul></td>
-        </tr>
+        <% } %>
     </tbody>
 
 </table>
-
-
-</main>
 
 <!-- {
 

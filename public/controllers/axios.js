@@ -44,7 +44,7 @@ const spectator = async function (req, res, next) {
 			var startDate = new Date(response.data.gameStartTime)
 			var startDay = startDate.toLocaleDateString("en-US", {timeZone: "America/New_York", month: "short", day: "numeric"})
 			var startTime = startDate.toLocaleTimeString("en-US", {timeZone: "America/New_York", hour: "numeric", minute: "numeric"})
-
+			
 			res.locals.info = {
 				gameId: response.data.gameId,
 				mapId: response.data.mapId,
