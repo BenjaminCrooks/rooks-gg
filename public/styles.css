@@ -1,4 +1,6 @@
 /* Tags */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,slnt,wdth,wght,GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC@8..144,-10..0,25..151,100..1000,-200..150,27..175,323..603,25..135,649..854,-305..-98,560..788,416..570,528..760&display=swap');
+
 * {
     box-sizing: border-box;
     margin: 0px;
@@ -8,11 +10,21 @@
 *::-webkit-scrollbar { display: none; }
 
 html {
-/*    font: 12px Roboto;*/
     font: 12px Roboto Flex;
-/*    font-weight: 400;
-    font-stretch: 100%;*/
+    font-weight: 400;
+    font-stretch: 100%;
     color: #b8b8b8;
+    font-variation-settings:
+        "GRAD" 0,
+        "slnt" 0,
+        "XTRA" 468,
+        "XOPQ" 96,
+        "YOPQ" 79,
+        "YTAS" 750,
+        "YTDE" -203,
+        "YTFI" 738,
+        "YTLC" 500,
+        "YTUC" 712;
 }
 
 body {
@@ -38,6 +50,7 @@ main {
 
 img {
     display: block;
+    image-rendering: smooth;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -51,17 +64,28 @@ h2 { font-size: 32px; }
 
 h3 { font-size: 16px; }
 
+header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--purple400);
+    padding: 0px 0px 12px 0px;
+    font-weight: 600;
+}
+
 p {}
 
 span {
     font-family: inherit;
     font-size: inherit;
-    height: inherit;
+/*    height: inherit;*/
+    font-variation-settings: inherit;
 }
 
 li.dull, span.dull { filter: brightness(75%); /* grayscale(25%) contrast(100%) blur(0px) invert(60%) */ }
 span.small { font-size: 0.75rem; }
-span.italic, li.italic { font-style: italic; }
+*.italic { font-style: italic; } /*span.italic, li.italic { font-style: italic; }*/
 
 /*span.subscript { vertical-align: sub; }*/
 
@@ -97,7 +121,7 @@ input {
 
 input[type=text] {
     color: white;
-    font-family: Roboto Medium;
+    font-weight: var(--font-medium);
     font-size: 14px;
     border: none;
     border-radius: 2px;
@@ -148,6 +172,7 @@ ul.right { align-items: end; }
 li {
     font-family: inherit;
     font-size: inherit;
+    font-variation-settings: inherit;
     color: inherit;
     line-height: inherit;
     white-space: nowrap;
@@ -156,12 +181,15 @@ li {
 }
 
 li.center { align-self: center; }
+li.left { text-align: left; }
+li.right { text-align: right; }
 
 li.break { margin-bottom: auto; }
 li.half-break { margin-bottom: 0.5em; }
 
-li.strong, td.strong { font-family: Roboto Bold; }
-li.thin { font-family: Roboto Light; }
+li.strong, td.strong { font-weight: var(--font-bold); }
+li.thin { font-weight: var(--font-light); }
+
 li.indent { margin-left: 0.5em; }
 
 *.legendary { color: #ff8000; }
@@ -189,7 +217,7 @@ th, td {
 }
 
 th {
-    font-family: Roboto Bold;
+    font-weight: var(--font-bold);
     color: white;
     background-color: var(--purple200);
 }
@@ -280,13 +308,17 @@ table.bevel img, table.bevel .winrate-bar { border-radius: 2px; }
 
 
 /* Row Elements ★ ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ★ */
+.sq-crop {
+    transform: scale(1.1);
+}
+
 .winrate-bar {
     height: 50%;
     display: flex;
     align-items: center;
     border-radius: 2px;
     overflow: hidden;
-    font-family: Roboto Medium;
+    font-weight: var(--font-medium);
     color: #d8d8d8;
     background-color: var(--loss-red100);
 }
@@ -298,6 +330,7 @@ table.bevel img, table.bevel .winrate-bar { border-radius: 2px; }
     align-items: inherit;
     font-family: inherit;
     font-size: inherit;
+    font-variation-settings: inherit;
     color: inherit;
     padding-left: 0.7em;
     background-color: var(--win-blue100);
@@ -381,6 +414,7 @@ table.bevel img, table.bevel .winrate-bar { border-radius: 2px; }
     --blue100: #28344E; /* --win-blue200 */
     --blue200: #2B3C5E;
     --blue300: #2F436E;
+        --blue350: #344E88;
     --blue400: #385AA2;
     --blue500: #4171D6;
     --blue600: #4A7ADF;
@@ -391,6 +425,7 @@ table.bevel img, table.bevel .winrate-bar { border-radius: 2px; }
     --red100: #59343B; /* --loss-red200 */
     --red200: #653841;
     --red300: #703C47;
+        --red350: #893447;
     --red400: #A22B46;
     --red500: #D31A45;
     --red600: #dE2D4E;
@@ -413,120 +448,28 @@ table.bevel img, table.bevel .winrate-bar { border-radius: 2px; }
     --enemy100: #9a261b;
     --enemy200: #aa372c;
     --enemy300: #d1685d;
+
+
+    --condensed:
+        "GRAD" 75,
+        "XTRA" 410,
+        "XOPQ" 88;
 }
 
 
 /* Montserrat */
-@font-face { font-family: Montserrat Light;             src: url(assets/fonts/Montserrat-Light.ttf); }
-@font-face { font-family: Montserrat;                   src: url(assets/fonts/Montserrat-Regular.ttf); }
-@font-face { font-family: Montserrat Medium;            src: url(assets/fonts/Montserrat-Medium.ttf); }
-@font-face { font-family: Montserrat Semi Bold;         src: url(assets/fonts/Montserrat-SemiBold.ttf); }
-@font-face { font-family: Montserrat Bold;              src: url(assets/fonts/Montserrat-Bold.ttf); }
-@font-face { font-family: Montserrat Extra Bold;        src: url(assets/fonts/Montserrat-ExtraBold.ttf); }
-
-/* Roboto */
-@font-face { font-family: Roboto Thin;                  src: url(assets/fonts/Roboto-Thin.ttf); }
-@font-face { font-family: Roboto Light;                 src: url(assets/fonts/Roboto-Light.ttf); }
-@font-face { font-family: Roboto;                       src: url(assets/fonts/Roboto-Regular.ttf); }
-@font-face { font-family: Roboto Medium;                src: url(assets/fonts/Roboto-Medium.ttf); }
-@font-face { font-family: Roboto Bold;                  src: url(assets/fonts/Roboto-Bold.ttf); }
-@font-face { font-family: Roboto Black;                 src: url(assets/fonts/Roboto-Black.ttf); }
-
-/* Roboto Condensed */
-@font-face { font-family: Roboto Condensed Thin;        src: url(assets/fonts/RobotoCondensed-Thin.ttf); }
-@font-face { font-family: Roboto Condensed Light;       src: url(assets/fonts/RobotoCondensed-Light.ttf); }
-@font-face { font-family: Roboto Condensed;             src: url(assets/fonts/RobotoCondensed-Regular.ttf); }
-@font-face { font-family: Roboto Condensed Medium;      src: url(assets/fonts/RobotoCondensed-Medium.ttf); }
-@font-face { font-family: Roboto Condensed Bold;        src: url(assets/fonts/RobotoCondensed-Bold.ttf); }
-@font-face { font-family: Roboto Condensed Black;       src: url(assets/fonts/RobotoCondensed-Black.ttf); }
+@font-face { font-family: Montserrat Light;             src: url(/assets/fonts/Montserrat-Light.ttf); }
+@font-face { font-family: Montserrat;                   src: url(/assets/fonts/Montserrat-Regular.ttf); }
+@font-face { font-family: Montserrat Medium;            src: url(/assets/fonts/Montserrat-Medium.ttf); }
+@font-face { font-family: Montserrat Semi Bold;         src: url(/assets/fonts/Montserrat-SemiBold.ttf); }
+@font-face { font-family: Montserrat Bold;              src: url(/assets/fonts/Montserrat-Bold.ttf); }
+@font-face { font-family: Montserrat Extra Bold;        src: url(/assets/fonts/Montserrat-ExtraBold.ttf); }
 
 
 @font-face {
-    font-family: Roboto Flex;
+    font-family: "Roboto Flex", serif;
     font-optical-sizing: auto;
     font-weight: 100 1000;
     font-stretch: 25% 151%;
     font-style: normal;
-    font-variation-settings:
-        /*"opsz" 8,           /*  Optical Size           6 > 144  */
-        /*"wght" 400,*/     /*  Weight               100 > 1000 */
-        /*"wdth" 100,*/     /*  Width                 25 > 151  */
-        "GRAD" 0,           /*  Grade               -200 > 150  */
-        "slnt" 0,           /*  Slant                -10 >   0  */
-        "XTRA" 445,         /*  Counter Width        323 > 603  */
-        "XOPQ" 89,          /*  Thick Stroke          27 > 175  */
-        "YOPQ" 79,          /*  Thin Stroke           25 > 135  */
-        "YTAS" 750,         /*  Ascender Height      649 > 854  */
-        "YTDE" -203,        /*  Descender Depth     -305 > -98  */
-        "YTFI" 738,         /*  Figure Height        560 > 788  */
-        "YTLC" 514,         /*  Lowercase Height     416 > 570  */
-        "YTUC" 712;         /*  Uppercase Height     528 > 760  */
-    src: url(assets/fonts/RobotoFlex-VariableFont_GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,opsz,slnt,wdth,wght.ttf);
-}
-
-@font-face {
-    font-family: Roboto Flex Condensed;
-    font-weight: 100 1000;
-    font-stretch: 80%;
-    font-variation-settings:
-        "opsz" 30,
-        /*"wght" 400,*/
-        /*"wdth" 80,*/
-        "GRAD" 70,
-        "slnt" 0,
-        "XTRA" 460,
-        "XOPQ" 100,
-        "YOPQ" 79,
-        "YTAS" 770,
-        "YTDE" -203,
-        "YTFI" 738,
-        "YTLC" 560,
-        "YTUC" 712;
-    src: url(assets/fonts/RobotoFlex-VariableFont_GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,opsz,slnt,wdth,wght.ttf);
-}
-
-@font-face {
-    font-family: Roboto Normal;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-stretch: 100%;
-    font-style: normal;
-    font-variation-settings:
-        /*"opsz" 8,*/
-        /*"wght" 400,*/
-        /*"wdth" 100,*/
-        "GRAD" 0,
-        "slnt" 0,
-        "XTRA" 400,
-        "XOPQ" 88,
-        "YOPQ" 116,
-        "YTAS" 750,
-        "YTDE" -250,
-        "YTFI" 600,
-        "YTLC" 500,
-        "YTUC" 725;
-    src: url(assets/fonts/RobotoFlex-VariableFont_GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,opsz,slnt,wdth,wght.ttf);
-}
-
-@font-face {
-    font-family: Roboto Refresh;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-stretch: 100%;
-    font-style: normal;
-    font-variation-settings:
-        /*"opsz" 8,*/
-        /*"wght" 400,*/
-        /*"wdth" 100,*/
-        "GRAD" 0,
-        "slnt" 0,
-        "XTRA" 468,
-        "XOPQ" 96,
-        "YOPQ" 79,
-        "YTAS" 750,
-        "YTDE" -203,
-        "YTFI" 738,
-        "YTLC" 514,
-        "YTUC" 712;
-    src: url(assets/fonts/RobotoFlex-VariableFont_GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,opsz,slnt,wdth,wght.ttf);
 }

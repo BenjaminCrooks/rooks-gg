@@ -33,9 +33,12 @@ table#stats {
     overflow: scroll;
 }
 table#stats thead th {
+    height: 110px;
     position: sticky;
     top: 56px;
-    height: 96px;
+}
+
+table#stats thead th:first-of-type {
     background-color: transparent;
 }
 
@@ -70,28 +73,62 @@ thead th.team100 { background-color: var(--img-bg-blue); }
 thead th.team200 { background-color: var(--img-bg-red); }
 
 th.dd-cent {
-    background-position: bottom 80% right 50%;
-    background-size: auto 140%;
+    background-position: top 0% right 50%;
+    background-size: 100% auto;
     background-blend-mode: luminosity;
     filter: brightness(100%) grayscale(25%) contrast(100%);
 }
 
-h3, h4 {
-    font-family: Roboto Medium;
-    font-weight: normal;
+th.dd-cent ul {
+    width: 110px;
+    height: 100%;
+    color: var(--text100);
+    padding: 4px;
+    gap: 0px;
+    font-size: 10px;
+    font-stretch: 75%;
+    font-variation-settings:
+        "GRAD" 75,
+        "XTRA" 440,
+        "XOPQ" 92;
+    text-shadow:
+        -1.5px -1.5px 0.1em rgba(0,0,0,0.75),
+        1.5px -1.5px 0.1em rgba(0,0,0,0.75),
+        -1.5px 1.5px 0.1em rgba(0,0,0,0.75),
+        1.5px 1.5px 0.1em rgba(0,0,0,0.75);
 }
 
-h3 > span, h4 > span {
-    font-family: Roboto;
-    font-weight: normal;
-    color: #b8b8b8;
+th.dd-cent li {
+    width: 100%;
+    overflow: hidden;
+    padding: 4px;
+}
+
+th.dd-cent li.medium { font-weight: 550; margin-bottom: auto; }
+th.dd-cent li.medium span { color: var(--text400); font-weight: var(--font-regular); }
+
+th.dd-cent li.medium a:hover {
+    color: var(--text500);
+}
+th.dd-cent li.medium a:hover span { color: var(--text500); }
+
+
+span.role-icon {
+    display: inline-block;
+    height: 1em;
+    aspect-ratio: 1 / 1;
+    vertical-align: top;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 2px;
+    transform: scale(1.5);
+    margin-left: 4px;
 }
 
 
 
-
-/*tbody td:nth-child(2)  { background-color: var(--blue100); } tbody td:nth-child(3)  { background-color: var(--blue200); } tbody td:nth-child(4)  { background-color: var(--blue300); } tbody td:nth-child(5)  { background-color: var(--blue400); } tbody td:nth-child(6)  { background-color: var(--blue500); } tbody td:nth-child(7)  { background-color: var(--blue600); } tbody td:nth-child(8)  { background-color: var(--blue700); } tbody td:nth-child(9)  { background-color: var(--blue800); } tbody td:nth-child(10) { background-color: var(--blue900); }*/
-/*tbody td:nth-child(2)  { background-color: var(--red100); } tbody td:nth-child(3)  { background-color: var(--red200); } tbody td:nth-child(4)  { background-color: var(--red300); } tbody td:nth-child(5)  { background-color: var(--red400); } tbody td:nth-child(6)  { background-color: var(--red500); } tbody td:nth-child(7)  { background-color: var(--red600); } tbody td:nth-child(8)  { background-color: var(--red700); } tbody td:nth-child(9)  { background-color: var(--red800); } tbody td:nth-child(10) { background-color: var(--red900); }*/
 
 td.team100:nth-child(even) { background-color: var(--blue100); }
 td.team100:nth-child(odd) { background-color: var(--blue200); }
@@ -101,30 +138,36 @@ td.team200:nth-child(odd) { background-color: var(--red200); }
 
 table#stats tr:hover > td:first-of-type {
     background-color: var(--purple500);
+    border-color: var(--purple700);
+    border-bottom: 1px solid var(--purple700);
 }
 
 table#stats tr:hover > td {
     color: white;
+    font-variation-settings:
+        "GRAD" 100;
 }
 
-tr:hover td.team100:nth-child(even) { background-color: var(--blue300); }
-tr:hover td.team100:nth-child(odd) { background-color: var(--blue400); }
+tr:hover td.team100:nth-child(even) { background-color: var(--blue300); border-color: var(--blue700); border-bottom: 1px solid var(--blue700); }
+tr:hover td.team100:nth-child(odd) { background-color: var(--blue350); border-color: var(--blue700); border-bottom: 1px solid var(--blue700); }
 
-tr:hover td.team200:nth-child(even) { background-color: var(--red300); }
-tr:hover td.team200:nth-child(odd) { background-color: var(--red400); }
+tr:hover td.team200:nth-child(even) { background-color: var(--red300); border-color: var(--red700); border-bottom: 1px solid var(--red700);  }
+tr:hover td.team200:nth-child(odd) { background-color: var(--red350); border-color: var(--red700); border-bottom: 1px solid var(--red700);  }
 
 
 
 
 
 table#runes ul {
-    font-size: 8px;
+    font-size: 9px;
     gap: 0.75em;
     width: 100%;
+    font-stretch: 50%;
+    font-variation-settings: var(--condensed);
 }
 
 table#runes li.strong {
-    font-size: 9px;
+    font-size: 10px;
     color: #c8c8c8;
 }
 
@@ -148,15 +191,18 @@ table#runes img {
 
 <main>
 
-<h3><span class="dull">matchId</span> – <%= general.metadata.matchId %></h3>
-<h4><span class="dull">gameVersion</span> – <%= general.info.gameVersion %></h4>
-<h4><span class="dull">gameId</span> – <%= general.info.gameId %></h4>
-<br>
-<h4><span class="dull">gameCreation</span> – <%= (new Date(general.info.gameCreation)).toLocaleTimeString("en-US", {timeZone: "America/New_York",hour: "numeric",minute: "numeric"}) %></h4>
-<h4><span class="dull">gameStartTimestamp</span> – <%= (new Date(general.info.gameStartTimestamp)).toLocaleTimeString("en-US", {timeZone: "America/New_York",hour: "numeric",minute: "numeric"}) %></h4>
-<h4><span class="dull">gameEndTimestamp</span> – <%= (new Date(general.info.gameEndTimestamp)).toLocaleTimeString("en-US", {timeZone: "America/New_York",hour: "numeric",minute: "numeric"}) %></h4>
-<h4><span class="dull">gameDateTimestamp</span> – <%= general.gameDateTimestamp %></h4>
-<h4><span class="dull">gameDuration</span> – <%= general.info.gameDuration %></h4>
+<ul>
+    <li><span class="dull">matchId</span> – <%= general.metadata.matchId %></li>
+    <li><span class="dull">gameVersion</span> – <%= general.info.gameVersion %></li>
+    <li><span class="dull">gameId</span> – <%= general.info.gameId %></li>
+    <br>
+    <li><span class="dull">gameCreation</span> – <%= (new Date(general.info.gameCreation)).toLocaleTimeString("en-US", {timeZone: "America/New_York",hour: "numeric",minute: "numeric"}) %></li>
+    <li><span class="dull">gameStartTimestamp</span> – <%= (new Date(general.info.gameStartTimestamp)).toLocaleTimeString("en-US",{timeZone: "America/New_York",hour: "numeric",minute: "numeric"}) %></li>
+    <li><span class="dull">gameEndTimestamp</span> – <%= (new Date(general.info.gameEndTimestamp)).toLocaleTimeString("en-US", {timeZone: "America/New_York",hour: "numeric",minute: "numeric"}) %></li>
+    <li><span class="dull">gameDateTimestamp</span> – <%= general.gameDateTimestamp %></li>
+    <li><span class="dull">gameDuration</span> – <%= general.info.gameDuration %></li>
+</ul>
+
 <br><br>
 
 
@@ -182,7 +228,15 @@ table#runes img {
             <% participants.forEach(function(player, index, array) { %>
             <!-- <th><img class="team<%= player.teamId  %>" src="<%= player.champion.img.centered %>"></th> -->
 
-            <th class="dd-cent team<%= player.teamId %>" style="background-image: url('<%= player.champion.img.centered %>')"></th>
+            <th class="dd-cent team<%= player.teamId %>" style="background-image: url('<%= player.champion.img.tiles %>')">
+                <ul class="left">
+                    <li class="medium left"><a target="_blank" href="<%= 'https://www.op.gg/' %>"><%= player.riotIdGameName %><span>#<%= player.riotIdTagline %></span></a></li>
+                    <li class="right">
+                        <%= player.championName %>
+                        <span class="role-icon" style="background-image: url('assets/icons/svgs/role/role-<%= player.position %>-w.svg');"></span>
+                    </li>
+                </ul>
+            </th>
             <% }) %>
         </tr>
     </thead>

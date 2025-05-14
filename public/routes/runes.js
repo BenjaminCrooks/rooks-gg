@@ -9,7 +9,7 @@ var query = require("../controllers/query.js")
 
 
 router.use("/value-compare", (req, res, next) => {
-
+	console.log(dd.liveVersion)
 	if (req.query.champion === undefined) { req.query.champion = "Anivia" }
 	if (req.query.datatype === undefined) { req.query.datatype = "damage" }
 
@@ -20,7 +20,7 @@ router.use("/value-compare", (req, res, next) => {
 	}
 
 	req.query.rune = req.query.rune.map(function(rune) {
-		rune = dd.rune(parseInt(rune))
+		rune = dd.rune(parseInt(rune), dd.liveVersion)
 		return rune.id
 	}).filter(function(rune) {
 		return rune != undefined
@@ -61,6 +61,7 @@ router.use("/value-compare", (req, res, next) => {
 			gameDuration: "$info.gameDuration",
 			gameLength: 1,
 			championName: 1,
+			championId: 1,
 			win: 1,
 
 			totalDamageDealtToChampions: 1,
@@ -131,7 +132,7 @@ router.use("/value-compare", (req, res, next) => {
  	next()
 }, query, (req, res, next) => {
 	res.locals.matches = res.locals.data[0].history.map(function(match) {
-		match.champion = dd.champion(match.championName)
+		match.champion = dd.champion(match.championId)
 		match.vars = match.perk
 		match.perk = dd.rune(match.perk.perk)
 		match.gameDuration = tools.gameLength(match.gameDuration)
@@ -150,8 +151,8 @@ router.use("/value-compare", (req, res, next) => {
 
 
 router.get("/value-compare", (req, res) => {
-	// res.send(res.locals.data[0])
 	res.render("table-runes.ejs", {
+		liveVersion: dd.liveVersion,
 		runeArray: dd.runeData,
 		checked: req.query.rune,
 		enabled: [ 8112, 8126, 8369, 8014, 8017, 8299, 8214, 8229, 8237 ]

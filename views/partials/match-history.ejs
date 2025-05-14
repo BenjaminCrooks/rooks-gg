@@ -7,7 +7,7 @@
 
     <a class="match-details" target="_blank" href="/match/details?matchid=<%= element.matchId %>"></a>
 
-    <div class="dd-center" style="background-image: url('<%= element.champion.img.centered %>');"></div>
+    <div class="dd-center" style="background-image: url('<%= element.champion.img.centeredmed %>');"></div>
     <div class="champion-level v-container"><%= element.champLevel %></div>
 
     
@@ -20,8 +20,8 @@
         <div class="side-bar"></div>
         <li class="strong"><% if (element.gameEndedInEarlySurrender === true) { %>Remake<% } else if (element.win === true) { %>Victory<% } else if (element.win === false) { %>Defeat<% } %></li>
         <li class="break"><%= element.length %></li>
-        <li><%= element.date.slice(0, -3) %><span class="small"><%= element.date.slice(-2) %></span></li>
-        <li class="player"><a target="_blank" href="https://www.op.gg/summoners/na/<%= element.riotIdGameName %>-<%= element.riotIdTagline %>"><%= element.summonerName %></a></li>
+        <li class="date"><%= element.date.slice(0, -3) %><span class="small"><%= element.date.slice(-2) %></span></li>
+        <li class="player"><a target="_blank" href="https://www.op.gg/summoners/na/<%= element.riotIdGameName %>-<%= element.riotIdTagline %>"><%= element.riotIdGameName %></a></li>
     </ul>
     
     
@@ -37,9 +37,9 @@
             </div>
 
             <div class="rune-stats v-container">
-                <img src="assets/dragontail/perk-images/StatMods/<%= element.stats.offense %>.png" alt="Stat">
-                <img src="assets/dragontail/perk-images/StatMods/<%= element.stats.flex %>.png" alt="Stat">
-                <img src="assets/dragontail/perk-images/StatMods/<%= element.stats.defense %>.png" alt="Stat">
+                <img src="<%= element.stats.offense.img %>" alt="Stat">
+                <img src="<%= element.stats.flex.img %>" alt="Stat">
+                <img src="<%= element.stats.defense.img %>" alt="Stat">
             </div>
 
             <div class="summoner-spells v-container">
@@ -68,9 +68,9 @@
 
 
     <div class="vision-data v-container">
-        <div class="vision-pinks v-container shadow" style="background-image:url('/assets/dragontail/item/2055.png');"><%= element.visionWardsBoughtInGame %></div>
-        <div class="vision-score v-container shadow" style="background-image:url('/assets/dragontail/item/3340.png');"><%= element.visionScore %></div>
-        <div class="vision-killed v-container shadow" style="background-image:url('/assets/dragontail/item/3364.png');"><%= element.wardsKilled %></div>
+        <div class="vision-pinks v-container shadow" style="background-image:url('/assets/dragontail/<%= liveVersion %>/item/2055.png');"><%= element.visionWardsBoughtInGame %></div>
+        <div class="vision-score v-container shadow" style="background-image:url('/assets/dragontail/<%= liveVersion %>/item/3340.png');"><%= element.visionScore %></div>
+        <div class="vision-killed v-container shadow" style="background-image:url('/assets/dragontail/<%= liveVersion %>/item/3364.png');"><%= element.wardsKilled %></div>
     </div>
 
 

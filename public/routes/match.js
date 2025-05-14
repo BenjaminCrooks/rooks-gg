@@ -5,6 +5,7 @@ const router = express.Router()
 
 router.use(express.static("public"))
 
+var aggr = require("../aggregation.js")
 var dd = require("../data-dragon.js")
 var tools = require("../tools.js")
 var { liveGame, league } = require("../controllers/axios.js")
@@ -72,12 +73,12 @@ async (req, res, next) => {
 			// return player
 
 			const runes = {
-				keystone: dd.rune(player.perks.perkIds.shift()),
+				keystone: dd.rune(player.perks.perkIds.shift(), res.locals.liveVersion),
 				styles: player.perks.perkIds.toSpliced(5, 3).map(function(styleId) {
-					return dd.rune(styleId)
+					return dd.rune(styleId, res.locals.liveVersion)
 				}),
 				stats: player.perks.perkIds.toSpliced(0, 5).map(function(statId) {
-					return dd.statmod(statId)
+					return dd.rune(statId, res.locals.liveVersion)
 				})
 			}
 
@@ -90,9 +91,9 @@ async (req, res, next) => {
 				gameName: player.riotId.split("#").at(0),
 				tagLine: player.riotId.split("#").at(1),
 				opgg: `https://www.op.gg/summoners/na/${player.riotId.replace("#", "-").replaceAll(" ", "%20")}`,
-				spell1: dd.summoner(player.spell1Id),
-				spell2: dd.summoner(player.spell2Id),
-				champion: dd.champion(player.championId),
+				spell1: dd.summoner(player.spell1Id, res.locals.liveVersion),
+				spell2: dd.summoner(player.spell2Id, res.locals.liveVersion),
+				champion: dd.champion(player.championId, res.locals.liveVersion),
 				runes,
 				league: player.league
 			}
@@ -107,7 +108,7 @@ async (req, res, next) => {
 		res.locals.bans.bannedChampions.forEach(function(ban) {
 			res.locals.bans[ban.teamId.toString()].push({
 				pickTurn: ban.pickTurn,
-				champion: dd.champion(ban.championId)
+				champion: dd.champion(ban.championId, res.locals.liveVersion)
 			})
 		})
 
@@ -220,6 +221,7 @@ router.use("/details", (req, res, next) => {
 					matchId: 1,
 					metadata: 1,
 					info: 1,
+					gameVersion: aggr.gameVersion,
 					gameDateTimestamp: 1,
 					gameLength: 1
 				}}
@@ -276,11 +278,11 @@ router.use("/details", (req, res, next) => {
 	res.locals.participants = res.locals.data[0].players.sort(function(a, b) {
 		return a.participantId - b.participantId
 	}).map(function(p) {
-		p.champion = dd.champion(p.championName)
-		p.summoner1 = dd.summoner(p.summoner1Id)
-		p.summoner2 = dd.summoner(p.summoner2Id)
-		p.items = p.items.map(function(item) { return dd.item(item) })
-		p.perks.styles = p.perks.styles.map(function(style) { return dd.rune(style) })
+		p.champion = dd.champion(p.championId, res.locals.general.gameVersion)
+		p.summoner1 = dd.summoner(p.summoner1Id, res.locals.general.gameVersion)
+		p.summoner2 = dd.summoner(p.summoner2Id, res.locals.general.gameVersion)
+		p.items = p.items.map(function(item) { return dd.item(item, res.locals.general.gameVersion) })
+		p.perks.styles = p.perks.styles.map(function(style) { return dd.rune(style, res.locals.general.gameVersion) })
 		return p
 	})
 
@@ -289,8 +291,7 @@ router.use("/details", (req, res, next) => {
 
 
 router.get("/details", (req, res) => {
-	// res.send(res.locals.general)
-	// res.send(res.locals.participants[0])
+	// res.send(res.locals)
 	res.render("match-details.ejs", { matchVars })
 })
 

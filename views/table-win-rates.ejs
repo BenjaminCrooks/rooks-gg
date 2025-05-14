@@ -13,59 +13,73 @@
 
 <style>
 
-	main {
-		width: auto;
-		align-items: center;
-		gap: 64px;
-		padding: 0px 8px 8px 8px;
-	}
+main {
+	width: auto;
+	align-items: center;
+	gap: 64px;
+	padding: 0px 8px 8px 8px;
+}
 
-	table {
-		table-layout: auto;
+table {
+	table-layout: auto;
 /*		width: 100%;*/
-	}
+}
 
-	th {
-		height: 48px;
-	}
+th {
+	height: 48px;
+}
 
-	td {
-		height: 64px;
-		padding: 8px 16px;
-	}
+td {
+	height: 64px;
+	padding: 8px 16px;
+}
 
-	table ul {
-		gap: 8px;
-	}
+table ul {
+	gap: 8px;
+}
 
-	.winrate-bar {
-		width: 100%;
-		font-size: 11px;
-	}
+.winrate-bar {
+	width: 100%;
+	font-size: 11px;
+}
 
-	td.champion-name, td.winrate-perc {
-		padding-left: 4px;
-		text-align: left;
-		font-family: Roboto Bold;
-	}
+td.champion-name, td.winrate-perc {
+	padding-left: 4px;
+	text-align: left;
+	font-weight: var(--font-bold);
+}
 
-	tr > td:first-of-type { font-family: Roboto Medium; } /* rank; col 1 */
-	td.icon { padding: 8px; }
-	td.icon.role { padding: 18px; }
-	td.icon > img { width: 100%; }
+tr > td:first-of-type { font-weight: var(--font-medium); } /* rank; col 1 */
+td.icon { padding: 8px; }
+td.icon.role { padding: 18px; }
+td.icon > img { width: 100%; }
 
-	span.icon {
-		display: inline-block;
-		height: 1em;
-		width: 1em;
-		background-repeat: no-repeat;
-    	background-position: top 0% left 0%;
-    	background-size: cover;
-    	vertical-align: top;
-	}
+span.icon {
+	display: inline-block;
+	height: 1em;
+	width: 1em;
+	background-repeat: no-repeat;
+	background-position: top 0% left 0%;
+	background-size: cover;
+	vertical-align: top;
+}
 
-	span.icon.cs { background-image: url("assets/icons/svgs/minion-grey.svg"); }
-	span.icon.gold { background-image: url("assets/icons/svgs/gold-grey.svg"); }
+span.icon.cs { background-image: url("assets/icons/svgs/minion-grey.svg"); }
+span.icon.gold { background-image: url("assets/icons/svgs/gold-grey.svg"); }
+
+td.champion.icon > img {
+	border-radius: 4px;
+}
+
+header a {
+	padding: 8px 16px;
+}
+
+header a:hover {
+	color: white;
+	font-variation-settings:
+    	"GRAD" 150;
+}
 
 </style>
 
@@ -75,6 +89,14 @@
 
 <%- include("partials/navigation-bar") %>
 
+
+<header>
+	<a href="/win-rates/personal">Personal</a>
+	<a href="/win-rates/ally">Ally</a>
+	<a href="/win-rates/enemy">Enemy</a>
+	<a href="/win-rates/overall">Overall</a>
+	<a class="italic" href="/win-rates/personal?account=rRooks&role=false">(Query Params)</a>
+</header>
 
 <main>
 

@@ -172,7 +172,7 @@ div.style.Inspiration > input { border-color: #48afbb; }/* inspiration 49a9b8 48
 #reload {
 	padding: 10px 14px;
     border-radius: 3px;
-    font-family: Roboto Medium;
+    font-weight: var(--font-medium);
     cursor: pointer;
     color: white;
     background-color: var(--purple500);
@@ -208,7 +208,7 @@ div.style.Inspiration > input { border-color: #48afbb; }/* inspiration 49a9b8 48
 			<% style.slots.forEach(function(slot, slotIndex) { %>
 				<% slot.runes.forEach(function(rune) { %>
 				<div class="<% if (slotIndex == 0) { %>keystone<% } else { %>style<% } %> <%= style.key %>">
-					<input <% if (!(enabled.includes(rune.id))) { %>disabled <% } else if (checked.includes(rune.id)) { %>checked <% } %>data-rune="<%= rune.id %>" type="checkbox" style="background-image: url('/assets/dragontail/<%= rune.icon %>');">
+					<input <% if (!(enabled.includes(rune.id))) { %>disabled <% } else if (checked.includes(rune.id)) { %>checked <% } %>data-rune="<%= rune.id %>" type="checkbox" style="background-image: url('/assets/dragontail/<%= liveVersion %>/<%= rune.icon %>');">
 				</div>
 				<% }) %>
 			<% }) %>

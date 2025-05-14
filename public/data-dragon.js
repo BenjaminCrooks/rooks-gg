@@ -2,197 +2,326 @@ const fs = require("fs")
 const path = require("path")
 
 
-function imgPath(root, file) {
-	return path.join("/assets/dragontail", root, file).replace(/\\/g,"/")
+function imgPath(version, group, full) {
+	return path.join("/assets/dragontail", version, group, full).replace(/\\/g,"/")
 }
 
-
-// Champions
-var champion = JSON.parse(fs.readFileSync("./public/assets/dragontail/data/champion.JSON", "utf8")).data
-Object.entries(champion).forEach(function([key, value]) {
-	value["img"] = {
-		"centered": imgPath("/champion/centered", value["id"]+"_0.jpg"),
-		"loading": imgPath("/champion/loading", value["id"]+"_0.jpg"),
-		"loadingcrop": imgPath("/champion/loadingcrop", value["id"]+"_0.jpg"),
-		"splash": imgPath("/champion/splash", value["id"]+"_0.jpg"),
-		"square": imgPath("/champion/square", value["id"]+".png"),
-		"squarecrop": imgPath("/champion/squarecrop", value["id"]+".png"),
-		"tile": imgPath("/champion/tiles", value["id"]+"_0.jpg")
+function readJSON(version, file) {
+	try {
+		return JSON.parse(fs.readFileSync(`./public/assets/dragontail/${version}/data/${file}.JSON`, "utf8"))
+	} catch (error) {
+		console.log(`./public/assets/dragontail/${version}/data/${file}.JSON`)
+		console.log(error)
+		return undefined
 	}
-	champion[value.key] = value
-})
+}
 
-champion["-1"] = {
-	"name": "blank",
-	"img": { "square": "/assets/icons/svgs/blank.svg", "squarecrop": "/assets/icons/svgs/blank.svg" }
+function dupeJSON(json) {
+	if (json !== undefined) {
+		return JSON.parse(JSON.stringify(json))
+	} else {
+		return undefined
+	}
 }
 
 
-// Runes
-var runesReforged = JSON.parse(fs.readFileSync("./public/assets/dragontail/data/runesReforged.JSON", "utf8"))
-var runes = {}
-runesReforged.forEach(function(element, eleIndex) {
-	runes[element.id] = { "id": element.id, "key": element.key, "icon": element.icon, "name": element.name, "img": path.join("/assets/dragontail", element.icon) }
-	element.slots.forEach(function(slot, slotIndex) {
-		slot.runes.forEach(function(item, itemIndex) {
-			item.img = path.join("/assets/dragontail", item.icon)
-			runes[item.id] = item
-		}) 
-	})
-})
+// Data file > object parsing
+function parseChampion(version) {
+	var data = readJSON(version, "championFull").data
+	var parsed = {}
 
-var statMods = {}
-var cDragonPerks = JSON.parse(fs.readFileSync("./public/assets/cdragon/perks.JSON", "utf8"))
-cDragonPerks.forEach(function(perk) {
-	if (perk.id in runes) {
-		runes[perk.id]["endOfGameStatDescs"] = perk.endOfGameStatDescs
-	} else if (perk.id.toString().charAt(0) == "5") {
-		statMods[perk.id] = {
-			"id": perk.id,
-			"name": perk.name,
-			"shortDesc": perk.shortDesc,
-			"img": path.join("/assets/dragontail", perk.iconPath.slice(perk.iconPath.indexOf("perk-images")))
+	Object.entries(data).forEach(function([key, value]) {
+		parsed[value.key] = {
+			id: value.id,
+			key: value.key,
+			name: value.name,
+			title: value.title,
+			tags: value.tags,
+			passive: {
+				name: value.passive.name,
+				img: imgPath(version, value.passive.image.group, value.passive.image.full)
+			},
+			spells: value.spells.map(function(spell) {
+				return {
+					id: spell.id,
+					name: spell.name,
+					img: imgPath(version, spell.image.group, spell.image.full)
+				}
+			}),
+			img: {
+				square: imgPath(version, "champion/square", value.id + ".png"),
+					squarecrop: imgPath(version, "champion/squarecrop", value.id + ".png"),
+				centered: imgPath(version, "champion/centered", value.id + "_0.jpg"),
+					centeredmed: imgPath(version, "champion/centeredmed", value.id + "_0.jpg"),
+					centeredsmall: imgPath(version, "champion/centeredsmall", value.id + "_0.jpg"),
+				loading: imgPath(version, "champion/loading", value.id + "_0.jpg"),
+					loadingcrop: imgPath(version, "champion/loadingcrop", value.id + "_0.jpg"),
+				splash: imgPath(version, "champion/splash", value.id + "_0.jpg"),
+				tiles: imgPath(version, "champion/tiles", value.id + "_0.jpg")
+			}
 		}
+	})
+
+	parsed["-1"] = {
+		name: "blank",
+		img: { square: "/assets/icons/svgs/blank.svg" }
+	}
+
+	return parsed
+}
+
+function parseRune(version) {
+	var data = readJSON(version, "runesReforged")
+	var parsed = {}
+
+	data.forEach(function(rune) {
+		parsed[rune.id] = {
+			id: rune.id,
+			key: rune.key,
+			icon: rune.icon,
+			name: rune.name,
+			img: path.join("/assets/dragontail", version, rune.icon)
+		}
+
+		rune.slots.forEach(function(slot) {
+			slot.runes.forEach(function(style) {
+				cDragon = cDragonPerks[style.id]
+				parsed[style.id] = {
+					id: style.id,
+					key: style.key,
+					icon: style.icon,
+					name: style.name,
+					shortDesc: style.shortDesc,
+					longDesc: style.longDesc,
+					tooltip: cDragon.tooltip,
+					img: path.join("/assets/dragontail", version, style.icon),
+					endOfGameStatDescs: cDragon.endOfGameStatDescs
+				}
+			}) 
+		})
+	})
+
+	cDragonPerks.statMods.forEach(function(statMod) {
+		statMod.img = statMod.img.replace("@version@", version)
+		parsed[statMod.id] = statMod
+	})
+
+	return parsed
+}
+
+function parseItem(version) {
+	var data = readJSON(version, "item").data
+
+	Object.entries(data).forEach(function([key, value]) {
+		data[key] = {
+			name: value.name,
+			description: value.description,
+			from: value.from,
+			gold: value.gold,
+			tags: value.tags,
+			stats: value.stats,
+			img: imgPath(version, value.image.group, value.image.full)
+		}
+	})
+
+	return data
+}
+
+function parseSummoner(version) {
+	var data = readJSON(version, "summoner").data
+	var parsed = {}
+
+	Object.entries(data).forEach(function([key, value]) {
+		parsed[value.key] = {
+			id: value.id,
+			key: value.key,
+			name: value.name,
+			description: value.description,
+			tooltip: value.tooltip,
+			cooldown: value.cooldown,
+			cooldownBurn: value.cooldownBurn,
+			img: imgPath(version, value.image.group, value.image.full)
+		}
+	})
+
+	return parsed
+}
+
+
+// Version functions
+function versionData(version) {
+	return {
+		champion: parseChampion(version),
+		rune: parseRune(version),
+		item: parseItem(version),
+		summoner: parseSummoner(version)
+	}
+}
+
+function checkVersion(version) {
+	if (objectData[version] === undefined) {
+		objectData[version] = versionData(version)
+		console.log(`Loading data for v${version}`)
+	}
+}
+
+
+
+var cDragonPerks = { statMods: [] }
+JSON.parse(fs.readFileSync("./public/assets/cdragon/perks.JSON", "utf8")).forEach(function(perk) {
+	cDragonPerks[perk.id] = {
+		tooltip: perk.tooltip,
+		endOfGameStatDescs: perk.endOfGameStatDescs
+	}
+
+	if (perk.iconPath.includes("StatMods")) {
+		cDragonPerks.statMods.push(
+			{
+				id: perk.id,
+				name: perk.name,
+				tooltip: perk.tooltip,
+				shortDesc: perk.shortDesc,
+				longDesc: perk.longDesc,
+				endOfGameStatDescs: perk.endOfGameStatDescs,
+				img: perk.iconPath.replace("lol-game-data/assets/v1", "assets/dragontail/@version@")
+			}
+		)
 	}
 })
 
 
-// Items
-var item = JSON.parse(fs.readFileSync("./public/assets/dragontail/data/item.JSON", "utf8")).data
-Object.entries(item).forEach(function([key, value]) {
-	value["img"] = imgPath(value["image"]["group"], value["image"]["full"])
-	item[value.key] = value
-})
+// Versions
+var versions = JSON.parse(fs.readFileSync("./public/assets/dragontail/versions.JSON", "utf8"))
+var liveVersion = versions[0]
 
 
-// Summoner Spells
-var summoner = JSON.parse(fs.readFileSync("./public/assets/dragontail/data/summoner.JSON", "utf8")).data
-Object.entries(summoner).forEach(function([key, value]) {
-	value["img"] = imgPath(value["image"]["group"], value["image"]["full"])
-	summoner[value.key] = value
-})
+var objectData = {}
+objectData[liveVersion] = versionData(liveVersion)
+
+
+
+
 
 
 // Maps
-var maps = JSON.parse(fs.readFileSync("./public/assets/dragontail/data/map.JSON", "utf8")).data
-Object.entries(maps).forEach(function([key, value]) {
-	value["img"] = imgPath(value["image"]["group"], value["image"]["full"])
+var staticMaps = JSON.parse(fs.readFileSync(`./public/assets/dragontail/${liveVersion}/data/map.JSON`, "utf8")).data
+
+Object.entries(staticMaps).forEach(function([key, value]) {
+	var svgPath = "/assets/icons/svgs"
+	value["img"] = imgPath(liveVersion, value.image.group, value.image.full)
+
 	if (value.MapId == 11) {
-		value["svg"] = path.join("/assets/icons/svgs/map", "classic.svg").replace(/\\/g,"/")
+		value["svg"] = path.join(svgPath, "/map/classic.svg")
 	} else if (value.MapId == 12) {
-		value["svg"] = path.join("/assets/icons/svgs/map", "aram.svg").replace(/\\/g,"/")
+		value["svg"] = path.join(svgPath, "/map/aram.svg")
 	} else if (value.MapId == 22) {
-		value["svg"] = path.join("/assets/icons/svgs/map", "cherry.svg").replace(/\\/g,"/")
+		value["svg"] = path.join(svgPath, "/map/cherry.svg")
+	} else {
+		value["svg"] = path.join(svgPath, "blank.svg")
 	}
-	summoner[value.key] = value
 })
 
 
 // Queues
-var queues = JSON.parse(fs.readFileSync("./public/assets/dragontail/data/queues.JSON", "utf8"))
-var queue = {}
-queues.forEach(function(element, index) {
+var queues = {}
+JSON.parse(fs.readFileSync("./public/assets/dragontail/queues.JSON", "utf8")).forEach(function(element) {
 	if (element.description !== null) {
-		element.desc = element.description.replace(" games","")
+		element.desc = element.description.replace("games","").replace("5v5","").trim()
 	} else {
 		element.desc = null
 	}
-	queue[element.queueId] = element
+	queues[element.queueId] = element
 })
+
 
 
 module.exports = {
 
-	runeData: runesReforged,
+	runeData: readJSON(liveVersion, "runesReforged"),
 
-	runes,
+	liveVersion,
 
-	rune: function (rune) {
+	champion: function (championId, version) {
 		/**
-		 * Obtains rune data object by id
-		 * 
-		 * @param {Object|number} - perk (+ vars) object | perk id
+		 * @param {string} - championId
+		 * @param {string} - gameVersion (X.X.1)
+		 * @returns {Object} - chamion data object
+		 */
+
+		if (version === undefined) { version = liveVersion };
+		checkVersion(version)
+		return dupeJSON(objectData[version].champion[championId])
+	},
+
+	rune: function (rune, version) {
+		/**
+		 * @param {Object|number} - perk & vars object | perk id
+		 * @param {string} - gameVersion (X.X.1)
 		 * @returns {Object} - rune data object
 		 */
 
-		if (typeof rune === 'object') {
-			let runeObject = JSON.parse(JSON.stringify(runes[rune.perk]))
-			runeObject.endOfGameStatDescs = runeObject.endOfGameStatDescs.map(function(statDesc) {
-				return statDesc.replace("@eogvar1@", rune.var1).replace("@eogvar2@", rune.var2).replace("@eogvar3@", rune.var3)
-			})
-			return runeObject
-		} else if (typeof rune === 'number') {
-			return JSON.parse(JSON.stringify(runes[rune]))
+		if (version === undefined) { version = liveVersion };
+		checkVersion(version)
+		if (typeof rune === "object") {
+			if (objectData[version].rune[rune.perk] === undefined) {
+				return undefined
+			} else {
+				let runeObject = dupeJSON(objectData[version].rune[rune.perk])
+				runeObject.endOfGameStatDescs = runeObject.endOfGameStatDescs.map(function(statDesc) {
+					return statDesc.replace("@eogvar1@", rune.var1).replace("@eogvar2@", rune.var2).replace("@eogvar3@", rune.var3)
+				})
+				return runeObject
+			}
+		} else if (typeof rune === "number") {
+			return dupeJSON(objectData[version].rune[rune])
 		} else if (!isNaN(Number(rune))) {
-			return JSON.parse(JSON.stringify(runes[Number(rune)]))
+			return dupeJSON(objectData[version].rune[Number(rune)])
 		} else {
 			return undefined
 		}
 	},
 
-	statmod: function (id) {
+	item: function (id, version) {
 		/**
-		 * Obtains rune stat modifier object by perk id
-		 * 
-		 * @param {number} - id
-		 * @returns {Object} - stat mod data object
-		 */
-
-		return statMods[id]
-	},
-
-	champion: function (input) {
-		/**
-		 * Obtains champion data object by key OR id
-		 * 
-		 * @param {string} - key
-		 * @returns {Object} - champion data object
-		 */
-
-		return champion[input]
-	},
-
-	item: function (id) {
-		/**
-		 * Obtains item data object by key
-		 * 
-		 * @param {number} - id
+		 * @param {string} - item id
+		 * @param {string} - gameVersion (X.X.1)
 		 * @returns {Object} - item data object
 		 */
 
-		return item[id]
+		if (version === undefined) { version = liveVersion };
+		checkVersion(version)
+		return dupeJSON(objectData[version].item[id])
 	},
 
-	summoner: function (key) {
+	summoner: function (key, version) {
 		/**
-		 * Obtains summoner spell data object by key
-		 * 
-		 * @param {number} - key
+		 * @param {string} - summoner spell key
+		 * @param {string} - gameVersion (X.X.1)
 		 * @returns {Object} - summoner spell data object
 		 */
 
-		return summoner[key]
+		if (version === undefined) { version = liveVersion };
+		checkVersion(version)
+		return dupeJSON(objectData[version].summoner[key])
 	},
 
-	maps: function (key) {
+
+
+	maps: function (id) {
 		/**
-		 * Obtains map data object by key
-		 * 
-		 * @param {number} - key
+		 * @param {string} - map id
 		 * @returns {Object} - map data object
 		 */
 
-		return maps[key]
+		return dupeJSON(staticMaps[id])
 	},
 
-	queue: function (key) {
+	queue: function (id) {
 		/**
-		 * Obtains queue data object by key
-		 * 
-		 * @param {number} - key
+		 * @param {string} - queue id
 		 * @returns {Object} - queue data object
 		 */
 
-		return queue[key]
+		return dupeJSON(queues[id])
 	}
 }

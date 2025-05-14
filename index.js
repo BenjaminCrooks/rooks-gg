@@ -21,11 +21,17 @@ app.use("/match", routes.match)
 app.use("/profile-icons", routes.icons)
 app.use("/data", routes.data)
 
+var aggr = require("./public/aggregation.js")
 var dd = require("./public/data-dragon.js")
 var tools = require("./public/tools.js")
 var query = require("./public/controllers/query.js")
 
 
+
+app.use((req, res, next) => {
+	res.locals.liveVersion = dd.liveVersion
+	next()
+})
 
 app.get("/", (req, res, next) => {
 	res.locals.queryMatch = []
@@ -34,7 +40,7 @@ app.get("/", (req, res, next) => {
 		{$sort: {gameDateTimestamp: -1}},
 	    {$project: {
 	    	matchId: "$metadata.matchId",
-	    	gameVersion: "$info.gameVersion",
+			gameVersion: aggr.gameVersion,
 	    	splitVersion: {$split: [{$substrCP: [ "$info.gameVersion", 0, {$indexOfCP: [ "$info.gameVersion", ".", 3 ]} ] }, "."]},
 			gameDateTimestamp: 1,
 			gameStartTimestamp: "$info.gameStartTimestamp",
@@ -105,6 +111,7 @@ app.get("/", (req, res, next) => {
 					riotIdGameName: 1,
 					riotIdTagline: 1,
 					position: 1,
+					championId: 1,
 					championName: 1,
 					summoner1Id: 1,
 					summoner2Id: 1,
@@ -147,6 +154,7 @@ app.get("/", (req, res, next) => {
 				]} },
 				{$match: {gameEndedInEarlySurrender: false}},
 				{$project: {
+					championId: 1,
 					championName: 1,
 					kills: 1,
 					deaths: 1,
@@ -154,7 +162,7 @@ app.get("/", (req, res, next) => {
 					win: 1
 				}},
 				{$group: {
-					_id: "$championName",
+					_id: "$championId",
 					kills: {$sum: "$kills"},
 					deaths: {$sum: "$deaths"},
 					assists: {$sum: "$assists"},
@@ -162,7 +170,7 @@ app.get("/", (req, res, next) => {
 					matches: {$sum: 1}
 				}},
 				{$addFields: {
-					championName: "$_id",
+					championId: "$_id",
 					losses: {$subtract: ["$matches", "$wins"]},
 					winrate: {$cond: [
 						{$eq: ["$matches", 0]},
@@ -187,7 +195,7 @@ app.get("/", (req, res, next) => {
 	// HISTORY data mutation
 	res.locals.history = res.locals.data[0].history.map(function(e, i) {
 
-		e.version = tools.version(e.gameVersion)
+		e.version = e.gameVersion
 		e.length = tools.gameLength(e.gameDuration)
 		e.date = tools.formatDate(e.gameDateTimestamp) + " · " + tools.formatTime(e.gameDateTimestamp)
 		e.timeStamps = {
@@ -202,16 +210,21 @@ app.get("/", (req, res, next) => {
 				minute: "numeric"
 			})
 		}
-		e.participants = tools.formatParticipants(e.participants)
+		e.participants = tools.formatParticipants(e.participants, e.gameVersion)
 
-		e.champion = dd.champion(e.championName)
-		e.summoner1 = dd.summoner(e.summoner1Id)
-		e.summoner2 = dd.summoner(e.summoner2Id)
-		e.items = e.items.map(function(item) { return dd.item(item) })
+		e.champion = dd.champion(e.championId, e.gameVersion)
+		e.summoner1 = dd.summoner(e.summoner1Id, e.gameVersion)
+		e.summoner2 = dd.summoner(e.summoner2Id, e.gameVersion)
+		e.items = e.items.map(function(item) { return dd.item(item, e.gameVersion) })
 
-		e.keystone = dd.rune(e.keystone)
-		e.styles = e.styles.map(function(style) { return dd.rune(style) })
-		e.stats = tools.formatRuneStats(e.perks.statPerks)
+		e.keystone = dd.rune(e.keystone, e.gameVersion)
+		e.styles = e.styles.map(function(style) { return dd.rune(style, e.gameVersion) })
+		// e.stats = tools.formatRuneStats(e.perks.statPerks)
+		e.stats = {
+			offense: dd.rune(e.perks.statPerks.offense, e.gameVersion),
+			flex: dd.rune(e.perks.statPerks.flex, e.gameVersion),
+			defense: dd.rune(e.perks.statPerks.defense, e.gameVersion)
+		}
 
 		return e
 	})
@@ -224,7 +237,7 @@ app.get("/", (req, res, next) => {
 		e.deaths = (e.deaths/e.matches).toFixed(1)
 		e.assists = (e.assists/e.matches).toFixed(1)
 
-		e.champion = dd.champion(e.championName)
+		e.champion = dd.champion(e.championId, e.gameVersion)
 		
 		return e
 	})
@@ -284,6 +297,12 @@ app.get("/", (req, res, next) => {
 	next()
 
 }, (req, res) => {
+	// res.locals.test = res.locals.history.filter(league => {
+	// 	return (0 < league.styles.filter(style => {
+	// 		return style === undefined
+	// 	}).length)
+	// })
+	// res.send(res.locals.data[0].history[0])
 	// console.log(res.locals.history[8].session)
 	res.render("home-page.ejs", {})
 })
@@ -291,5 +310,5 @@ app.get("/", (req, res, next) => {
 
 
 app.listen(process.env.PORT, () => {
-	console.log("\nRooks.GG\nv2.2.1\n")
+	console.log("\nRooks.GG\nv2.3.0\n")
 })

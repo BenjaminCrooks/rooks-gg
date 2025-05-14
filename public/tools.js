@@ -30,20 +30,7 @@ module.exports = {
 	winRate: function (winRate) {
 		let range = [ 70, 60, 55, 40 ]
 		return this.assignColor((winRate).toFixed(1), range)
-	},
-
-
-	version: function (gameVersion) {
-		/**
-		 * Formats the game version
-		 * 
-		 * @param {number}
-		 * @returns {string}
-		 */
-
-
-		return gameVersion.substring(0, gameVersion.indexOf(".", 3))
-	},
+	}, 
 
 
 	gameLength: function (seconds) {
@@ -129,11 +116,12 @@ module.exports = {
 	},
 
 
-	formatParticipants: function (teams) {
+	formatParticipants: function (teams, version) {
 		/**
 		 * Formats match history participants
 		 * 
 		 * @param {Object} teams - Ally and enemy teams
+		 * @param {Object} version - gameVersion (X.X.1)
 		 * @returns {Object} - Participant object with altered keys
 		 */
 
@@ -142,11 +130,11 @@ module.exports = {
 
 		teams.ally.forEach(function(e) {
 			participants.ally[e.position] = e
-			participants.ally[e.position].champion = dd.champion(e.championId)
+			participants.ally[e.position].champion = dd.champion(e.championId, version)
 		})
 		teams.enemy.forEach(function(e) {
 			participants.enemy[e.position] = e
-			participants.enemy[e.position].champion = dd.champion(e.championId)
+			participants.enemy[e.position].champion = dd.champion(e.championId, version)
 		})
 
 		return roles.map(function(element) {

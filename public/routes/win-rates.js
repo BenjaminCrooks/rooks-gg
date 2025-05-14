@@ -203,7 +203,7 @@ router.use((req, res, next) => {
 	res.locals.data.forEach(function(element, index) { totalPlayedMatches += element.matches })
 
 	res.locals.rows = res.locals.data.map(function(element, index, array) {
-		element.champion = dd.champion(element.championId)
+		element.champion = dd.champion(element.championId, dd.liveVersion)
 		element.kda = element.kda.toFixed(2)
 		element.winrate = element.winrate.toFixed(1).padStart(4, "0")
 		element.pickrate = ((element.matches/totalPlayedMatches)*100).toFixed(1)

@@ -62,22 +62,24 @@ input[type=text] {
 button {
     padding: 8px;
     border-radius: 2px;
-    font-family: Roboto;
     font-size: 11px;
     aspect-ratio: 1 / 1;
 }
 
 button[data-name] {
 	height: 32px;
-	font-family: Roboto Bold;
+    font-weight: var(--font-medium);
 	text-align: center;
 	padding-left: 12px;
     white-space:nowrap;
 	color: #c8c8c8;
 	flex-grow: 1;
+    font-variation-settings:
+        "GRAD" 100;
 }
 
 button[data-name] > span {
+	height: auto;
 	color: #a8a8a8;
 	display: inline-block;
 }
@@ -119,7 +121,7 @@ button[data-name] > span {
 	<button data-name="Jari" data-tag="NA1">Jari <span>#NA1</span></button>
 	<button data-name="dyegozz" data-tag="NA1">dyegozz <span>#NA1</span></button>
 	<button data-name="HeckinCuteBorker" data-tag="NA1">HeckinCuteBorker <span>#NA1</span></button>
-	<button data-name="Zachypooxoxo" data-tag="NA1">Zachypooxoxo <span>#NA1</span></button>
+	<button data-name="ZZchy" data-tag="Zzch">ZZchy <span>#Zzch</span></button>
 	<button data-name="Catalyst" data-tag="Wings">Catalyst <span>#Wings</span></button>
 	<button data-name="Moochh" data-tag="NA1">Moochh <span>#NA1</span></button>
 </div>
