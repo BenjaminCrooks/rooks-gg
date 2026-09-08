@@ -91,6 +91,7 @@ function parseRune(version) {
 					key: style.key,
 					icon: style.icon,
 					name: style.name,
+					path: rune.key,
 					shortDesc: style.shortDesc,
 					longDesc: style.longDesc,
 					tooltip: cDragon.tooltip,
@@ -239,13 +240,15 @@ module.exports = {
 
 	runeData: readJSON(liveVersion, "runesReforged"),
 
+	championData: readJSON(liveVersion, "champion").data,
+
 	liveVersion,
 
 	champion: function (championId, version) {
 		/**
 		 * @param {string} - championId
 		 * @param {string} - gameVersion (X.X.1)
-		 * @returns {Object} - chamion data object
+		 * @returns {Object} - champion data object
 		 */
 
 		if (version === undefined) { version = liveVersion };

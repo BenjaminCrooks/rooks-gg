@@ -62,8 +62,8 @@
     <ul class="stat-data">
         <li class="strong center"><%= element.kills %> / <span><%= element.deaths %></span> / <%= element.assists %></li>
         <li class="break center"><%= element.kda.toFixed(2) %>:1</li>
-        <li class="strong"><span class="small"><img src="assets/icons/svgs/minion-grey.svg" style="height:13px;display:inline-block;vertical-align:text-top;"> CS</span> <%= element.cs %> (<%= element.csMin %><span class="small">/min</span>)</li>
-        <li><img src="assets/icons/svgs/gold-grey.svg" style="height:12px;display:inline-block;vertical-align:text-top;"> <%= element.goldEarned.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></li>
+        <li class="strong"><span class="small"><img src="/assets/icons/svgs/minion-grey.svg" style="height:13px;display:inline-block;vertical-align:text-top;"> CS</span> <%= element.cs %> (<%= element.csMin %><span class="small">/min</span>)</li>
+        <li><img src="/assets/icons/svgs/gold-grey.svg" style="height:12px;display:inline-block;vertical-align:text-top;"> <%= element.goldEarned.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></li>
     </ul>
 
 
@@ -88,7 +88,7 @@
 
             <% element.participants.forEach(function(participant, index) { %>
             <tr<% if (element.position == participant.position) { %> class="player"<% } %>>
-                <td><img class="role" src="assets/icons/svgs/role/role-<%= participant.position %><% if (element.position == participant.position) { %>-w<% } %>.svg"></td>
+                <td><img class="role" src="/assets/icons/svgs/role/role-<%= participant.position %><% if (element.position == participant.position) { %>-w<% } %>.svg"></td>
 
                 <td class="ally"><img src="<%= participant.ally.champion.img.squarecrop %>"></td>
 

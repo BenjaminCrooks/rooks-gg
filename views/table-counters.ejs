@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-<title>Data Table - Win Rates</title>
+<title>Data Table - Drafting Counters</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Rooks">
 <meta name="description" content="Win rate table">
@@ -91,11 +91,29 @@ header a:hover {
 
 
 <header>
-	<a href="/win-rates/personal">Personal</a>
-	<a href="/win-rates/ally">Ally</a>
-	<a href="/win-rates/enemy">Enemy</a>
-	<a href="/win-rates/overall">Overall</a>
-	<a class="italic" href="/win-rates/personal?account=rRooks&role=false">(Query Params)</a>
+	<a href="/draft/84/counters">Akali</a>
+	<a href="/draft/166/counters">Akshan</a>
+	<a href="/draft/245/counters">Ekko</a>
+	<a href="/draft/4/counters">Twisted Fate</a>
+	<a href="/draft/105/counters">Fizz</a>
+	<a href="/draft/3/counters">Galio</a>
+	<a href="/draft/910/counters">Hwei</a>
+	<a href="/draft/38/counters">Kassadin</a>
+	<a href="/draft/55/counters">Katarina</a>
+	<a href="/draft/7/counters">LeBlanc</a>
+	<a href="/draft/61/counters">Orianna</a>
+	<a href="/draft/246/counters">Qiyana</a>
+	<a href="/draft/13/counters">Ryze</a>
+	<a href="/draft/517/counters">Sylas</a>
+	<a href="/draft/134/counters">Syndra</a>
+	<a href="/draft/91/counters">Talon</a>
+	<a href="/draft/112/counters">Viktor</a>
+	<a href="/draft/8/counters">Vladimir</a>
+	<a href="/draft/101/counters">Xerath</a>
+	<a href="/draft/157/counters">Yasuo</a>
+	<a href="/draft/777/counters">Yone</a>
+	<a href="/draft/238/counters">Zed</a>
+	<a href="/draft/142/counters">Zoe</a>
 </header>
 
 <main>
@@ -106,7 +124,6 @@ header a:hover {
 
         <colgroup>
             <col width="64px"> <!-- rank -->
-            <% if (rows[0].position != undefined) { %><col width="64px" class="role"> <!-- role icon --><% } %>
         	<col width="64px"> <!-- champion icon -->
             <col width="96px"> <!-- champion name -->
             <col width="128px"> <!-- kda -->
@@ -114,11 +131,6 @@ header a:hover {
             <col width="64px"> <!-- win rate % -->
             <col width="80px"> <!-- matches played -->
             <col width="80px"> <!-- pick rate -->
-            <col width="80px"> <!-- cs -->
-            <col width="80px"> <!-- gold -->
-            <col width="80px"> <!-- damage -->
-            <col width="48px"> <!-- vision score -->
-            <col width="48px"> <!-- control wards -->
         </colgroup>
 
         <thead>
@@ -127,17 +139,11 @@ header a:hover {
         	</tr>
         	<tr>
         		<th>Rank</th>
-        		<% if (rows[0].position != undefined) { %><th>Role</th><% } %>
         		<th colspan="2">Champion</th>
         		<th>KDA</th>
         		<th colspan="2">Win Rate</th>
         		<th>Matches</th>
         		<th>Pick Rate</th>
-        		<th><span class="icon cs"></span> CS</th>
-        		<th><span class="icon gold"></span> Gold</th>
-        		<th>Damage</th>
-        		<th>Vision Score</th>
-        		<th>Control Wards</th>
         	</tr>
         </thead>
 
@@ -147,8 +153,6 @@ header a:hover {
             <tr>
 
             	<td><%= index + 1 %></td>
-
-        		<% if (row.position != undefined) { %><td class="role icon"><img src="/assets/icons/svgs/role/role-<%= row.position %>-w.svg"></td><% } %>
 
             	<td class="champion icon"><img src="<%= row.champion.img.squarecrop %>"></td>
 
@@ -172,27 +176,6 @@ header a:hover {
             	<td><%= row.matches %> Played</td>
 
             	<td class="strong"><%= row.pickrate %><span class="dull">%</span></td>
-
-            	<td><ul class="center">
-            		<li class="strong"><%= row.cs %></li>
-            		<li><span class="dull">(<%= row.csMin %><span class="small">/min</span>)</span></li>
-            	</ul></td>
-
-            	<td><ul class="center">
-            		<li class="strong"><%= row.goldEarned %></li>
-            		<li><span class="dull">(<%= row.goldMin %><span class="small">/min</span>)</span></li>
-            	</ul></td>
-
-            	<td class="strong"><%= row.totalDamageDealtToChampions %></td>
-
-            	<!-- <td><ul class="center">
-            		<li><%= row.visionScore %> <span class="small dull">Vision Score</span></li>
-            		<li><%= row.visionWardsBoughtInGame %> <span class="small dull">Control wards</span></li>
-            	</ul></td> -->
-
-            	<td ><%= row.visionScore %></td>
-
-            	<td><%= row.visionWardsBoughtInGame %></td>
 
             </tr>
         <% }) %>

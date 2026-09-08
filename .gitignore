@@ -1,8 +1,10 @@
 .env
+desktop.ini
 node_modules/
-public/assets/data/
-public/assets/fonts/
-public/assets/icons/
 public/plugins/
+public/assets/data/*
+public/assets/fonts/*
+public/assets/icons/*
+public/assets/cdragon/*
 public/assets/dragontail/*
 !public/assets/dragontail/README.md

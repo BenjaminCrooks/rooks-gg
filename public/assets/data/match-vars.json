@@ -2,40 +2,40 @@
     {
         "header": "Damage Dealt",
         "variables": [
-          "totalDamageDealt",
-          "totalDamageDealtToChampions",
-          "magicDamageDealt",
-          "magicDamageDealtToChampions",
-          "physicalDamageDealt",
-          "physicalDamageDealtToChampions",
-          "trueDamageDealt",
-          "trueDamageDealtToChampions"
+          { "data": "totalDamageDealtToChampions", "key": "Total Damage Dealt to Champions", "icon": "/assets/icons/small/Successfully_enhanced_damage_physical_icon.webp" },
+          { "data": "magicDamageDealtToChampions", "key": "Magic Damage Dealt to Champions", "icon": "/assets/icons/small/Magic_damage.webp" },
+          { "data": "physicalDamageDealtToChampions", "key": "Physical Damage Dealt to Champions", "icon": "/assets/icons/small/Attack_damage.webp" },
+          { "data": "trueDamageDealtToChampions", "key": "True Damage Dealt to Champions", "icon": "/assets/icons/small/Hybrid_penetration.webp" },
+          { "data": "totalDamageDealt", "key": "Total Damage Dealt", "icon": null },
+          { "data": "magicDamageDealt", "key": "Magic Damage Dealt", "icon": null },
+          { "data": "physicalDamageDealt", "key": "Physical Damage Dealt", "icon": null },
+          { "data": "trueDamageDealt", "key": "True Damage Dealt", "icon": null }
         ]
     },
     {
         "header": "Damage Taken",
         "variables": [
-            "magicDamageTaken",
-            "physicalDamageTaken",
-            "trueDamageTaken",
-            "totalDamageTaken",
-            "damageSelfMitigated"
+            { "data": "magicDamageTaken", "key": "Magic Damage Taken", "icon": null },
+            { "data": "physicalDamageTaken", "key": "Physical Damage Taken", "icon": null },
+            { "data": "trueDamageTaken", "key": "True Damage Taken", "icon": null },
+            { "data": "totalDamageTaken", "key": "Total Damage Taken", "icon": null },
+            { "data": "damageSelfMitigated", "key": "Damage Self Mitigated", "icon": null }
         ]
     },
     {
         "header": "Heal & Shield",
         "variables": [
-            "totalHeal",
-            "totalHealsOnTeammates",
-            "totalUnitsHealed",
-            "totalDamageShieldedOnTeammates"
+            { "data": "totalHeal", "key": "Damage Healed", "icon": "/assets/icons/small/15px-Heal_and_shield_power_icon.webp" },
+            { "data": "totalHealsOnTeammates", "key": "Total Healing on Teammates", "icon": null },
+            { "data": "totalDamageShieldedOnTeammates", "key": "Damage Shielded on Teammates", "icon": "/assets/icons/small/Hybrid_resistances_icon.webp" },
+            { "data": "totalUnitsHealed", "key": "Total Units Healed", "icon": null }
         ]
     },
     {
         "header": "Crowd Control",
         "variables": [
-            "timeCCingOthers",
-            "totalTimeCCDealt"
+            { "data": "timeCCingOthers", "key": "Crowd Control Score", "icon": "/assets/icons/small/Forced_action_icons.webp" },
+            { "data": "totalTimeCCDealt", "key": "Total Time of CC Applied", "icon": null }
         ]
     },
 
@@ -43,19 +43,19 @@
     {
         "header": "Combat",
         "variables": [
-            "firstBloodAssist",
-            "firstBloodKill",
-            "totalTimeSpentDead",
-            "longestTimeSpentLiving",
-            "largestCriticalStrike",
-            "largestKillingSpree",
-            "killingSprees",
-            "largestMultiKill",
-            "doubleKills",
-            "tripleKills",
-            "quadraKills",
-            "pentaKills",
-            "unrealKills"
+            { "data": "firstBloodKill", "key": "First Blood Kill", "icon": null },
+            { "data": "firstBloodAssist", "key": "First Blood Assist", "icon": null },
+            { "data": "totalTimeSpentDead", "key": "Total Time Spent Dead", "icon": "/assets/icons/small/Death.webp" },
+            { "data": "longestTimeSpentLiving", "key": "Longest Time Spent Living", "icon": null },
+            { "data": "largestCriticalStrike", "key": "Largest Critical Strike", "icon": "/assets/icons/small/Critical_strike_icon.webp" },
+            { "data": "largestKillingSpree", "key": "Largest Kill Spree", "icon": "/assets/icons/small/kills.webp"  },
+            { "data": "largestMultiKill", "key": "Largest Multi Kill", "icon": null },
+            { "data": "killingSprees", "key": "Killing Sprees", "icon": null },
+            { "data": "doubleKills", "key": "Double Kills", "icon": null },
+            { "data": "tripleKills", "key": "Triple Kills", "icon": null },
+            { "data": "quadraKills", "key": "Quadra Kills", "icon": null },
+            { "data": "pentaKills", "key": "Penta Kills", "icon": null },
+            { "data": "unrealKills", "key": "Unreal Kills", "icon": null }
         ]
     },
 
@@ -63,32 +63,32 @@
     {
         "header": "Minions",
         "variables": [
-            "neutralMinionsKilled",
-            "totalAllyJungleMinionsKilled",
-            "totalEnemyJungleMinionsKilled",
-            "totalMinionsKilled"
+            { "data": "totalMinionsKilled", "key": "Minions Killed", "icon": "/assets/icons/small/Minion_icon.webp" },
+            { "data": "neutralMinionsKilled", "key": "Neutral Minions Killed", "icon": null },
+            { "data": "totalAllyJungleMinionsKilled", "key": "Ally Jungle Minions Killed", "icon": "/assets/icons/small/Monster_icon.webp" },
+            { "data": "totalEnemyJungleMinionsKilled", "key": "Enemy Jungle Minions Killed", "icon": "/assets/icons/small/Monster_icon.webp" }
         ]
     },
 
     {
         "header": "Income",
         "variables": [
-            "goldEarned",
-            "goldSpent",
-            "consumablesPurchased",
-            "itemsPurchased"
+            { "data": "goldEarned", "key": "Gold Earned", "icon": null },
+            { "data": "goldSpent", "key": "Gold Spent", "icon": null },
+            { "data": "consumablesPurchased", "key": "Consumables Purchased", "icon": null },
+            { "data": "itemsPurchased", "key": "Items Purchased", "icon": null }
         ]
     },
 
     {
         "header": "Vision",
         "variables": [
-            "detectorWardsPlaced",
-            "sightWardsBoughtInGame",
-            "visionScore",
-            "visionWardsBoughtInGame",
-            "wardsKilled",
-            "wardsPlaced"
+            { "data": "visionScore", "key": "Vision Score", "icon": null },
+            { "data": "visionWardsBoughtInGame", "key": "Control Wards Purchased", "icon": "/assets/icons/small/Control_Ward_icon.webp" },
+            { "data": "detectorWardsPlaced", "key": "Control Wards Placed", "icon": "/assets/icons/small/Control_Ward_icon.webp" },
+            { "data": "wardsPlaced", "key": "Wards Placed", "icon": "/assets/icons/small/Stealth_Ward_icon.webp" },
+            { "data": "wardsKilled", "key": "Wards Destroyed", "icon": "/assets/icons/small/Disabled_Ward_icon.webp" },
+            { "data": "sightWardsBoughtInGame", "key": "sightWardsBoughtInGame (DEPRECATED)", "icon": null }
         ]
     },
 
@@ -96,67 +96,67 @@
     {
         "header": "Objectives",
         "variables": [
-            "damageDealtToBuildings",
-            "damageDealtToObjectives",
-            "damageDealtToTurrets",
-            "firstTowerAssist",
-            "firstTowerKill",
-            "turretKills",
-            "turretTakedowns",
-            "turretsLost",
-            "inhibitorKills",
-            "inhibitorTakedowns",
-            "inhibitorsLost",
-            "nexusKills",
-            "nexusLost",
-            "nexusTakedowns",
-            "baronKills",
-            "dragonKills",
-            "objectivesStolen",
-            "objectivesStolenAssists"
+            { "data": "damageDealtToObjectives", "key": "Damage Dealt to Objectives", "icon": null },
+            { "data": "damageDealtToTurrets", "key": "Damage Dealt to Turrets", "icon": "/assets/cdragon/icons/right_icons/_tower.png" },
+            { "data": "firstTowerKill", "key": "First Tower Kill", "icon": "/assets/cdragon/icons/right_icons/_tower.png" },
+            { "data": "firstTowerAssist", "key": "First Tower Assist", "icon": "/assets/cdragon/icons/right_icons/_tower.png" },
+            { "data": "turretKills", "key": "Turret Kills", "icon": "/assets/cdragon/icons/right_icons/_tower.png" },
+            { "data": "turretTakedowns", "key": "Turret Takedowns", "icon": "/assets/cdragon/icons/right_icons/_tower.png" },
+            { "data": "turretsLost", "key": "Turrets Lost", "icon": "/assets/cdragon/icons/right_icons/_tower.png" },
+            { "data": "inhibitorKills", "key": "Inhibitor Kills", "icon": "/assets/cdragon/icons/right_icons/_inhibitor.png" },
+            { "data": "inhibitorTakedowns", "key": "Inhibitor Takedowns", "icon": "/assets/cdragon/icons/right_icons/_inhibitor.png" },
+            { "data": "inhibitorsLost", "key": "Inhibitors Lost", "icon": "/assets/cdragon/icons/right_icons/_inhibitor.png" },
+            { "data": "nexusKills", "key": "Nexus Kills", "icon": null },
+            { "data": "nexusTakedowns", "key": "Nexus Takedowns", "icon": null },
+            { "data": "baronKills", "key": "Baron Kills", "icon": "/assets/cdragon/icons/right_icons/_baron.png" },
+            { "data": "dragonKills", "key": "Dragon Kills", "icon": "/assets/cdragon/icons/right_icons/_dragon.png" },
+            { "data": "objectivesStolen", "key": "Objectives Stolen", "icon": null },
+            { "data": "objectivesStolenAssists", "key": "Objective Stolen Assists", "icon": null },
+            { "data": "damageDealtToBuildings", "key": "damageDealtToBuildings (DEPRECATED)", "icon": null },
+            { "data": "nexusLost", "key": "Nexus Lost (REDUNDANT)", "icon": null }
         ]
     },
 
     {
         "header": "Spells",
         "variables": [
-            "spell1Casts",
-            "spell2Casts",
-            "spell3Casts",
-            "spell4Casts",
-            "summoner1Casts",
-            "summoner1Id",
-            "summoner2Casts",
-            "summoner2Id"
+            { "data": "spell1Casts", "key": "Q Casts", "icon": null },
+            { "data": "spell2Casts", "key": "W Casts", "icon": null },
+            { "data": "spell3Casts", "key": "E Casts", "icon": null },
+            { "data": "spell4Casts", "key": "R Casts", "icon": null },
+            { "data": "summoner1Casts", "key": "Summoner Spell 1 Casts", "icon": null },
+            { "data": "summoner1Id", "key": "(summoner1Id)", "icon": null },
+            { "data": "summoner2Casts", "key": "Summoner Spell 2 Casts", "icon": null },
+            { "data": "summoner2Id", "key": "(summoner2Id)", "icon": null }
         ]
     },
 
     {
         "header": "Pings",
         "variables": [
-            "basicPings",
-            "commandPings",
-            "getBackPings",
-            "holdPings",
-            "dangerPings",
-            "pushPings",
-            "onMyWayPings",
-            "allInPings",
-            "assistMePings",
-            "needVisionPings",
-            "enemyMissingPings",
-            "enemyVisionPings",
-            "visionClearedPings"
+            { "data": "commandPings", "key": "Ping", "icon": "/assets/icons/pings/Generic_ping.png" },
+            { "data": "getBackPings", "key": "Retreat", "icon": "/assets/icons/pings/Retreat_ping.png" },
+            { "data": "holdPings", "key": "Hold", "icon": "/assets/icons/pings/Hold_ping.png" },
+            { "data": "dangerPings", "key": "Caution", "icon": "/assets/icons/pings/Caution_ping.png" },
+            { "data": "pushPings", "key": "Push", "icon": "/assets/icons/pings/Push_ping.png" },
+            { "data": "onMyWayPings", "key": "On My Way", "icon": "/assets/icons/pings/On_My_Way_ping.png" },
+            { "data": "allInPings", "key": "All In", "icon": "/assets/icons/pings/All_In_ping.png" },
+            { "data": "assistMePings", "key": "Assist Me", "icon": "/assets/icons/pings/Assist_Me_ping.png" },
+            { "data": "needVisionPings", "key": "Need Vision", "icon": "/assets/icons/pings/Need_Vision_ping.png" },
+            { "data": "enemyMissingPings", "key": "Enemy Missing", "icon": "/assets/icons/pings/Enemy_Missing_ping.png" },
+            { "data": "enemyVisionPings", "key": "Enemy Vision", "icon": "/assets/icons/pings/Enemy_Vision_ping.png" },
+            { "data": "basicPings", "key": "basicPings (DEPRECATED)", "icon": null },
+            { "data": "visionClearedPings", "key": "visionClearedPings (DEPRECATED)", "icon": null }
         ]
     },
 
     {
         "header": "Outcome",
         "variables": [
-            "gameEndedInEarlySurrender",
-            "gameEndedInSurrender",
-            "teamEarlySurrendered",
-            "win"
+            { "data": "gameEndedInEarlySurrender", "key": "Remake", "icon": null },
+            { "data": "gameEndedInSurrender", "key": "Game Ended In Surrender", "icon": null },
+            { "data": "teamEarlySurrendered", "key": "Team Early Surrendered", "icon": null },
+            { "data": "win", "key": "Win", "icon": null }
         ]
     }
 ]

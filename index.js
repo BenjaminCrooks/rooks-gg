@@ -20,6 +20,7 @@ app.use("/win-rates", routes.winrates)
 app.use("/match", routes.match)
 app.use("/profile-icons", routes.icons)
 app.use("/data", routes.data)
+app.use("/draft", routes.draft)
 
 var aggr = require("./public/aggregation.js")
 var dd = require("./public/data-dragon.js")
@@ -98,7 +99,7 @@ app.get("/", (req, res, next) => {
 		{$facet: {
 
 			history: [
-				{$limit: 30},
+				{$limit: 23},
 				{$project: {
 					matchId: 1,
 					gameVersion: 1,

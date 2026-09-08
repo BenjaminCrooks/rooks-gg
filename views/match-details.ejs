@@ -7,9 +7,9 @@
 <meta name="author" content="Rooks">
 <meta name="description" content="Match Details">
 
-<link rel="icon" href="assets/icons/rooksIconGG.png">
-<link rel="stylesheet" href="styles.css">
-<script src="plugins/jquery-3.4.1.min.js"></script>
+<link rel="icon" href="/assets/icons/rooksIconGG.png">
+<link rel="stylesheet" href="/styles.css">
+<script src="/plugins/jquery-3.4.1.min.js"></script>
 
 <style>
 
@@ -48,16 +48,16 @@ tbody td {
 }
 
 table img {
-    width: 32px;
+    width: 100%;
     margin: 0 auto;
-    border-radius: 4px;
+    /*border-radius: 4px;*/
 }
 
 tr.section > th {
     color: #e8e8e8;
-    height: 48px;
+    /*height: 38px;*/
     vertical-align: bottom;
-    border-top: 12px solid var(--purple100);
+    border-top: 1px solid var(--purple100);
     text-align: left;
     font-size: 14px;
     padding: 12px;
@@ -66,7 +66,7 @@ tr.section > th {
 table#stats tr > td:first-of-type {
     border-right: 1px solid var(--purple100);
     text-align: left;
-    padding: 8px 8px 8px 24px;
+    padding: 8px 8px 8px 32px;
 }
 
 thead th.team100 { background-color: var(--img-bg-blue); }
@@ -128,42 +128,66 @@ span.role-icon {
 }
 
 
-
-
-td.team100:nth-child(even) { background-color: var(--blue100); }
-td.team100:nth-child(odd) { background-color: var(--blue200); }
-
-td.team200:nth-child(even) { background-color: var(--red100); }
-td.team200:nth-child(odd) { background-color: var(--red200); }
-
-table#stats tr:hover > td:first-of-type {
-    background-color: var(--purple500);
-    border-color: var(--purple700);
-    border-bottom: 1px solid var(--purple700);
-}
-
 table#stats tr:hover > td {
     color: white;
     font-variation-settings:
         "GRAD" 100;
 }
 
-tr:hover td.team100:nth-child(even) { background-color: var(--blue300); border-color: var(--blue700); border-bottom: 1px solid var(--blue700); }
-tr:hover td.team100:nth-child(odd) { background-color: var(--blue350); border-color: var(--blue700); border-bottom: 1px solid var(--blue700); }
 
-tr:hover td.team200:nth-child(even) { background-color: var(--red300); border-color: var(--red700); border-bottom: 1px solid var(--red700);  }
-tr:hover td.team200:nth-child(odd) { background-color: var(--red350); border-color: var(--red700); border-bottom: 1px solid var(--red700);  }
+/* Client Design Style */
+table#stats tbody tr:not(.section):hover { outline: 2px solid #614a25; border-radius: 2px; }
+
+table#stats tbody tr:hover > td {
+    background-color: var(--purple400);
+    border-top: 1px solid var(--purple300);
+}
+
+span.icon {
+    position: absolute;
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    background-repeat: no-repeat;
+    background-position: top 0% left 0%;
+    background-size: cover;
+    vertical-align: top;
+    /*margin-right: 0.4em;*/
+    transform: scale(1.6) translate(-14px, 0);
+}
 
 
 
 
+
+table#runes td {
+    height: 96px;
+    padding: 8px 4px;
+}
+
+table#runes tr.team100 td:first-of-type { background-color: var(--img-bg-blue); }
+table#runes tr.team200 td:first-of-type { background-color: var(--img-bg-red); }
+table#runes tr.team100 td { background-color: var(--blue100); }
+table#runes tr.team200 td { background-color: var(--red100); }
+
+table#runes td.dd-cent {
+    background-position: bottom 85% right 50%;
+    background-size: auto 180%;
+    background-blend-mode: luminosity;
+    filter: brightness(100%) grayscale(25%) contrast(100%);
+    /*-webkit-mask-image: linear-gradient( 90deg,
+        rgba(0,0,0,1) 0%,
+        rgba(0,0,0,1) 75%,
+        rgba(0,0,0,0) 100%
+    );*/
+}
 
 table#runes ul {
-    font-size: 9px;
+    font-size: 10px;
     gap: 0.75em;
     width: 100%;
-    font-stretch: 50%;
-    font-variation-settings: var(--condensed);
+    /*font-stretch: 75%;*/
+    /*font-variation-settings: var(--condensed);*/
 }
 
 table#runes li.strong {
@@ -171,18 +195,29 @@ table#runes li.strong {
     color: #c8c8c8;
 }
 
-table#runes td {
-    padding: 8px 0px;
+table#runes td.style img {
+    border: 2px ridge;
+    border-radius: 50%;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
 }
 
-table#runes img {
-    width: 24px;
+table#runes td.style.Precision > img    { border-color: #bba87b; }
+table#runes td.style.Domination > img   { border-color: #d84545; }
+table#runes td.style.Sorcery > img      { border-color: #858ff8; }
+table#runes td.style.Resolve > img      { border-color: #a2d289; }
+table#runes td.style.Inspiration > img  { border-color: #48afbb; }
+
+table#runes td.stat-perk img {
+    border: 1px solid rgb(187, 152, 52);
+    border-radius: 50%;
+    background-color: #282828;
 }
 
 </style>
 
 </head>
 
+<!-- ★ ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ★ -->
 
 <body>
 
@@ -222,6 +257,8 @@ table#runes img {
         <col width="auto">
     </colgroup>
 
+
+    <!-- Champion/Players -->
     <thead>
         <tr>
             <th></th>
@@ -241,18 +278,26 @@ table#runes img {
         </tr>
     </thead>
 
+
+
+    <!-- Data Variables ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── -->
     <tbody>
     <% matchVars.forEach(function(section, ind, arr) { %>
 
+        <!-- Section Header ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── -->
         <tr class="section"><th colspan="100%"><%= section.header %></th></tr>
 
+        <!-- Individual Data Variables ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── -->
         <% section.variables.forEach(function(variable) {%>
         <tr>
-            <td><%= variable %></td>
+            <td>
+                <% if (variable.icon != null) { %><span class="icon" style="background-image: url('<%= variable.icon %>');"></span><% } %>
+                <%= variable.key %>
+            </td>
 
             <% participants.forEach(function(player, index, array) { %>
             <td class="team<%= player.teamId %>">
-                <% if (player[variable] !== undefined) { %><%= player[variable] %><% } else { %>-<% } %>
+                <% if (player[variable.data] !== undefined) { %><%= player[variable.data] %><% } else { %>-<% } %>
             </td>
             <% }) %>
         </tr>
@@ -260,6 +305,9 @@ table#runes img {
 
     <% }) %>
     </tbody>
+
+
+
 
 </table>
 
@@ -273,417 +321,43 @@ table#runes img {
 </main>
 
 
-<table id="runes" class="default alternate">
+<!-- Rune Table ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── -->
+<table id="runes" class="default">
 
     <colgroup>
-        <col width="32px">
-        <col width="128px">
-        <col width="32px">
-        <col width="128px">
-        <col width="32px">
-        <col width="128px">
-        <col width="32px">
-        <col width="128px">
-        <col width="32px">
-        <col width="128px">
-        <col width="32px">
-        <col width="128px">
-        <col width="32px">
-        <col width="128px">
-        <col width="32px">
-        <col width="128px">
-        <col width="32px">
-        <col width="128px">
-        <col width="32px">
-        <col width="128px">
+        <col width="192px">
+        <col width="52px">
+        <col width="160px">
+        <% for (let i = 0; i < 5; i++) { %>
+        <col width="38px">
+        <col width="160px">
+        <% } %>
+        <% for (let i = 0; i < 3; i++) { %>
+        <col width="28px">
+        <% } %>
     </colgroup>
 
-    <thead>
-        <tr>
-            <% participants.forEach(function(player, index, array) { %>
-            <th colspan="2"><img src="<%= player.champion.img.squarecrop %>"></th>
-            <% }) %>
-        </tr>
-    </thead>
-
     <tbody>
-        <% for (let i = 0; i < 6; i++) { %>
-        <tr>
-            <% participants.forEach(function(player, index, array) { %>
-            <td><img src="<%= player.perks.styles[i].img %>"></td>
-            <td>
-                <ul class="left">
-                    <li class="strong"><%= player.perks.styles[i].name %></li>
-                    <% player.perks.styles[i].endOfGameStatDescs.forEach(function(desc) { %>
-                    <li><%= desc %></li>
-                    <% }) %>
-                </ul>
-            </td>
+        <% participants.forEach(function(player, index, array) { %>
+        <tr class="team<%= player.teamId %>">
+            <td class="dd-cent" style="background-image: url('<%= player.champion.img.centeredsmall %>')"></td>
+            <% player.perks.styles.forEach(function(style, index) { %>
+            <td class="<% if (index == 0) { %>keystone<% } else { %>style<% } %> <%= style.path %>"><img src="<%= style.img %>"></td>
+            <td><ul class="left">
+                <li class="strong"><%= style.name %></li>
+                <% style.endOfGameStatDescs.forEach(function(desc) { %>
+                <li><%= desc %></li>
+                <% }) %>
+            </ul></td>
             <% }) %>
+            <td class="stat-perk"><img src="<%= player.perks.statPerks.offense.img %>"></td>
+            <td class="stat-perk"><img src="<%= player.perks.statPerks.flex.img %>"></td>
+            <td class="stat-perk"><img src="<%= player.perks.statPerks.defense.img %>"></td>
         </tr>
-        <% } %>
+        <% }) %>
     </tbody>
 
 </table>
-
-<!-- {
-
-"profileIcon": 1426,
-"riotIdGameName": "ADDERALL XERATH",
-"riotIdTagline": "NA1",
-"puuid": "_zVHA_4i3q9uekhqXCBAdi56hklK61-mKeLSB61lE-lsmfLBivTBbHu9jmf9D5CAKSKkPBJVKtwdVw",
-"summonerId": "szCWKvkp9Kbh4ZifyhhaQjsYAKd4ACzpFJH8K-fD3YF1Vr4_",
-"summonerName": "ADDERALL XERATH",
-"summonerLevel": 45,
-"participantId": 3,
-"teamId": 100,
-
-"timePlayed": 1615,
-"gameDateTimestamp": "2024-10-17T22:58:14.985Z",
-"gameLength": {
-  "h": 0,
-  "m": 26,
-  "s": 55
-},
-
-
-"champExperience": 16281,
-"champLevel": 16,
-"championId": 910,
-"championName": "Hwei",
-"bountyLevel": 1,
-
-"individualPosition": "MIDDLE",
-"teamPosition": "MIDDLE",
-"lane": "MIDDLE",
-"role": "SOLO",
-"position": "MIDDLE",
-
-
-
-"assists": 13,
-"deaths": 4,
-"kills": 8,
-
-
-"item0": 6653,
-"item1": 3020,
-"item2": 3040,
-"item3": 4628,
-"item4": 4630,
-"item5": 1082,
-"item6": 3340,
-"items": [6653, 3020, 3040, 4628, 4630, 1082, 3340]
-
-
-
-
-
-
-
-"championTransform": 0,
-"eligibleForProgression": true,
-
-
-
-"perks": {
-  "statPerks": {
-    "defense": 5011,
-    "flex": 5008,
-    "offense": 5008
-  },
-  "styles": {
-    "primaryStyle": {
-      "description": "primaryStyle",
-      "selections": [
-        {
-          "perk": 8229,
-          "var1": 1975,
-          "var2": 0,
-          "var3": 0
-        },
-        {
-          "perk": 8226,
-          "var1": 250,
-          "var2": 1401,
-          "var3": 0
-        },
-        {
-          "perk": 8210,
-          "var1": 25,
-          "var2": 0,
-          "var3": 0
-        },
-        {
-          "perk": 8236,
-          "var1": 24,
-          "var2": 0,
-          "var3": 0
-        }
-      ],
-      "style": 8200
-    },
-    "subStyle": {
-      "description": "subStyle",
-      "selections": [
-        {
-          "perk": 9105,
-          "var1": 15,
-          "var2": 30,
-          "var3": 0
-        },
-        {
-          "perk": 8017,
-          "var1": 1388,
-          "var2": 0,
-          "var3": 0
-        }
-      ],
-      "style": 8000
-    }
-  }
-},
-
-
-  
-  "platformId": "NA1",
-
-  "queueId": 420,
-
-"metadata": {
-  "dataVersion": "2",
-  "matchId": "NA1_5135488965",
-  "participants": [
-    "AsCERcDixmc0HP_CCHiQxWHzpOHpcFYQyOr3O89Dxg449_1vGMFMObidvRLW8pcBpmAKzR3wrTiuwQ",
-    "EuYlaB3mQepnU4Xyvw9wa_4TkCEpBaWweRbd3qdfJQNX745bU_Exwly1YcBOttwmqaD4F6ytOQjTqg",
-    "_zVHA_4i3q9uekhqXCBAdi56hklK61-mKeLSB61lE-lsmfLBivTBbHu9jmf9D5CAKSKkPBJVKtwdVw",
-    "B5oJ85EpNO61smqCoBthCVXKIu3xSthwAxw-y5SwGH9yhWvPdapdg0HYd1Fw0FQz_lO7t5KstRF3xA",
-    "eIBhgmRJdeUNmVUgeQPQkWSY-PiQm_o_GwrCwHdtDnD5PybfNu2rpb0dDbbfLlMhgFETK_TgCzTtIQ",
-    "9IxS7mk6fw1LkW8t31Ah__cy8OymHJX4caFmEuPW6-FA77e9R_RtoewbiSBHzhfGxbhgd4ujIygxLw",
-    "eK0FMQ21O4dIC3w46lcWFzYXu8wXMqUuqYH1hm5NESrLcpBs78x9L_H8eRn6Ct3HQb7Fti5ubnc7PQ",
-    "rcdS2NzdyEYu3bx1MZ2XTq2cHB4HlZ5-tViVqphYa1MDtVuS3cL0jO3OSzNtz8Ea7A5mdX4T0xqSuA",
-    "7u70VS9vYuQi2EFrNrhPNORTyzpwiLoISOAYocdda02j5uf9WO02SnMjRShLMlSV_J-KK6jBYgoMLA",
-    "v9t1rkSQyMzeVuNOUqmoLSbhuYkkp0azcmKeMwhowhumz6nRCJBh8Z7i93W5pnrWmrs77F9OOUD3NQ"
-  ]
-},
-
-"info": {
-  "endOfGameResult": "GameComplete",
-  
-  "gameVersion": "14.20.623.6777",
-  "gameId": 5135488965,
-  "gameCreation": 1729218651331,
-  "gameStartTimestamp": 1729218679985,
-  "gameEndTimestamp": 1729220295786,
-  "gameDuration": 1615,
-
-  "gameMode": "CLASSIC",
-  "gameName": "teambuilder-match-5135488965",
-  "gameType": "MATCHED_GAME",
-  "mapId": 11,
-
-  "participants": {
-    "ally": [
-      { "championId": 82, "championName": "Mordekaiser", "riotIdGameName": "Roach bully", "riotIdTagline": "1850", "relationship": "ally", "position": "TOP" },
-      { "championId": 62, "championName": "MonkeyKing", "riotIdGameName": "KingPinTheUnit", "riotIdTagline": "NA1", "relationship": "ally", "position": "JUNGLE" },
-      { "championId": 202, "championName": "Jhin", "riotIdGameName": "Jari", "riotIdTagline": "NA1", "relationship": "ally", "position": "BOTTOM" },
-      { "championId": 64, "championName": "LeeSin", "riotIdGameName": "Coreytime", "riotIdTagline": "NA1", "relationship": "ally", "position": "SUPPORT" }
-    ],
-    "enemy": [
-      { "championId": 223, "championName": "TahmKench", "riotIdGameName": "TopGuru", "riotIdTagline": "NA1", "relationship": "enemy", "position": "TOP" },
-      { "championId": 107, "championName": "Rengar", "riotIdGameName": "HuntedByRengar", "riotIdTagline": "7682", "relationship": "enemy", "position": "JUNGLE" },
-      { "championId": 134, "championName": "Syndra", "riotIdGameName": "Buu", "riotIdTagline": "BBQ", "relationship": "enemy", "position": "MIDDLE" },
-      { "championId": 429, "championName": "Kalista", "riotIdGameName": "Pro Hater", "riotIdTagline": "NA1", "relationship": "enemy", "position": "BOTTOM" },
-      { "championId": 412, "championName": "Thresh", "riotIdGameName": "Lil Benny", "riotIdTagline": "NA1", "relationship": "enemy", "position": "SUPPORT" }
-    ]
-  },
-
-  "teams": [
-    {
-      "bans": [
-        { "championId": 555, "pickTurn": 1 },
-        { "championId": 266, "pickTurn": 2 },
-        { "championId": 77, "pickTurn": 3 },
-        { "championId": 7, "pickTurn": 4 },
-        { "championId": 78, "pickTurn": 5 }
-      ],
-      "objectives": {
-        "baron": { "first": true, "kills": 1 },
-        "champion": { "first": false, "kills": 38 },
-        "dragon": { "first": true, "kills": 3 },
-        "horde": { "first": false, "kills": 2 },
-        "inhibitor": { "first": true, "kills": 1 },
-        "riftHerald": { "first": true, "kills": 1 },
-        "tower": { "first": true, "kills": 9 }
-      },
-      "teamId": 100,
-      "win": true
-    },
-    {
-      "bans": [
-        { "championId": 266, "pickTurn": 6 },
-        { "championId": 77, "pickTurn": 7 },
-        { "championId": 7, "pickTurn": 8 },
-        { "championId": 201, "pickTurn": 9 },
-        { "championId": 119, "pickTurn": 10 }
-      ],
-      "objectives": {
-        "baron": { "first": false, "kills": 0 },
-        "champion": { "first": true, "kills": 26 },
-        "dragon": { "first": false, "kills": 1 },
-        "horde": { "first": true, "kills": 4 },
-        "inhibitor": { "first": false, "kills": 0 },
-        "riftHerald": { "first": false, "kills": 0 },
-        "tower": { "first": false, "kills": 3 }
-      },
-      "teamId": 200,
-      "win": false
-    }
-  ],
-
-  "tournamentCode": ""
-
-
-
-
-
-"_id": "67121edcd0c6ad336b3c2f54",
-"challenges": {
-  "12AssistStreakCount": 0,
-  "HealFromMapSources": 400,
-  "InfernalScalePickup": 0,
-  "SWARM_DefeatAatrox": 0,
-  "SWARM_DefeatBriar": 0,
-  "SWARM_DefeatMiniBosses": 0,
-  "SWARM_EvolveWeapon": 0,
-  "SWARM_Have3Passives": 0,
-  "SWARM_KillEnemy": 0,
-  "SWARM_PickupGold": 0,
-  "SWARM_ReachLevel50": 0,
-  "SWARM_Survive15Min": 0,
-  "SWARM_WinWith5EvolvedWeapons": 0,
-  "abilityUses": 323,
-  "acesBefore15Minutes": 0,
-  "alliedJungleMonsterKills": 10,
-  "baronBuffGoldAdvantageOverThreshold": 1,
-  "baronTakedowns": 0,
-  "blastConeOppositeOpponentCount": 0,
-  "bountyGold": 300,
-  "buffsStolen": 0,
-  "completeSupportQuestInTime": 0,
-  "controlWardsPlaced": 0,
-  "damagePerMinute": 1212.44396778352,
-  "damageTakenOnTeamPercentage": 0.143357814740605,
-  "dancedWithRiftHerald": 0,
-  "deathsByEnemyChamps": 4,
-  "dodgeSkillShotsSmallWindow": 10,
-  "doubleAces": 0,
-  "dragonTakedowns": 1,
-  "earliestBaron": 1326.130485743,
-  "earliestDragonTakedown": 1045.828646882,
-  "earlyLaningPhaseGoldExpAdvantage": 0,
-  "effectiveHealAndShielding": 1100.65942382813,
-  "elderDragonKillsWithOpposingSoul": 0,
-  "elderDragonMultikills": 0,
-  "enemyChampionImmobilizations": 48,
-  "enemyJungleMonsterKills": 0,
-  "epicMonsterKillsNearEnemyJungler": 0,
-  "epicMonsterKillsWithin30SecondsOfSpawn": 0,
-  "epicMonsterSteals": 0,
-  "epicMonsterStolenWithoutSmite": 0,
-  "firstTurretKilled": 1,
-  "firstTurretKilledTime": 945.386796533,
-  "fistBumpParticipation": 0,
-  "flawlessAces": 0,
-  "fullTeamTakedown": 0,
-  "gameLength": 1616.146077317,
-  "getTakedownsInAllLanesEarlyJungleAsLaner": 0,
-  "goldPerMinute": 467.423181126731,
-  "hadOpenNexus": 0,
-  "highestChampionDamage": 1,
-  "immobilizeAndKillWithAlly": 8,
-  "initialBuffCount": 0,
-  "initialCrabCount": 0,
-  "jungleCsBefore10Minutes": 0,
-  "junglerTakedownsNearDamagedEpicMonster": 2,
-  "kTurretsDestroyedBeforePlatesFall": 0,
-  "kda": 5.25,
-  "killAfterHiddenWithAlly": 3,
-  "killParticipation": 0.552631578947369,
-  "killedChampTookFullTeamDamageSurvived": 0,
-  "killingSprees": 1,
-  "killsNearEnemyTurret": 3,
-  "killsOnOtherLanesEarlyJungleAsLaner": 0,
-  "killsOnRecentlyHealedByAramPack": 0,
-  "killsUnderOwnTurret": 0,
-  "killsWithHelpFromEpicMonster": 1,
-  "knockEnemyIntoTeamAndKill": 3,
-  "landSkillShotsEarlyGame": 0,
-  "laneMinionsFirst10Minutes": 66,
-  "laningPhaseGoldExpAdvantage": 0,
-  "legendaryCount": 0,
-  "legendaryItemUsed": [3003, 3040, 4628, 6653],
-  "lostAnInhibitor": 0,
-  "maxCsAdvantageOnLaneOpponent": 0,
-  "maxKillDeficit": 1,
-  "maxLevelLeadLaneOpponent": 2,
-  "mejaisFullStackInTime": 0,
-  "moreEnemyJungleThanOpponent": 0,
-  "multiKillOneSpell": 0,
-  "multiTurretRiftHeraldCount": 0,
-  "multikills": 1,
-  "multikillsAfterAggressiveFlash": 0,
-  "outerTurretExecutesBefore10Minutes": 0,
-  "outnumberedKills": 3,
-  "outnumberedNexusKill": 0,
-  "perfectDragonSoulsTaken": 0,
-  "perfectGame": 0,
-  "pickKillWithAlly": 10,
-  "playedChampSelectPosition": 1,
-  "poroExplosions": 0,
-  "quickCleanse": 0,
-  "quickFirstTurret": 0,
-  "quickSoloKills": 0,
-  "riftHeraldTakedowns": 1,
-  "saveAllyFromDeath": 0,
-  "scuttleCrabKills": 0,
-  "shortestTimeToAceFromFirstTakedown": 34.664978754,
-  "skillshotsDodged": 72,
-  "skillshotsHit": 13,
-  "snowballsHit": 0,
-  "soloBaronKills": 0,
-  "soloKills": 3,
-  "stealthWardsPlaced": 9,
-  "survivedSingleDigitHpCount": 0,
-  "survivedThreeImmobilizesInFight": 18,
-  "takedownOnFirstTurret": 0,
-  "takedowns": 21,
-  "takedownsAfterGainingLevelAdvantage": 0,
-  "takedownsBeforeJungleMinionSpawn": 0,
-  "takedownsFirstXMinutes": 4,
-  "takedownsInAlcove": 1,
-  "takedownsInEnemyFountain": 0,
-  "teamBaronKills": 1,
-  "teamDamagePercentage": 0.272010611714108,
-  "teamElderDragonKills": 0,
-  "teamRiftHeraldKills": 1,
-  "teleportTakedowns": 1,
-  "tookLargeDamageSurvived": 0,
-  "turretPlatesTaken": 1,
-  "turretTakedowns": 4,
-  "turretsTakenWithRiftHerald": 5,
-  "twentyMinionsIn3SecondsCount": 0,
-  "twoWardsOneSweeperCount": 0,
-  "unseenRecalls": 0,
-  "visionScoreAdvantageLaneOpponent": 0.768066883087158,
-  "visionScorePerMinute": 0.769577050825468,
-  "voidMonsterKill": 1,
-  "wardTakedowns": 4,
-  "wardTakedownsBefore20M": 0,
-  "wardsGuarded": 0
-},
-},
-} -->
 
 
 </body>

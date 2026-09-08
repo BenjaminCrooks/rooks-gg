@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 
-router.use(express.static("public"))
+// router.use(express.static("public"))
 
 var dd = require("../data-dragon.js")
 var tools = require("../tools.js")
@@ -21,6 +21,8 @@ router.use((req, res, next) => {
 	} else {
 		res.locals.groupBy = "$championId"
 	}
+
+	// req.query.season = 0
 
 	next()
 })

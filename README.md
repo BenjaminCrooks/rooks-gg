@@ -224,6 +224,15 @@ Tooltips for each icon show the name of the icon; and the name is also copied to
 
 ## Development Log
 
+### v3.0.0
+**Variable Font**
+- Implemented variable font usage
+
+**Counters/Drafting**
+- New routing for draft phase based aggregation stages
+- Able to see my champion's winrates into a specific enemy pick
+
+
 ### v2.2.0
 **Live Game**
 - Added live game feature, due to OP.GG (and other sites) having in-consistent reliability recently

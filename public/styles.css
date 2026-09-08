@@ -50,7 +50,6 @@ main {
 
 img {
     display: block;
-    image-rendering: smooth;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -83,7 +82,7 @@ span {
     font-variation-settings: inherit;
 }
 
-li.dull, span.dull { filter: brightness(75%); /* grayscale(25%) contrast(100%) blur(0px) invert(60%) */ }
+li.dull, span.dull { filter: brightness(80%); /* grayscale(25%) contrast(100%) blur(0px) invert(60%) */ }
 span.small { font-size: 0.75rem; }
 *.italic { font-style: italic; } /*span.italic, li.italic { font-style: italic; }*/
 

@@ -3,7 +3,7 @@ const fs = require("fs")
 const path = require("path")
 const router = express.Router()
 
-router.use(express.static("public"))
+// router.use(express.static("public"))
 
 var { liveVersion } = require("../data-dragon.js")
 

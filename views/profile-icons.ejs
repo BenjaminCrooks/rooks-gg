@@ -7,9 +7,9 @@
 <meta name="author" content="Rooks">
 <meta name="description" content="Profile Icons">
 
-<link rel="icon" href="assets/icons/rooksIconGG.png">
-<link rel="stylesheet" href="styles.css">
-<script src="plugins/jquery-3.4.1.min.js"></script>
+<link rel="icon" href="/assets/icons/rooksIconGG.png">
+<link rel="stylesheet" href="/styles.css">
+<script src="/plugins/jquery-3.4.1.min.js"></script>
 
 
 <style>
@@ -23,7 +23,7 @@ main {
     height: 100%;
     display: grid;
     gap: 0px;
-    grid-template-columns: 622px auto;
+    grid-template-columns: auto auto;
     grid-template-rows: 60% auto 1fr;
     grid-template-areas:
     "icons random"
@@ -48,8 +48,8 @@ main {
     height: 100%;
     overflow: scroll;
     display: grid;
-    grid-template-columns: repeat(8, 64px);
-    grid-template-rows: repeat(auto-fill, 64px);
+    grid-template-columns: repeat(7, 96px);
+    grid-template-rows: repeat(auto-fill, 96px);
     gap: 16px 8px;
     padding: 24px;
     /*background: linear-gradient( 0deg,*/
@@ -175,7 +175,7 @@ input[type=checkbox]:hover, button:hover {
 }
 
 input[type=checkbox]:checked {
-    background-image: url("assets/icons/checkmark.png");
+    background-image: url("/assets/icons/checkmark.png");
     background-color: var(--purple500);
 }
 
@@ -191,9 +191,12 @@ input[type=checkbox]:checked + label {
     color: inherit;
 }
 
-.frame[data-type="Champie"] {
+/*.frame[data-type="Champie"] {
     display: none;
-}
+}*/
+
+#icon-grid .frame { display: none; }
+#icon-grid .frame[data-type="Misc"] { display: flex; }
 
 
 /* Note (options) ★ ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── ★ */
@@ -243,17 +246,17 @@ button {
 
     <div id="rand-frame" class="v-container">
         <div class="frame" data-name="">
-            <img class="rand-img" src="assets/icons/svgs/blank.svg">
-            <img class="rand-img" src="assets/icons/svgs/blank.svg">
+            <img class="rand-img" src="/assets/icons/svgs/blank.svg">
+            <img class="rand-img" src="/assets/icons/svgs/blank.svg">
         </div>
         <h2>Icon</h2>
     </div>
 
     <div id ="options">
         <input checked type="checkbox" data-filter="Misc" id="Misc"><label for="Misc" style="font-style: italic; font-weight: var(--font-light);">* Misc</label>
-        <input checked type="checkbox" data-filter="Prestige" id="Prestige"><label for="Prestige">Prestige</label>
-        <input checked type="checkbox" data-filter="Graphic" id="Graphic"><label for="Graphic">Graphic</label>
-        <input checked type="checkbox" data-filter="Illustration" id="Illustration"><label for="Illustration">Illustration</label>
+        <input unchecked type="checkbox" data-filter="Prestige" id="Prestige"><label for="Prestige">Prestige</label>
+        <input unchecked type="checkbox" data-filter="Graphic" id="Graphic"><label for="Graphic">Graphic</label>
+        <input unchecked type="checkbox" data-filter="Illustration" id="Illustration"><label for="Illustration">Illustration</label>
         <input unchecked type="checkbox" data-filter="Champie" id="Champie"><label for="Champie">Champie</label>
         <div id="note">(shift click to disable siblings)</div>
     </div>

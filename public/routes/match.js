@@ -3,7 +3,7 @@ const fs = require("fs")
 const path = require("path")
 const router = express.Router()
 
-router.use(express.static("public"))
+// router.use(express.static("public"))
 
 var aggr = require("../aggregation.js")
 var dd = require("../data-dragon.js")
@@ -283,6 +283,11 @@ router.use("/details", (req, res, next) => {
 		p.summoner2 = dd.summoner(p.summoner2Id, res.locals.general.gameVersion)
 		p.items = p.items.map(function(item) { return dd.item(item, res.locals.general.gameVersion) })
 		p.perks.styles = p.perks.styles.map(function(style) { return dd.rune(style, res.locals.general.gameVersion) })
+		p.perks.statPerks = {
+			defense: dd.rune(p.perks.statPerks.defense, res.locals.general.gameVersion),
+			flex: dd.rune(p.perks.statPerks.flex, res.locals.general.gameVersion),
+			offense: dd.rune(p.perks.statPerks.offense, res.locals.general.gameVersion)
+		}
 		return p
 	})
 
@@ -291,7 +296,7 @@ router.use("/details", (req, res, next) => {
 
 
 router.get("/details", (req, res) => {
-	// res.send(res.locals)
+	// res.send(res.locals.participants[0].perks)
 	res.render("match-details.ejs", { matchVars })
 })
 
